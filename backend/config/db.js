@@ -1,12 +1,15 @@
 const mongoose = require("mongoose");
 
+const dns=require("dns"); dns.setServers(["1.1.1.1","8.8.8.8"]);
+const dburl="mongodb+srv://it23259584_db_user:FvhFJL6ufxdrM9mh@cluster0.jrpbwzi.mongodb.net/?appName=Cluster0";
+
+mongoose.set("strictQuery",true,"useNewUrlParser",true);
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI);
-
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.error("Database connection failed");
+    await mongoose.connect(dburl);
+    console.log("MongoDB connected");
+  } catch (e) {
+    console.error(e.message);
     process.exit(1);
   }
 };
