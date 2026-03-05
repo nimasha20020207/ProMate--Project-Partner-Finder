@@ -1,6 +1,6 @@
 import React from 'react';
 import {Routes, Route, Link} from 'react-router-dom';
-import recommendations from './pages/RecEngine/recommendations';
+import Recommendations from './pages/RecEngine/ProjectRecommendations';
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
     // </div>
     <div>
       <Routes>
-        <Route path="/" element={<recommendations />} />
+        <Route path="/" element={<Recommendations />} />
       </Routes>
     </div>
   );

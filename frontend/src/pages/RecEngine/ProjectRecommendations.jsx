@@ -5,7 +5,7 @@ const recommendations = () => {
 
     useEffect(()=>{
 
-    fetch("http://localhost:5000/api/recommendations/projects/S1")
+    fetch("http://localhost:3000/api/recommendations/projects/S1")
     .then(res=>res.json())
     .then(data=>setProjects(data))
 
