@@ -4,13 +4,15 @@ import {BrowserRouter} from 'react-router-dom';
 import "./tailwind.css";
 
 import App from "./App.jsx";
-import recommendations from "./pages/RecEngine/recommendations.jsx";
+
 
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>
 );
 
