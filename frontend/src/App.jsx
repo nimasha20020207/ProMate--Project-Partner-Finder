@@ -1,6 +1,7 @@
 import React from 'react';
 import {Routes, Route, Link} from 'react-router-dom';
 import Recommendations from './pages/RecEngine/ProjectRecommendations';
+import Candidates from './pages/RecEngine/StudentRecommendations';
 import Dashboard from './Dashboard';
 
 function App() {
@@ -16,6 +17,10 @@ function App() {
       <Routes>
         <Route path="/recs" element={<Recommendations />} />
       </Routes>
+
+      <Routes>
+        <Route path="/sturecs" element={<Candidates />} />
+      </Routes>      
     </div>
   );
 }

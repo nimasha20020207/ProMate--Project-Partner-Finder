@@ -58,6 +58,66 @@ semester:2,
 cgpa:3.7
 }
 
+},
+
+{
+id:"S3",
+
+fullName:"Bobby",
+
+skills:{
+languages:[{name:"Javascript"}],
+frameworks:[{name:"React"}],
+libraries:[{name:"Bootstrap"}],
+databases:[{name:"MySQL"}],
+tools:[{name:"Git"}]
+},
+
+availability:{
+weeklyHours:15
+},
+
+interests:["AI / ML"],
+
+preferredRoles:["Fullstack Developer"],
+
+academicInfo:{
+specialization:"IT",
+year:3,
+semester:1,
+cgpa:3.0
+}
+
+},
+
+{
+id:"S4",
+
+fullName:"Nimasha",
+
+skills:{
+languages:[{name:"Javascript",}],
+frameworks:[{name:"React"}],
+libraries:[],
+databases:[{name:"MySQL"},{name:"MongoDB"}],
+tools:[{name:"Git"}]
+},
+
+availability:{
+weeklyHours:15
+},
+
+interests:["Web Development"],
+
+preferredRoles:["Fullstack Developer"],
+
+academicInfo:{
+specialization:"IT",
+year:3,
+semester:1,
+cgpa:3
+}
+
 }
 
 ]
