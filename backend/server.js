@@ -1,4 +1,6 @@
 const express =require("express");
+const cors = require('cors');
+
 const dbconnection=require("./config/db");
 
 const app = express();
@@ -7,6 +9,11 @@ const app = express();
 dbconnection();
 
 app.get("/",(req,res)=>res.send("Server is running.."));
+
+//Enable CORS
+app.use(cors({
+  origin: 'http://localhost:5173'
+}));
 
 //RecEngine
 const recommendationRoutes = require("./routes/recommendationRoutes")

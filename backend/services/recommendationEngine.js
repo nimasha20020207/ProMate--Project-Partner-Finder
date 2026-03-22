@@ -61,7 +61,14 @@ return {
 score:finalScore,
 
 explanation:
-`Matched ${matchedSkills.length} skills, availability aligned and domain interest matched`
+`Matched ${matchedSkills.length} skills, availability aligned and domain interest matched`,
+
+details: {
+    matchedSkills,
+    totalRequiredSkills: projectSkills.length,
+
+    interestMatches: interestMatch
+  }
 
 }
 

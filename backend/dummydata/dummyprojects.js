@@ -58,6 +58,36 @@ semester:2,
 minimumCGPA:3
 }
 
+},
+
+{
+id:"P3",
+
+title:"ITPM project",
+
+essentialSkills:{
+languages:["JavaScript"],
+frameworks:["React"],
+libraries:[],
+databases:["MongoDB","MySQL"],
+tools:["Git"]
+},
+
+requiredRoles:["Frontend Developer","Backend Developer","Fullstack Developer"],
+
+availabilityRequirement:{
+weeklyHours:15
+},
+
+domain:["Web Development"],
+
+academicConstraints:{
+specialization:["IT"],
+year:3,
+semester:1,
+minimumCGPA:3
+}
+
 }
 
 ]
