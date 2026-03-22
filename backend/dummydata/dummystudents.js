@@ -22,7 +22,7 @@ interests:["Web Development"],
 preferredRoles:["Frontend Developer"],
 
 academicInfo:{
-specialization:"SE",
+specialization:"IT",
 year:3,
 semester:1,
 cgpa:3.5

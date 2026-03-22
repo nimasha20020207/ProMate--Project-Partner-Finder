@@ -22,7 +22,7 @@ weeklyHours:15
 domain:["Web Development"],
 
 academicConstraints:{
-specialization:["SE","IT"],
+specialization:["IT"],
 year:3,
 semester:1,
 minimumCGPA:3
@@ -80,6 +80,66 @@ weeklyHours:15
 },
 
 domain:["Web Development"],
+
+academicConstraints:{
+specialization:["IT"],
+year:3,
+semester:1,
+minimumCGPA:3
+}
+
+},
+
+{
+id:"P3",
+
+title:"PAF project",
+
+essentialSkills:{
+languages:["JavaScript","Java"],
+frameworks:["React","Springboot"],
+libraries:["Bootstrap"],
+databases:["MongoDB","MySQL"],
+tools:["Git"]
+},
+
+requiredRoles:["Frontend Developer","Backend Developer","Fullstack Developer"],
+
+availabilityRequirement:{
+weeklyHours:15
+},
+
+domain:["Web Development"],
+
+academicConstraints:{
+specialization:["IT"],
+year:3,
+semester:1,
+minimumCGPA:3
+}
+
+},
+
+{
+id:"P3",
+
+title:"ITPM project",
+
+essentialSkills:{
+languages:["Python","SQL"],
+frameworks:["Django"],
+libraries:["pandas","numpy","tensorflow","scikitlearn"],
+databases:["postgreSQL"],
+tools:["Git","pycharm"]
+},
+
+requiredRoles:["Frontend Developer","Backend Developer","Fullstack Developer"],
+
+availabilityRequirement:{
+weeklyHours:15
+},
+
+domain:["ML development"],
 
 academicConstraints:{
 specialization:["IT"],
