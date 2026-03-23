@@ -2,11 +2,16 @@ function getSkills(student){
 
 return [
 
-...student.skills.languages.map(s=>s.name),
-...student.skills.frameworks.map(s=>s.name),
-...student.skills.libraries.map(s=>s.name),
-...student.skills.databases.map(s=>s.name),
-...student.skills.tools.map(s=>s.name)
+// ...student.skills.languages.map(s=>s.name),
+// ...student.skills.frameworks.map(s=>s.name),
+// ...student.skills.libraries.map(s=>s.name),
+// ...student.skills.databases.map(s=>s.name),
+// ...student.skills.tools.map(s=>s.name)
+...student.skills.languages,
+...student.skills.frameworks,
+...student.skills.libraries,
+...student.skills.databases,
+...student.skills.tools
 
 ]
 

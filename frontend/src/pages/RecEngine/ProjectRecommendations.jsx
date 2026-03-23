@@ -101,8 +101,20 @@ const Recommendations = () => {
                     {item.explanation}
                   </p>
 
+                  {/* Matched Skills */}
+              <div className="flex flex-wrap gap-2 mt-2">
+                {item.details?.matchedSkills?.map((skill, idx) => (
+                  <span
+                    key={idx}
+                    className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+
                   {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-3">
+                  <div className="flex flex-wrap gap-2 mb-3 mt-3">
                     {item.project.domain?.map((d, index) => (
                       <span
                         key={index}

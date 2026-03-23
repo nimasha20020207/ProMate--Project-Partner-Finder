@@ -5,12 +5,14 @@ id:"S1",
 
 fullName:"Alice",
 
+profileImage:"/assets/images/students/alice.jpg",
+
 skills:{
-languages:[{name:"JavaScript"}],
-frameworks:[{name:"React"}],
+languages:["Javascript"],
+frameworks:["React"],
 libraries:[],
-databases:[{name:"MongoDB"}],
-tools:[{name:"Git"}]
+databases:["MongoDB"],
+tools:["Git"]
 },
 
 availability:{
@@ -36,9 +38,9 @@ id:"S2",
 fullName:"Bob",
 
 skills:{
-languages:[{name:"Python"}],
+languages:["python"],
 frameworks:[],
-libraries:[{name:"TensorFlow"}],
+libraries:["Tensorflow"],
 databases:[],
 tools:[]
 },
@@ -66,11 +68,11 @@ id:"S3",
 fullName:"Bobby",
 
 skills:{
-languages:[{name:"Javascript"}],
-frameworks:[{name:"React"}],
-libraries:[{name:"Bootstrap"}],
-databases:[{name:"MySQL"}],
-tools:[{name:"Git"}]
+languages:["JavaScript"],
+frameworks:["React"],
+libraries:["Bootstrap"],
+databases:["MySQL"],
+tools:["Git"]
 },
 
 availability:{
@@ -96,11 +98,11 @@ id:"S4",
 fullName:"Nimasha",
 
 skills:{
-languages:[{name:"Javascript",}],
-frameworks:[{name:"React"}],
+languages:["Javascript"],
+frameworks:["React"],
 libraries:[],
-databases:[{name:"MySQL"},{name:"MongoDB"}],
-tools:[{name:"Git"}]
+databases:["MySQl","MongoDB"],
+tools:["Git"]
 },
 
 availability:{
