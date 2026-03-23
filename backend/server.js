@@ -19,6 +19,11 @@ app.use(cors({
 const recommendationRoutes = require("./routes/recommendationRoutes")
 app.use("/api/recommendations",recommendationRoutes)
 
+//Feedbacks
+const feedbackRoutes = require("./routes/feedbacksRoutes");
+app.use("/api/feedback", feedbackRoutes);
+
+
 const PORT=3000;
 
 app.listen(PORT,()=>console.log(`Server running on PORT ${PORT}`));
