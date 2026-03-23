@@ -37,6 +37,8 @@ id:"S2",
 
 fullName:"Bob",
 
+profileImage:"/assets/images/students/alice.jpg",
+
 skills:{
 languages:["python"],
 frameworks:[],
@@ -67,6 +69,8 @@ id:"S3",
 
 fullName:"Bobby",
 
+profileImage:"/assets/images/students/alice.jpg",
+
 skills:{
 languages:["JavaScript"],
 frameworks:["React"],
@@ -96,6 +100,8 @@ cgpa:3.0
 id:"S4",
 
 fullName:"Nimasha",
+
+profileImage:"/assets/images/students/alice.jpg",
 
 skills:{
 languages:["Javascript"],

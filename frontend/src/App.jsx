@@ -3,6 +3,7 @@ import {Routes, Route, Link} from 'react-router-dom';
 import Recommendations from './pages/RecEngine/ProjectRecommendations';
 import Candidates from './pages/RecEngine/StudentRecommendations';
 import Dashboard from './Dashboard';
+import Feedbacks from './pages/RecEngine/Feedbacks';
 
 function App() {
   return (
@@ -20,7 +21,11 @@ function App() {
 
       <Routes>
         <Route path="/sturecs" element={<Candidates />} />
-      </Routes>      
+      </Routes>   
+
+      <Routes>
+        <Route path="/feedbacks" element={<Feedbacks />} />
+      </Routes>   
     </div>
   );
 }

@@ -19,6 +19,20 @@ const Recommendations = () => {
 
       {/* Main content */}
       <div className="flex-1 p-6 bg-surface">
+
+        {/* Button */}
+        <div className="mb-6 flex justify-end">
+  <button
+    onClick={() => window.location.href = "/feedbacks"}
+    className="relative w-full max-w-xs px-6 py-3 font-semibold text-white rounded-xl 
+               bg-gradient-to-r from-primary to-secondary
+               shadow-md hover:shadow-lg transition-transform duration-300 hover:scale-105
+               text-sm text-center"
+  >
+    Rate Recommendations⭐⭐
+  </button>
+</div>
+
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((item, i) => {
             const percentage = (item.score * 100).toFixed(0);
