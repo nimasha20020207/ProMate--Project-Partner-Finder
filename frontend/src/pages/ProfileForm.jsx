@@ -37,23 +37,17 @@ const ProfileForm = () => {
     tools: ["Git", "Docker", "Figma", "Postman", "AWS", "Jira"]
   };
 
-  const skillLevels = ["Beginner", "Intermediate", "Advanced"];
   const interests = ["AI / ML", "Web Development", "Mobile Apps", "Cybersecurity", "Data Science", "IoT", "UI / UX", "DevOps"];
   const roles = ["Frontend Developer", "Backend Developer", "Full Stack", "ML Engineer", "UI/UX Designer", "DevOps", "QA Engineer"];
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const times = ["Morning", "Afternoon", "Evening", "Night"];
 
-  const handleSkillChange = (category, skill, level) => {
-    const updated = student.skills[category].filter(s => s.name !== skill);
-    if (level !== "") {
-      updated.push({ name: skill, level });
-    }
+  const toggleSkill = (category, skill) => {
+    const current = student.skills[category];
+    const updated = current.includes(skill) 
+      ? current.filter(s => s !== skill) 
+      : [...current, skill];
     setStudent({ ...student, skills: { ...student.skills, [category]: updated } });
-  };
-
-  const getSkillLevel = (category, skill) => {
-    const found = student.skills[category].find(s => s.name === skill);
-    return found ? found.level : "";
   };
 
   const handleMultiSelect = (field, value) => {
@@ -157,23 +151,18 @@ const ProfileForm = () => {
         
         {Object.keys(skillOptions).map(category => (
           <div key={category} style={{ marginBottom: '1.5rem' }}>
-            <div className="skill-cat-label">{category}</div>
-            <div className="skill-rows">
+            <div className="form-label" style={{ textTransform: 'capitalize', marginBottom: '0.5rem' }}>{category}</div>
+            <div className="chip-group">
               {skillOptions[category].map(skill => {
-                const currentLevel = getSkillLevel(category, skill);
+                const isSelected = student.skills[category].includes(skill);
                 return (
-                  <div className="skill-row-item" key={skill}>
-                    <span className="skill-name">{skill}</span>
-                    <select 
-                      className={`skill-select ${currentLevel ? 'has-value' : ''}`}
-                      value={currentLevel}
-                      onChange={(e) => handleSkillChange(category, skill, e.target.value)}
-                    >
-                      <option value="">None</option>
-                      {skillLevels.map(level => (
-                        <option key={level} value={level}>{level}</option>
-                      ))}
-                    </select>
+                  <div 
+                    key={skill} 
+                    className={`chip ${isSelected ? 'active' : ''}`}
+                    onClick={() => toggleSkill(category, skill)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {skill}
                   </div>
                 );
               })}

@@ -2473,3 +2473,89 @@ input[type="range"] {
   padding: 0;
   max-width: none;
 }
+
+/* ── PREMIUM PROFILE VIEW EFFECTS ── */
+.premium-hero {
+  background: linear-gradient(135deg, #2563EB 0%, #F472B6 100%);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.2);
+  border-radius: 18px;
+  color: white;
+  border: none;
+}
+
+.premium-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+  animation: spin 30s linear infinite;
+  pointer-events: none;
+}
+
+.premium-avatar {
+  border: 4px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.premium-name {
+  font-family: 'Sora', sans-serif;
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -1px;
+}
+
+.glass-chip {
+  background: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #fff !important;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.shadow-card {
+  border: none !important;
+  background: #ffffff;
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.06) !important;
+  border-radius: 18px !important;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
+}
+
+.shadow-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1) !important;
+}
+
+.shadow-avatar {
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+  border: 3px solid #fff;
+}
+
+.skill-tag-premium {
+  background: linear-gradient(to right, #EFF6FF, #E0E7FF) !important;
+  color: #1E3A8A !important;
+  border: 1px solid #BFDBFE !important;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.skill-tag-premium:hover {
+  background: linear-gradient(to right, #DBEAFE, #BFDBFE) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+.premium-chip {
+  background: linear-gradient(135deg, #2563EB, #3B82F6) !important;
+  color: white !important;
+  border: none !important;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+}

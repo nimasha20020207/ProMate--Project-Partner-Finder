@@ -118,8 +118,8 @@ const Landing = () => {
 
       <footer className="landing-footer">
         <div className="footer-brand"><div className="brand-dot" style={{ background: 'var(--sky)' }}></div> ProjectMate</div>
-        <div className="footer-text">© 2026 ProjectMate · IT3040 Project · University of Sri Lanka</div>
-        <div className="footer-text">Built with 💙 by Module 1 Team</div>
+        <div className="footer-text">© 2026 ProjectMate · IT3040 Project · Sri Lanka Institute of Information Technology</div>
+        <div className="footer-text">Built with 💙 by Team</div>
       </footer>
     </div>
   );
