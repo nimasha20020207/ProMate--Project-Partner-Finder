@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import AdminNavbar from '../../components/AdminNavbar'
 
-function Dashboard() {
+const Admindashboard = () => {
   const [data, setData] = useState({});
 
   useEffect(() => {
@@ -15,17 +16,27 @@ function Dashboard() {
   }, []);
 
   return (
-    <div>
-      <h1>Admin Dashboard</h1>
 
-      <div className="cards">
+    <div className="flex min-h-screen">
+      {/* Sidebar */}
+      <div className="w-64 bg-gray-800 text-white">
+        <AdminNavbar />
+      </div>
+
+      {/* Main content */}
+      <div className="flex-1 p-6 bg-surface">
+
+        <h1>dashboard</h1>
+        <div className="cards">
         <div>Total Students: {data.totalStudents}</div>
         <div>Total Projects: {data.totalProjects}</div>
         <div>Total Requests: {data.totalRequests}</div>
         <div>Pending Requests: {data.pendingRequests}</div>
       </div>
+        
+      </div>
     </div>
   );
 }
 
-export default Dashboard;
+export default Admindashboard
