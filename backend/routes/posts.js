@@ -21,5 +21,12 @@ router.get("/", (req, res) => {
     .catch(() => res.status(400).json({msg: "unable to fetch posts"}));
 });
 
+//get post by id - read
+router.get("/:id", (req, res) => {
+    Posts.findById(req.params.id)
+    .then((post) => res.json(post))
+    .catch(() => res.status(400).json({msg: "unable to fetch by id post"}));
+});
+
 
 module.exports = router;
