@@ -28,4 +28,4 @@ const studentMockSchema = new mongoose.Schema({
   preferredRoles: [String]
 }, { timestamps: true });
 
-module.exports = mongoose.model("Student", studentMockSchema);
+module.exports = mongoose.model("StudentsMock", studentMockSchema);

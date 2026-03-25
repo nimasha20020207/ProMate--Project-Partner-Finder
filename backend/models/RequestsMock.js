@@ -7,4 +7,4 @@ const requestSchema = new mongoose.Schema({
   status: { type: String, default: "Pending" } // Pending / Accepted / Rejected
 });
 
-module.exports = mongoose.model("RequestMock", requestSchema);
+module.exports = mongoose.model("RequestsMock", requestSchema);

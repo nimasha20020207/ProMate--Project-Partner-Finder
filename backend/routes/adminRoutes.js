@@ -11,6 +11,7 @@ const reportController = require("../controllers/ReportController");
 router.get("/students", studentController.getStudents);
 router.put("/students/:id", studentController.updateStudent);
 router.delete("/students/:id", studentController.deleteStudent);
+router.post("/students", studentController.createStudent);
 
 // Projects
 router.get("/projects", projectController.getProjects);

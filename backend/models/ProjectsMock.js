@@ -34,4 +34,4 @@ const projectMockSchema = new mongoose.Schema({
   domain: [String]
 }, { timestamps: true });
 
-module.exports = mongoose.model("Project", projectMockSchema);
+module.exports = mongoose.model("ProjectsMock", projectMockSchema);
