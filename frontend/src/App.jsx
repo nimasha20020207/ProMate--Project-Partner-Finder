@@ -1,4 +1,5 @@
 import React from 'react';
+import Navbar from './components/Navbar';
 
 
 
@@ -9,6 +10,7 @@ function App() {
     //  ProjectMate Frontend Ready 🚀
     //</div>
     <div>
+      <Navbar />
       
     </div>
 

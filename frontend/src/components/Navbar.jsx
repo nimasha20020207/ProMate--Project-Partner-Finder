@@ -9,7 +9,7 @@ const Navbar = () => {
     { text: "Dashboard", icon: <Home size={20} />, path: "/" },
     { text: "Create new project", icon: <PlusSquare size={20} />, path: "/#" },
     { text: "Notifications", icon: <Bell size={20} />, badge: "3", path: "/#" },
-    { text: "Your projects", icon: <Folder size={20} />, path: "/#" },
+    { text: "My projects", icon: <Folder size={20} />, path: "/#" },
   ];
 
   const teams = [
