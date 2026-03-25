@@ -28,5 +28,12 @@ router.get("/:id", (req, res) => {
     .catch(() => res.status(400).json({msg: "unable to fetch by id post"}));
 });
 
+//update post by id
+router.put("/:id", (req, res) => {
+    Posts.findByIdAndUpdate(req.params.id, req.body)
+    .then(() => res.json({msg: "post updated successfully"}))
+    .catch(() => res.status(400).json({msg: "unable to update post"}));
+});
+
 
 module.exports = router;
