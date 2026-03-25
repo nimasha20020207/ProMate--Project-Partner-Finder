@@ -1,11 +1,18 @@
 import React from 'react';
+import {Routes, Route, Link} from 'react-router-dom';
+
 
 function App() {
   return (
-    <div className="text-3xl font-bold text-blue-600 p-10">
-      ProjectMate Frontend Ready 🚀
+    <div>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+      </Routes>
+
     </div>
   );
 }
 
 export default App;
+
+{/* <Route path="/" element={<Home />} /> */}
