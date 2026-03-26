@@ -1,15 +1,16 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Home, PlusSquare, Bell, Folder, Users, LogOut } from "lucide-react";
+import ProMateLogo from '../assets/images/ProMateLogo.png'
 
 const AdminNavbar = () => {
   const location = useLocation();
 
   const navItems = [
-    { text: "Dashboard", icon: <Home size={20} />, path: "/" },
-    { text: "Create new project", icon: <PlusSquare size={20} />, path: "/#" },
-    { text: "Notifications", icon: <Bell size={20} />, badge: "3", path: "/#" },
-    { text: "Your projects", icon: <Folder size={20} />, path: "/#" },
+    { text: "Dashboard", icon: <Home size={24} />, path: "/" },
+    { text: "Students ", icon: <PlusSquare size={24} />, path: "/studentman" },
+    { text: "Projects", icon: <Bell size={24} />, badge: "3", path: "/projectman" },
+    { text: "Activity", icon: <Folder size={24} />, path: "/requestman" },
   ];
 
   const teams = [
@@ -18,13 +19,22 @@ const AdminNavbar = () => {
   ];
 
   return (
-    <div className="h-screen w-64 bg-white border-r border-gray-200 flex flex-col justify-between p-5">
+    <div className="h-screen w-64 bg-white border-r border-gray-200 flex flex-col p-5">
       
       {/* Logo */}
-      <h2 className="text-2xl font-bold mb-4">
-        <span className="text-primary">Partner</span>
-        <span className="text-secondary">Finder</span>
-      </h2>
+      <div className="flex items-center gap-1 mb-6">
+  {/* Logo Image (Square) */}
+  <img
+    src={ProMateLogo}
+    alt="ProMate Logo"
+    className="w-11 h-10 object-cover rounded-lg"
+  />
+
+  {/* Text */}
+  <h2 className="text-2xl font-bold text-primary">
+    ProMate
+  </h2>
+</div>
 
       {/* Navigation */}
       <div>
@@ -98,7 +108,7 @@ function NavItem({ icon, text, active, badge }) {
       </div>
 
       {/* Text */}
-      <span className="text-sm flex-1">{text}</span>
+      <span className="text-lg font-semibold flex-1">{text}</span>
 
       {/* Badge */}
       {badge && (
