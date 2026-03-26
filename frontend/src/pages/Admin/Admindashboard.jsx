@@ -3,16 +3,12 @@ import axios from "axios";
 import AdminNavbar from '../../components/AdminNavbar'
 
 const Admindashboard = () => {
-  const [data, setData] = useState({});
+  const [report, setReport] = useState({});
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    axios.get("/api/admin/reports", {
-      headers: { Authorization: token }
-    })
-    .then(res => setData(res.data))
-    .catch(err => console.log(err));
+    axios.get("http://localhost:3000/api/admin/reports")
+      .then(res => setReport(res.data))
+      .catch(err => console.log(err));
   }, []);
 
   return (
@@ -26,14 +22,25 @@ const Admindashboard = () => {
       {/* Main content */}
       <div className="flex-1 p-6 bg-surface">
 
-        <h1>dashboard</h1>
-        <div className="cards">
-        <div>Total Students: {data.totalStudents}</div>
-        <div>Total Projects: {data.totalProjects}</div>
-        <div>Total Requests: {data.totalRequests}</div>
-        <div>Pending Requests: {data.pendingRequests}</div>
+        <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
+      <div className="grid grid-cols-4 gap-4">
+        <div className="bg-white shadow p-4 rounded">
+          <h2 className="font-semibold">Total Students</h2>
+          <p className="text-xl">{report.totalStudents}</p>
+        </div>
+        <div className="bg-white shadow p-4 rounded">
+          <h2 className="font-semibold">Total Projects</h2>
+          <p className="text-xl">{report.totalProjects}</p>
+        </div>
+        <div className="bg-white shadow p-4 rounded">
+          <h2 className="font-semibold">Total Requests</h2>
+          <p className="text-xl">{report.totalRequests}</p>
+        </div>
+        <div className="bg-white shadow p-4 rounded">
+          <h2 className="font-semibold">Pending Requests</h2>
+          <p className="text-xl">{report.pendingRequests}</p>
+        </div>
       </div>
-        
       </div>
     </div>
   );

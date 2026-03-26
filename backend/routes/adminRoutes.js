@@ -17,6 +17,7 @@ router.post("/students", studentController.createStudent);
 router.get("/projects", projectController.getProjects);
 router.put("/projects/:id", projectController.updateProject);
 router.delete("/projects/:id", projectController.deleteProject);
+router.post("/projects", projectController.createProject);
 
 // Requests
 router.get("/requests", requestController.getRequests);
