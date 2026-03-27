@@ -25,5 +25,6 @@ router.put("/requests/:id", requestController.updateRequest);
 
 // Reports
 router.get("/reports", reportController.getReports);
+router.get("/specialization-stats", reportController.getSpecializationStats);
 
 module.exports = router;

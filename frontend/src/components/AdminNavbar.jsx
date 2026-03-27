@@ -1,16 +1,18 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, PlusSquare, Bell, Folder, Users, LogOut } from "lucide-react";
-import ProMateLogo from '../assets/images/ProMateLogo.png'
+import { Home, PlusSquare, Bell, Folder, Users, LogOut, Star } from "lucide-react";
+import ProMateLogo from '../assets/images/logo.jpeg'
+import DummyProfile from '../assets/images/pic1.jpeg'
 
-const AdminNavbar = () => {
+const Navbar = () => {
   const location = useLocation();
 
   const navItems = [
-    { text: "Dashboard", icon: <Home size={24} />, path: "/" },
-    { text: "Students ", icon: <PlusSquare size={24} />, path: "/studentman" },
-    { text: "Projects", icon: <Bell size={24} />, badge: "3", path: "/projectman" },
-    { text: "Activity", icon: <Folder size={24} />, path: "/requestman" },
+    { text: "Dashboard", icon: <Home size={20} />, path: "/" },
+    { text: "Students", icon: <PlusSquare size={20} />, path: "/studentman" },
+    { text: "Projects", icon: <Bell size={20} />, badge: "3", path: "/projectman" },
+    { text: "Activity", icon: <Folder size={20} />, path: "/requestman" },
+    { text: "Ratings & Feedbacks", icon: <Star size={20} />, path: "/feedbacks" },
   ];
 
   const teams = [
@@ -19,19 +21,19 @@ const AdminNavbar = () => {
   ];
 
   return (
-    <div className="h-screen w-64 bg-white border-r border-gray-200 flex flex-col p-5">
+    <div className="h-screen w-64 bg-white border-r border-gray-200 flex flex-col justify-between p-5">
       
-      {/* Logo */}
-      <div className="flex items-center gap-1 mb-6">
-  {/* Logo Image (Square) */}
+      {/* Logo + Text */}
+<div className="flex items-center mb-6 gap-3">
+  {/* Logo Image */}
   <img
-    src={ProMateLogo}
+    src={ProMateLogo} // replace with your logo path
     alt="ProMate Logo"
-    className="w-11 h-10 object-cover rounded-lg"
+    className="w-12 h-10 rounded-full"
   />
-
-  {/* Text */}
-  <h2 className="text-2xl font-bold text-primary">
+  
+  {/* App Name */}
+  <h2 className="text-3xl font-bold text-primary">
     ProMate
   </h2>
 </div>
@@ -78,15 +80,14 @@ const AdminNavbar = () => {
       {/* Profile Section */}
       <div className="mt-6">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary flex-shrink-0"></div>
-          <p className="text-sm font-medium text-gray-800">John Doe</p>
+          <img 
+            src={DummyProfile} 
+            alt="Profile" 
+            className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+          />
+          <p className="text-sm font-medium text-gray-800">Admin</p>
         </div>
 
-        {/* Progress */}
-        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-          <div className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full w-[60%] shadow-sm"></div>
-        </div>
-        <p className="text-xs mt-1 text-right text-gray-500">60%</p>
       </div>
     </div>
   );
@@ -108,7 +109,7 @@ function NavItem({ icon, text, active, badge }) {
       </div>
 
       {/* Text */}
-      <span className="text-lg font-semibold flex-1">{text}</span>
+      <span className="text-base flex-1">{text}</span>
 
       {/* Badge */}
       {badge && (
@@ -120,4 +121,4 @@ function NavItem({ icon, text, active, badge }) {
   );
 }
 
-export default AdminNavbar;
+export default Navbar;
