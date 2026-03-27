@@ -4,6 +4,7 @@ import Recommendations from './pages/RecEngine/ProjectRecommendations';
 import Candidates from './pages/RecEngine/StudentRecommendations';
 import Dashboard from './Dashboard';
 import Feedbacks from './pages/RecEngine/Feedbacks';
+import RecProjects from './pages/RecEngine/RecProjects';
 
 function App() {
   return (
@@ -25,6 +26,10 @@ function App() {
 
       <Routes>
         <Route path="/feedbacks" element={<Feedbacks />} />
+      </Routes> 
+
+      <Routes>
+        <Route path="/recprojects" element={<RecProjects />} />
       </Routes>   
     </div>
   );
