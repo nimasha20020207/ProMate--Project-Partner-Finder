@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
   const { login } = useAuth();
@@ -41,12 +41,12 @@ const Login = () => {
             {error && <div className="form-error show" style={{ marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
             
             <div className="form-group">
-              <label className="form-label">University Email</label>
+              <label className="form-label">Student ID or Email Address</label>
               <input
                 type="text"
                 className="form-input"
                 name="identifier"
-                placeholder="itXXXXXXXX or itXXXXXXXX@my.sliit.lk"
+                placeholder="Enter your Student ID or Email"
                 value={formData.identifier}
                 onChange={handleChange}
                 required

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { calculateProfileCompleteness } from '../utils/profileUtils';
+import { useAuth } from '../../context/AuthContext';
+import { calculateProfileCompleteness } from '../../utils/profileUtils';
 
 const EditProfile = () => {
   const navigate = useNavigate();

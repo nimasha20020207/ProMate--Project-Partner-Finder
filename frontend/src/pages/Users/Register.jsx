@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 const Register = () => {
   const { register } = useAuth();
@@ -23,39 +23,82 @@ const Register = () => {
     bio: ''
   });
 
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (error) setError('');
   };
 
-  const nextStep = () => setStep((prev) => Math.min(prev + 1, 3));
-  const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
+  const handleNextStep1 = () => {
+    const { firstName, lastName, email, department, yearOfStudy } = formData;
+    if (!firstName || !lastName || !email || !department || !yearOfStudy) {
+      setError('Please fill all required fields to continue.');
+      return;
+    }
+    const emailRegex = /^\S+@\S+\.\S+$/i;
+    if (!emailRegex.test(email)) {
+      setError('Please provide a valid email address.');
+      return;
+    }
+    setError('');
+    setStep(2);
+  };
+
+  const handleNextStep2 = () => {
+    const { password, confirmPassword } = formData;
+    if (!password || !confirmPassword) {
+      setError('Please fill in and confirm your password.');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+    if (!agreedToTerms) {
+      setError('You must agree to the Terms of Service and Privacy Policy to continue.');
+      return;
+    }
+    setError('');
+    setStep(3);
+  };
+
+  const prevStep = () => {
+    setError('');
+    setStep((prev) => Math.max(prev - 1, 1));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+    const { studentId, degreeProgram, specialization, semester } = formData;
+    if (!studentId || !degreeProgram || !specialization || !semester) {
+      setError('Please fill all required fields to create your account.');
+      return;
+    }
+
+    const studentIdRegex = /^it\d{8}$/i;
+    if (!studentIdRegex.test(studentId)) {
+      setError('Student ID must start with "IT" followed by exactly 8 digits.');
       return;
     }
     
     // Combining first and last name for backend full name requirement
     const fullName = `${formData.firstName} ${formData.lastName}`.trim();
 
-    const studentIdRegex = /^it\d{8}$/i;
-    if (!studentIdRegex.test(formData.studentId)) {
-      setError('Student ID must start with "IT" followed by exactly 8 digits.');
-      return;
-    }
-    
     const res = await register({
       fullName,
       studentId: formData.studentId,
       email: formData.email,
-      password: formData.password
+      password: formData.password,
+      department: formData.department,
+      degreeProgram: formData.degreeProgram,
+      specialization: formData.specialization,
+      yearOfStudy: formData.yearOfStudy,
+      semester: formData.semester,
+      bio: formData.bio
     });
     if (res.success) {
-      // Typically we would also call PUT /profile here for the other details,
-      // but for now redirecting to profile or onboarding fits the flow.
-      navigate('/onboarding');
+      navigate('/dashboard');
     } else {
       setError(res.message);
     }
@@ -99,9 +142,9 @@ const Register = () => {
                 </div>
               </div>
               <div className="form-group">
-                <label className="form-label">University Email</label>
-                <input type="email" className="form-input" name="email" value={formData.email} onChange={handleChange} placeholder="ashan@university.ac.lk" />
-                <div className="form-hint">Must be a valid university email address e.g. itXXXXXXXX@my.sliit.lk</div>
+                <label className="form-label">Email Address</label>
+                <input type="email" className="form-input" name="email" value={formData.email} onChange={handleChange} placeholder="student@example.com" />
+                <div className="form-hint">Enter your primary email address</div>
               </div>
               <div className="form-row">
                 <div className="form-group">
@@ -122,7 +165,7 @@ const Register = () => {
                   </select>
                 </div>
               </div>
-              <button className="btn btn-primary btn-full" style={{ padding: '.8rem' }} onClick={nextStep} type="button">Continue →</button>
+              <button className="btn btn-primary btn-full" style={{ padding: '.8rem' }} onClick={handleNextStep1} type="button">Continue →</button>
               <div className="auth-footer-text" style={{ marginTop: '.75rem' }}>
                 Already have an account? <Link to="/login" style={{ cursor: 'pointer' }}>Sign in</Link>
               </div>
@@ -148,12 +191,12 @@ const Register = () => {
                 </div>
               </div>
               <label className="agree-row">
-                <input type="checkbox" />
+                <input type="checkbox" checked={agreedToTerms} onChange={(e) => setAgreedToTerms(e.target.checked)} />
                 I agree to the <span style={{ color: 'var(--p)', fontWeight: 600 }}>Terms of Service</span> and <span style={{ color: 'var(--p)', fontWeight: 600 }}>Privacy Policy</span>
               </label>
               <div style={{ display: 'flex', gap: '.6rem' }}>
                 <button className="btn btn-outline" onClick={prevStep} type="button">← Back</button>
-                <button className="btn btn-primary" style={{ flex: 1, justifyContent: 'center' }} onClick={nextStep} type="button">Continue →</button>
+                <button className="btn btn-primary" style={{ flex: 1, justifyContent: 'center' }} onClick={handleNextStep2} type="button">Continue →</button>
               </div>
             </div>
           )}

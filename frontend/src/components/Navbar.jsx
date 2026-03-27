@@ -1,25 +1,19 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import { Home, PlusSquare, Bell, Folder, Users, LogOut } from "lucide-react";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Home, PlusSquare, Bell, Folder, Users, LogOut, Star, Settings as SettingsIcon } from "lucide-react";
+import ProMateLogo from '../assets/images/logo.jpeg'
+import DummyProfile from '../assets/images/pic1.jpeg'
 
 const Navbar = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { user, logout } = useAuth();
-  
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-  
-  const getInitials = (name) => name ? name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'U';
-  const initials = getInitials(user?.fullName);
 
   const navItems = [
-    { text: "Dashboard", icon: <Home size={20} />, path: "/" },
+    { text: "Dashboard", icon: <Home size={20} />, path: "/dashboard" },
     { text: "Create new project", icon: <PlusSquare size={20} />, path: "/#" },
     { text: "Notifications", icon: <Bell size={20} />, badge: "3", path: "/#" },
     { text: "Your projects", icon: <Folder size={20} />, path: "/#" },
+    { text: "Rate & Review", icon: <Star size={20} />, path: "/feedbacks" },
+    { text: "Settings", icon: <SettingsIcon size={20} />, path: "/settings" }
   ];
 
   const teams = [
@@ -30,16 +24,20 @@ const Navbar = () => {
   return (
     <div className="h-screen w-64 bg-white border-r border-gray-200 flex flex-col justify-between p-5">
       
-      {/* Logo */}
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 bg-gray-100 border border-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400 font-medium tracking-wide">
-          LOGO
-        </div>
-        <h2 className="text-2xl font-bold">
-          <span className="text-primary">Partner</span>
-          <span className="text-secondary">Finder</span>
-        </h2>
-      </div>
+      {/* Logo + Text */}
+<div className="flex items-center mb-6 gap-3">
+  {/* Logo Image */}
+  <img
+    src={ProMateLogo} // replace with your logo path
+    alt="ProMate Logo"
+    className="w-12 h-10 rounded-full"
+  />
+  
+  {/* App Name */}
+  <h2 className="text-3xl font-bold text-primary">
+    ProMate
+  </h2>
+</div>
 
       {/* Navigation */}
       <div>
@@ -75,16 +73,20 @@ const Navbar = () => {
         <div className="border-t border-gray-200 my-6"></div>
 
         {/* Logout */}
-        <div onClick={handleLogout}>
+        <Link to="/logout">
           <NavItem icon={<LogOut size={20} />} text="Logout" />
-        </div>
+        </Link>
       </div>
 
       {/* Profile Section */}
       <div className="mt-6">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary flex-shrink-0 flex items-center justify-center text-white font-bold text-sm tracking-wider shadow-sm">{initials}</div>
-          <p className="text-sm font-medium text-gray-800 truncate" style={{ maxWidth: '140px' }}>{user?.fullName || 'User'}</p>
+          <img 
+            src={DummyProfile} 
+            alt="Profile" 
+            className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+          />
+          <p className="text-sm font-medium text-gray-800">Nimasha Karunarathne</p>
         </div>
 
         {/* Progress */}
@@ -113,7 +115,7 @@ function NavItem({ icon, text, active, badge }) {
       </div>
 
       {/* Text */}
-      <span className="text-sm flex-1">{text}</span>
+      <span className="text-base flex-1">{text}</span>
 
       {/* Badge */}
       {badge && (

@@ -2,17 +2,17 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Landing from './pages/Landing';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import ProfileForm from './pages/ProfileForm';
-import ProfileView from './pages/ProfileView';
-import EditProfile from './pages/EditProfile';
-import Settings from './pages/Settings';
-import Dashboard from './pages/Dashboard';
+import Login from './pages/Users/Login';
+import Register from './pages/Users/Register';
+import Dashboard from './pages/Users/Dashboard';
+import ProfileView from './pages/Users/ProfileView';
+import EditProfile from './pages/Users/EditProfile';
+import Settings from './pages/Users/Settings';
+import ChangePassword from './pages/Users/ChangePassword';
 import Navbar from './components/Navbar';
-import ForgotPassword from './pages/ForgotPassword';
-import VerifyOTP from './pages/VerifyOTP';
-import ResetPassword from './pages/ResetPassword';
+import ForgotPassword from './pages/Users/ForgotPassword';
+import VerifyOTP from './pages/Users/VerifyOTP';
+import ResetPassword from './pages/Users/ResetPassword';
 
 const PrivateRoute = ({ children }) => {
   const { token, loading } = useAuth();
@@ -41,11 +41,11 @@ function App() {
           <Route path="/verify-otp" element={<VerifyOTP />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           
-          <Route path="/onboarding" element={
-            <PrivateRoute><ProfileForm /></PrivateRoute>
-          } />
           <Route path="/dashboard" element={
             <PrivateRoute><Dashboard /></PrivateRoute>
+          } />
+          <Route path="/change-password" element={
+            <PrivateRoute><ChangePassword /></PrivateRoute>
           } />
           <Route path="/profile" element={
             <PrivateRoute><ProfileView /></PrivateRoute>

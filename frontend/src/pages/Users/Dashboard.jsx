@@ -1,5 +1,6 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -23,15 +24,20 @@ const Dashboard = () => {
       </div>
       
       <div className="profile-hero">
-        <div className="ph-avatar">{initials}</div>
+        <div className="ph-avatar" style={{ overflow: 'hidden' }}>
+          {user?.profilePicture ? (
+            <img src={user.profilePicture} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ) : (
+            initials
+          )}
+        </div>
         <div className="ph-info">
           <h2>{user?.fullName || 'Student'}</h2>
           <div className="ph-dept">📍 {user?.department || 'Dept. Unassigned'} · {user?.academicInfo?.year ? `Year ${user.academicInfo.year}` : 'Year N/A'}</div>
           <div className="ph-chips">
-            <span className="ph-chip">🎓 IT3040 Student</span>
-            <span className="ph-chip">⏰ 10 hrs/week</span>
-            <span className="ph-chip">🟢 Available</span>
-            <span className="ph-chip">⭐ 82% avg match</span>
+            {user?.degreeProgram && <span className="ph-chip">🎓 {user.degreeProgram}</span>}
+            {user?.availability?.weeklyHours && <span className="ph-chip">⏰ {user.availability.weeklyHours} hrs/week</span>}
+            {user?.availability?.preferredDays?.length > 0 && <span className="ph-chip">🟢 Available</span>}
           </div>
         </div>
         <div className="ph-actions">
@@ -41,9 +47,15 @@ const Dashboard = () => {
       </div>
       
       <div className="stats-row">
-        <div className="stat-card-sm"><div className="sc-label">Skills Listed</div><div className="sc-value">{user?.skills?.languages?.length || 0}</div><div className="sc-sub">Add more to match better</div></div>
+        <div className="stat-card-sm">
+          <div className="sc-label">Skills Listed</div>
+          <div className="sc-value">
+            {(user?.skills?.languages?.length || 0) + (user?.skills?.frameworks?.length || 0) + (user?.skills?.tools?.length || 0) + (user?.skills?.databases?.length || 0) + (user?.skills?.libraries?.length || 0)}
+          </div>
+          <div className="sc-sub">Add more to match better</div>
+        </div>
         <div className="stat-card-sm"><div className="sc-label">Projects Applied</div><div className="sc-value">0</div><div className="sc-sub">0 accepted · 0 pending</div></div>
-        <div className="stat-card-sm"><div className="sc-label">Match Score Avg</div><div className="sc-value">0%</div><div className="sc-sub">New Profile</div></div>
+        <div className="stat-card-sm"><div className="sc-label">Match Score Avg</div><div className="sc-value">N/A</div><div className="sc-sub">New Profile</div></div>
       </div>
       
       <div className="ai-banner">
