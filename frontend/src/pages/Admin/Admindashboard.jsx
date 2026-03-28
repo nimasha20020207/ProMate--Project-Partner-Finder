@@ -152,7 +152,7 @@ const Admindashboard = () => {
             </h2>
 
             <Link
-              to="/feedbacks"
+              to="/adminfeedbacks"
               className="text-sm text-primary font-medium hover:underline"
             >
               View All →

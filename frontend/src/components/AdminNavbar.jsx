@@ -12,7 +12,7 @@ const Navbar = () => {
     { text: "Students", icon: <PlusSquare size={20} />, path: "/studentman" },
     { text: "Projects", icon: <Bell size={20} />, badge: "3", path: "/projectman" },
     { text: "Activity", icon: <Folder size={20} />, path: "/requestman" },
-    { text: "Ratings & Feedbacks", icon: <Star size={20} />, path: "/feedbacks" },
+    { text: "Ratings & Feedbacks", icon: <Star size={20} />, path: "/adminfeedbacks" },
   ];
 
   const teams = [

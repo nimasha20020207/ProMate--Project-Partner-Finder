@@ -4,6 +4,7 @@ import Admindashboard from './pages/Admin/Admindashboard';
 import Projectmanagement from './pages/Admin/Projectmanagement';
 import Studentmanagement from './pages/Admin/Studentmanagement';
 import Requestmanagement from './pages/Admin/Requestmanagement';
+import AdminFeedbacks from './pages/Admin/AdminFeedbacks';
 
 function App() {
   return (
@@ -23,6 +24,10 @@ function App() {
       
       <Routes>
         <Route path="/requestman" element={<Requestmanagement/>} />
+      </Routes>
+
+      <Routes>
+        <Route path="/adminfeedbacks" element={<AdminFeedbacks/>} />
       </Routes>
     </div>
   );
