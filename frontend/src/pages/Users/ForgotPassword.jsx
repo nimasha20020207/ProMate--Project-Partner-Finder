@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import logo from '../../assets/images/logo.jpeg';
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -11,8 +12,9 @@ const ForgotPassword = () => {
     e.preventDefault();
     setError('');
     
-    if (!email || !/^it\d{8}@my\.sliit\.lk$/i.test(email)) {
-      setError('Please enter a valid SLIIT university email.');
+    const emailRegex = /^\S+@\S+\.\S+$/i;
+    if (!email || !emailRegex.test(email)) {
+      setError('Please enter a valid email address.');
       return;
     }
 
@@ -43,25 +45,26 @@ const ForgotPassword = () => {
       <div className="auth-blob-1"></div>
       <div className="auth-blob-2"></div>
       <div className="auth-card">
-        <div className="auth-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-          <div className="brand-dot" style={{ background: 'var(--p)' }}></div> ProjectMate
+        <div className="auth-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <img src={logo} alt="ProMate Logo" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
+          <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--p)' }}>ProMate</span>
         </div>
         <div className="auth-header" style={{ marginBottom: '1.5rem' }}>
           <h2>Reset your Password</h2>
-          <p>Enter your university email to receive a 6-digit verification code</p>
+          <p>Enter your email address to receive a 6-digit verification code</p>
         </div>
         
         {error && <div className="form-error show" style={{ marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">University Email</label>
+            <label className="form-label">Email Address</label>
             <input 
               type="email" 
               className="form-input" 
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
-              placeholder="it########@my.sliit.lk" 
+              placeholder="student@example.com" 
             />
           </div>
           <button type="submit" className="btn btn-primary btn-full flex justify-center items-center" style={{ padding: '.8rem' }} disabled={loading}>

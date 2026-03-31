@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/images/logo.jpeg';
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -13,8 +14,8 @@ const Landing = () => {
     <div id="page-landing" className="page active" style={{ display: 'block' }}>
       <nav className="landing-nav" id="landingNav">
         <div className="landing-brand" onClick={() => navigate('/')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', background: 'var(--border)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', color: 'var(--mid)', fontWeight: 500 }}>Logo</div>
-          <div className="brand-dot"></div> ProjectMate
+          <img src={logo} alt="ProMate Logo" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
+          <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--p)' }}>ProMate</span>
         </div>
         <div className="landing-nav-links">
           <span className="landing-nav-link" onClick={() => scrollToSection('features')}>Features</span>
@@ -117,7 +118,10 @@ const Landing = () => {
       </section>
 
       <footer className="landing-footer">
-        <div className="footer-brand"><div className="brand-dot" style={{ background: 'var(--sky)' }}></div> ProjectMate</div>
+        <div className="footer-brand" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <img src={logo} alt="ProMate Logo" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
+          <span>ProMate</span>
+        </div>
         <div className="footer-text">© 2026 ProjectMate · IT3040 Project · Sri Lanka Institute of Information Technology</div>
         <div className="footer-text">Built with 💙 by Team</div>
       </footer>

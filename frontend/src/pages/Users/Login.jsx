@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import logo from '../../assets/images/logo.jpeg';
 
 const Login = () => {
   const { login } = useAuth();
@@ -27,8 +28,9 @@ const Login = () => {
       <div className="auth-blob-2"></div>
       
       <div className="auth-container">
-        <div className="auth-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-          <div className="brand-dot" style={{ background: 'var(--p)' }}></div> ProjectMate
+        <div className="auth-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <img src={logo} alt="ProMate Logo" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
+          <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--p)' }}>ProMate</span>
         </div>
         
         <div className="auth-card">
@@ -70,7 +72,7 @@ const Login = () => {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  👁️
+                  {showPassword ? "🙈" : "👁️"}
                 </button>
               </div>
             </div>

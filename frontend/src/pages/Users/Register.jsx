@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import logo from '../../assets/images/logo.jpeg';
 
 const Register = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   const [formData, setFormData] = useState({
     firstName: '',
@@ -36,6 +39,14 @@ const Register = () => {
       setError('Please fill all required fields to continue.');
       return;
     }
+    
+    // Prevent numbers in names
+    const hasNumber = /\d/;
+    if (hasNumber.test(firstName) || hasNumber.test(lastName)) {
+      setError('Names cannot contain numbers.');
+      return;
+    }
+
     const emailRegex = /^\S+@\S+\.\S+$/i;
     if (!emailRegex.test(email)) {
       setError('Please provide a valid email address.');
@@ -109,8 +120,9 @@ const Register = () => {
       <div className="auth-blob-1"></div>
       <div className="auth-blob-2"></div>
       <div className="reg-container" style={{ paddingTop: '1.5rem' }}>
-        <div className="auth-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-          <div className="brand-dot" style={{ background: 'var(--p)' }}></div> ProjectMate
+        <div className="auth-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <img src={logo} alt="ProMate Logo" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
+          <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--p)' }}>ProMate</span>
         </div>
         
         <div className="reg-card">
@@ -178,16 +190,16 @@ const Register = () => {
               <div className="form-group">
                 <label className="form-label">Password</label>
                 <div className="pw-wrap">
-                  <input type="password" className="form-input" name="password" value={formData.password} onChange={handleChange} placeholder="Create a strong password" />
-                  <button className="pw-toggle" type="button">👁️</button>
+                  <input type={showPassword ? "text" : "password"} className="form-input" name="password" value={formData.password} onChange={handleChange} placeholder="Create a strong password" />
+                  <button className="pw-toggle" type="button" onClick={() => setShowPassword(!showPassword)}>{showPassword ? "🙈" : "👁️"}</button>
                 </div>
                 <div className="pw-label">Enter a password</div>
               </div>
               <div className="form-group">
                 <label className="form-label">Confirm Password</label>
                 <div className="pw-wrap">
-                  <input type="password" className="form-input" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Repeat your password" />
-                  <button className="pw-toggle" type="button">👁️</button>
+                  <input type={showConfirmPassword ? "text" : "password"} className="form-input" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Repeat your password" />
+                  <button className="pw-toggle" type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>{showConfirmPassword ? "🙈" : "👁️"}</button>
                 </div>
               </div>
               <label className="agree-row">
