@@ -10,6 +10,40 @@ const ProfileView = () => {
   
   const [profileUser, setProfileUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [githubData, setGithubData] = useState(null);
+
+  useEffect(() => {
+    const fetchGithub = async () => {
+      let username = null;
+      if (profileUser?.socialLinks?.github) {
+        try {
+          const urlStr = profileUser.socialLinks.github;
+          if (urlStr.includes('github.com/')) {
+            username = new URL(urlStr).pathname.split('/').filter(Boolean).pop();
+          } else {
+            username = urlStr.replace('@', '');
+          }
+        } catch (e) {}
+      }
+      
+      if (username) {
+        try {
+          const res = await fetch(`https://api.github.com/users/${username}`);
+          if (res.ok) {
+            const data = await res.json();
+            setGithubData({ ...data, extractedUsername: username });
+          }
+        } catch (err) {
+          console.error("Github fetch error", err);
+        }
+      } else {
+        setGithubData(null);
+      }
+    };
+    if (profileUser) {
+      fetchGithub();
+    }
+  }, [profileUser]);
 
   useEffect(() => {
     const fetchPublicProfile = async () => {
@@ -137,6 +171,42 @@ const ProfileView = () => {
               </div>
             )}
           </div>
+
+          {githubData && (
+            <div className="card shadow-card" style={{ background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '1.25rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.25rem' }}>
+                <img src={githubData.avatar_url} alt="GitHub Avatar" style={{ width: '45px', height: '45px', borderRadius: '50%', border: '2px solid #2563eb', padding: '2px' }} />
+                <div>
+                  <div style={{ fontFamily: "'Sora', sans-serif", fontSize: '1rem', fontWeight: 700, color: '#1e293b' }}>{githubData.name || githubData.login}</div>
+                  <a href={githubData.html_url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.8rem', color: '#64748b', textDecoration: 'none', fontWeight: 500 }}>@{githubData.login}</a>
+                </div>
+                <div style={{ marginLeft: 'auto', background: '#e0e7ff', padding: '8px', borderRadius: '50%', color: '#3730A3', display: 'flex', alignItems: 'center', justifyItems: 'center' }}>
+                  <svg height="20" viewBox="0 0 16 16" width="20" fill="currentColor"><path fillRule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                </div>
+              </div>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', textAlign: 'center' }}>
+                <div style={{ background: '#f1f5f9', padding: '10px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#2563eb' }}>{githubData.public_repos}</div>
+                  <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Repos</div>
+                </div>
+                <div style={{ background: '#f1f5f9', padding: '10px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#2563eb' }}>{githubData.followers}</div>
+                  <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Followers</div>
+                </div>
+                <div style={{ background: '#f1f5f9', padding: '10px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#2563eb' }}>{githubData.following}</div>
+                  <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Following</div>
+                </div>
+              </div>
+              
+              {githubData.bio && (
+                <div style={{ marginTop: '1.25rem', fontSize: '0.85rem', color: '#475569', fontStyle: 'italic', borderLeft: '3px solid #cbd5e1', paddingLeft: '10px', lineHeight: 1.5 }}>
+                  "{githubData.bio}"
+                </div>
+              )}
+            </div>
+          )}
           
           <div className="card shadow-card">
             <div style={{ fontFamily: "'Sora', sans-serif", fontSize: '1rem', fontWeight: 700, marginBottom: '.75rem' }}>🧩 Skills</div>

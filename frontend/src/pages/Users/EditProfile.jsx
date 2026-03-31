@@ -242,7 +242,9 @@ const EditProfile = () => {
           <div className="section-card-title"><span className="section-icon">🔗</span>Social Links</div>
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">GitHub</label>
+              <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                GitHub <span style={{ fontSize: '0.7rem', background: '#DBEAFE', color: '#1E3A8A', padding: '2px 6px', borderRadius: '10px', fontWeight: 'bold' }}>Enables Live Stats</span>
+              </label>
               <input type="url" className="form-input" placeholder="https://github.com/username" value={formData.socialLinks?.github || ""} onChange={e => handleNestedChange("socialLinks", "github", e.target.value)} />
             </div>
             <div className="form-group">
