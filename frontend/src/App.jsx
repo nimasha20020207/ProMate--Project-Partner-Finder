@@ -17,22 +17,31 @@ import ForgotPassword from './pages/Users/ForgotPassword';
 import VerifyOTP from './pages/Users/VerifyOTP';
 import ResetPassword from './pages/Users/ResetPassword';
 
-// ProjectMate Recommendation Pages
+// Recommendation Pages
 import Recommendations from './pages/RecEngine/ProjectRecommendations';
 import Candidates from './pages/RecEngine/StudentRecommendations';
 import Feedbacks from './pages/RecEngine/Feedbacks';
 import RecProjects from './pages/RecEngine/RecProjects';
 
-// Project Management Pages
+// Project Pages
 import InsertPost from './pages/Projects/InsertProject';
 import YourProjects from './pages/Projects/YourProjects';
 import AllProjects from './pages/Projects/AllProjects';
 import Notifications from './pages/Notifications/Notifications';
 
+// Admin Pages (UNCHANGED PATHS)
+import Admindashboard from './pages/Admin/Admindashboard';
+import Projectmanagement from './pages/Admin/Projectmanagement';
+import Studentmanagement from './pages/Admin/Studentmanagement';
+import Requestmanagement from './pages/Admin/Requestmanagement';
+import AdminFeedbacks from './pages/Admin/AdminFeedbacks';
+
 import './App.css';
 
+// 🔐 Private Route
 const PrivateRoute = ({ children }) => {
   const { token, loading } = useAuth();
+
   if (loading) return <div>Loading...</div>;
   if (!token) return <Navigate to="/login" />;
 
@@ -50,7 +59,8 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        {/* Public Routes */}
+
+        {/* 🌐 Public */}
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -58,7 +68,7 @@ function App() {
         <Route path="/verify-otp" element={<VerifyOTP />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* Private Routes */}
+        {/* 👤 User */}
         <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
         <Route path="/change-password" element={<PrivateRoute><ChangePassword /></PrivateRoute>} />
         <Route path="/profile" element={<PrivateRoute><ProfileView /></PrivateRoute>} />
@@ -66,21 +76,30 @@ function App() {
         <Route path="/edit-profile" element={<PrivateRoute><EditProfile /></PrivateRoute>} />
         <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
 
-        {/* ProjectMate Recommendation Routes */}
+        {/* 🤖 Recommendations */}
         <Route path="/recs" element={<PrivateRoute><Recommendations /></PrivateRoute>} />
         <Route path="/sturecs" element={<PrivateRoute><Candidates /></PrivateRoute>} />
         <Route path="/feedbacks" element={<PrivateRoute><Feedbacks /></PrivateRoute>} />
         <Route path="/recprojects" element={<PrivateRoute><RecProjects /></PrivateRoute>} />
 
-        {/* Project Management Routes */}
+        {/* 📁 Projects */}
         <Route path="/insert-project" element={<PrivateRoute><InsertPost /></PrivateRoute>} />
         <Route path="/your-projects" element={<PrivateRoute><YourProjects /></PrivateRoute>} />
         <Route path="/all-projects" element={<PrivateRoute><AllProjects /></PrivateRoute>} />
         <Route path="/notifications" element={<PrivateRoute><Notifications /></PrivateRoute>} />
 
-        {/* Fallback */}
+        {/* 🛠 Admin (UNCHANGED PATHS) */}
+        <Route path="/admindashboard" element={<PrivateRoute><Admindashboard /></PrivateRoute>} />
+        <Route path="/projectman" element={<PrivateRoute><Projectmanagement /></PrivateRoute>} />
+        <Route path="/studentman" element={<PrivateRoute><Studentmanagement /></PrivateRoute>} />
+        <Route path="/requestman" element={<PrivateRoute><Requestmanagement /></PrivateRoute>} />
+        <Route path="/adminfeedbacks" element={<PrivateRoute><AdminFeedbacks /></PrivateRoute>} />
+
+        {/* 🚫 Fallback */}
         <Route path="*" element={<div>Page not found</div>} />
+
       </Routes>
+
       <FAQChatbot />
     </AuthProvider>
   );
