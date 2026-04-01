@@ -1,0 +1,19 @@
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f7f9fb;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+}
+
+.app-sidebar {
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.app-main-content {
+  flex: 1;
+  overflow-y: auto;
+  height: 100vh;
+  position: relative;
+}
