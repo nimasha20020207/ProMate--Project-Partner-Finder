@@ -8,10 +8,24 @@ const Posts = require("../models/post");
 router.get("/post", (req, res) => res.send("post route testing"));
 
 //add post - insert
-router.post("/", (req, res) => {
-    Posts.create(req.body)
-    .then(() => res.json({msg: "post added successfully"}))
-    .catch(() => res.status(400).json({msg: "unable to add post"}));
+router.post("/", async (req, res) => {
+    try {
+        const latestPost = await Posts.findOne().sort({ _id: -1 });
+        let nextSequence = 1;
+        if (latestPost && latestPost.projectId) {
+            nextSequence = parseInt(latestPost.projectId.substring(1)) + 1;
+        } else if (latestPost) {
+            const count = await Posts.countDocuments();
+            nextSequence = count + 1;
+        }
+        
+        req.body.projectId = 'P' + String(nextSequence).padStart(4, '0');
+        
+        await Posts.create(req.body);
+        res.json({msg: "post added successfully"});
+    } catch(err) {
+        res.status(400).json({msg: "unable to add post"});
+    }
 });
 
 //get all posts - read
