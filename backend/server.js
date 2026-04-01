@@ -1,29 +1,29 @@
-const express =require("express");
-const cors = require('cors');
-
-const dbconnection=require("./config/db");
+const express = require("express");
+const cors = require("cors");
+const dbconnection = require("./config/db");
 
 const app = express();
 
-//DB connection
+// DB connection
 dbconnection();
 
-app.get("/",(req,res)=>res.send("Server is running.."));
-
-//Enable CORS
+// Middleware
 app.use(cors({
-  origin: 'http://localhost:5173'
+  origin: "http://localhost:5173",
 }));
+app.use(express.json()); // ✅ REQUIRED
 
-//RecEngine
-const recommendationRoutes = require("./routes/recommendationRoutes")
-app.use("/api/recommendations",recommendationRoutes)
+// Test route
+app.get("/", (req, res) => res.send("Server is running.."));
 
-//Feedbacks
-const feedbackRoutes = require("./routes/feedbacksRoutes");
+// recommendation Routes
+const recommendationRoutes = require("./routes/recommendationRoutes");
+app.use("/api/recommendations", recommendationRoutes);
+
+//feedback routes
+const feedbackRoutes = require("./routes/feedbackRoutes"); // ✅ fixed name
 app.use("/api/feedback", feedbackRoutes);
 
-
-const PORT=3000;
-
-app.listen(PORT,()=>console.log(`Server running on PORT ${PORT}`));
+// Server
+const PORT = 3000;
+app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));

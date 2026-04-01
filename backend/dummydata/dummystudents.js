@@ -126,6 +126,37 @@ semester:1,
 cgpa:3
 }
 
+},
+{
+id:"S5",
+
+fullName:"Kalpani",
+
+profileImage:"/assets/images/students/alice.jpg",
+
+skills:{
+languages:["JavaScript"],
+frameworks:["React"],
+libraries:[],
+databases:["MySQl","MongoDB"],
+tools:["Git"]
+},
+
+availability:{
+weeklyHours:15
+},
+
+interests:["Web Development"],
+
+preferredRoles:["Fullstack Developer","Backend Developer"],
+
+academicInfo:{
+specialization:"IT",
+year:3,
+semester:1,
+cgpa:3.5
+}
+
 }
 
 ]

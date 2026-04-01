@@ -13,7 +13,7 @@ function App() {
     // </div>
     <div>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<RecProjects />} />
       </Routes>
 
       <Routes>
@@ -28,9 +28,9 @@ function App() {
         <Route path="/feedbacks" element={<Feedbacks />} />
       </Routes> 
 
-      <Routes>
+      {/* <Routes>
         <Route path="/recprojects" element={<RecProjects />} />
-      </Routes>   
+      </Routes>    */}
     </div>
   );
 }

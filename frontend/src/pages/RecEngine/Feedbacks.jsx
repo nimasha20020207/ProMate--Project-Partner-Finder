@@ -24,7 +24,7 @@ const Feedbacks = () => {
         studentId: "S123",
       };
 
-      const res = await fetch("http://localhost:5000/api/feedback", {
+      const res = await fetch("http://localhost:3000/api/feedback", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

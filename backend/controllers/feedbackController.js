@@ -1,12 +1,11 @@
-// controllers/feedbackController.js
-const Feedback = require("../models/feedbacksModel");
+const Feedback = require("../models/feedbackModel");
 
 // 👉 Submit Feedback
 const submitFeedback = async (req, res) => {
   try {
     const { studentId, rating, comments, improvementAreas } = req.body;
 
-    // ✅ VALIDATIONS
+    // VALIDATION
     if (!studentId) {
       return res.status(400).json({ message: "Student ID is required" });
     }
@@ -23,12 +22,17 @@ const submitFeedback = async (req, res) => {
       return res.status(400).json({ message: "Comments max length is 300" });
     }
 
-    // ✅ CREATE OBJECT
+    // Prevent duplicate feedback
+    const existing = await Feedback.findOne({ studentId });
+    if (existing) {
+      return res.status(400).json({ message: "Feedback already submitted" });
+    }
+
     const feedback = new Feedback({
       studentId,
       rating,
       comments,
-      improvementAreas,
+      improvementAreas: improvementAreas || [],
     });
 
     await feedback.save();
@@ -44,13 +48,35 @@ const submitFeedback = async (req, res) => {
   }
 };
 
-
-// 👉 Get All Feedback (for admin/testing)
+// 👉 Get All Feedback
 const getAllFeedback = async (req, res) => {
   try {
     const feedbackList = await Feedback.find().sort({ createdAt: -1 });
     res.json(feedbackList);
-  } catch (error) {
+  } catch {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// 👉 Stats
+const getFeedbackStats = async (req, res) => {
+  try {
+    const stats = await Feedback.aggregate([
+      {
+        $group: {
+          _id: null,
+          avgRating: { $avg: "$rating" },
+          total: { $sum: 1 },
+        },
+      },
+    ]);
+
+    res.json({
+      averageRating: stats[0]?.avgRating || 0,
+      totalFeedbacks: stats[0]?.total || 0,
+    });
+
+  } catch {
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -58,4 +84,5 @@ const getAllFeedback = async (req, res) => {
 module.exports = {
   submitFeedback,
   getAllFeedback,
+  getFeedbackStats,
 };
