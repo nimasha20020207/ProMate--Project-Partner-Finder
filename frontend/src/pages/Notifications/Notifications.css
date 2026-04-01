@@ -1,0 +1,222 @@
+/* Notifications.css */
+.notif-page-container {
+  padding: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  height: 100%;
+}
+
+.notif-header {
+  margin-bottom: 40px;
+}
+
+.notif-header h1 {
+  font-size: 32px;
+  color: #1e293b;
+  margin: 0 0 8px 0;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.notif-header p {
+  color: #64748b;
+  margin: 0;
+  font-size: 15px;
+}
+
+.notif-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px dashed #cbd5e1;
+  color: #64748b;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+
+.notif-caught-up svg {
+  width: 56px;
+  height: 56px;
+  color: #10b981;
+  margin-bottom: 16px;
+  background: #ecfdf5;
+  padding: 12px;
+  border-radius: 50%;
+}
+
+.notif-empty h3 {
+  color: #1e293b;
+  margin: 0 0 8px 0;
+  font-size: 20px;
+}
+
+.notif-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Notification Card */
+.notif-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f1f5f9;
+  border-left: 5px solid transparent;
+  /* slightly thicker edge */
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Distinct color themes for easy understanding */
+.notif-card.join_request {
+  background-color: #f0f9ff;
+  border-left-color: #3b82f6;
+}
+
+.notif-card.accepted {
+  background-color: #f0fdf4;
+  border-left-color: #10b981;
+}
+
+.notif-card.rejected {
+  background-color: #fef2f2;
+  border-left-color: #ef4444;
+}
+
+.notif-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-color: #e2e8f0;
+}
+
+.notif-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.notif-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.notif-icon.join_request {
+  background: #eff6ff;
+  color: #3b82f6;
+}
+
+.notif-icon.accepted {
+  background: #ecfdf5;
+  color: #10b981;
+}
+
+.notif-icon.rejected {
+  background: #fef2f2;
+  color: #ef4444;
+}
+
+.notif-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.notif-it {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 16px;
+}
+
+.notif-desc {
+  color: #64748b;
+  font-size: 14px;
+  margin: 0;
+}
+
+.btn-notif {
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-accept {
+  background: #10b981;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+}
+
+.btn-accept:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.btn-reject {
+  background: #ffffff;
+  color: #ef4444;
+  border: 1px solid #fca5a5;
+}
+
+.btn-reject:hover {
+  background: #fef2f2;
+}
+
+.btn-dismiss {
+  background: transparent;
+  color: #94a3b8;
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+.btn-dismiss:hover {
+  color: #64748b;
+  background: #f1f5f9;
+}
+
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-badge.accepted {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.status-badge.rejected {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* Spinner for Loading State */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f1f5f9;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
