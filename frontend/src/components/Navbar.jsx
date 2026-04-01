@@ -1,15 +1,19 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, PlusSquare, Bell, Folder, Users, LogOut } from "lucide-react";
+import { Home, PlusSquare, Bell, Folder, Users, LogOut, Star } from "lucide-react";
+import ProMateLogo from '../assets/images/logo.png'
+import DummyProfile from '../assets/images/pic1.jpg'
+
 
 const Navbar = () => {
   const location = useLocation();
 
   const navItems = [
     { text: "Dashboard", icon: <Home size={20} />, path: "/" },
-    { text: "Create new project", icon: <PlusSquare size={20} />, path: "/#" },
-    { text: "Notifications", icon: <Bell size={20} />, badge: "3", path: "/#" },
-    { text: "My projects", icon: <Folder size={20} />, path: "/#" },
+    { text: "Projects", icon: <PlusSquare size={20} />, path: "/all-projects" },
+    { text: "Notifications", icon: <Bell size={20} />, badge: "3", path: "/notifications" },
+    { text: "My projects", icon: <Folder size={20} />, path: "/your-projects" },
+    { text: "Rate & Review", icon: <Star size={20} />, path: "/feedbacks" },
   ];
 
   const teams = [
@@ -19,12 +23,21 @@ const Navbar = () => {
 
   return (
     <div className="h-screen w-64 bg-white border-r border-gray-200 flex flex-col justify-between p-5">
-      
-      {/* Logo */}
-      <h2 className="text-2xl font-bold mb-4">
-        <span className="text-primary">Partner</span>
-        <span className="text-secondary">Finder</span>
-      </h2>
+
+      {/* Logo + Text */}
+      <div className="flex items-center mb-6 gap-3">
+        {/* Logo Image */}
+        <img
+          src={ProMateLogo} // replace with your logo path
+          alt="ProMate Logo"
+          className="w-12 h-10 rounded-full"
+        />
+
+        {/* App Name */}
+        <h2 className="text-3xl font-bold text-primary">
+          ProMate
+        </h2>
+      </div>
 
       {/* Navigation */}
       <div>
@@ -68,8 +81,12 @@ const Navbar = () => {
       {/* Profile Section */}
       <div className="mt-6">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary flex-shrink-0"></div>
-          <p className="text-sm font-medium text-gray-800">John Doe</p>
+          <img
+            src={DummyProfile}
+            alt="Profile"
+            className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+          />
+          <p className="text-sm font-medium text-gray-800">IT23272736</p>
         </div>
 
         {/* Progress */}
@@ -86,11 +103,10 @@ const Navbar = () => {
 function NavItem({ icon, text, active, badge }) {
   return (
     <div
-      className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-all duration-200 ${
-        active
-          ? "bg-gradient-to-r from-primary/10 to-secondary/10 text-primary font-medium shadow-sm scale-105"
-          : "text-gray-500 hover:bg-gray-100 hover:text-primary hover:scale-105"
-      }`}
+      className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-all duration-200 ${active
+        ? "bg-gradient-to-r from-primary/10 to-secondary/10 text-primary font-medium shadow-sm scale-105"
+        : "text-gray-500 hover:bg-gray-100 hover:text-primary hover:scale-105"
+        }`}
     >
       {/* Icon with gradient on active */}
       <div className={`${active ? "bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary" : "text-gray-500"}`}>
@@ -98,7 +114,7 @@ function NavItem({ icon, text, active, badge }) {
       </div>
 
       {/* Text */}
-      <span className="text-sm flex-1">{text}</span>
+      <span className="text-base flex-1">{text}</span>
 
       {/* Badge */}
       {badge && (
