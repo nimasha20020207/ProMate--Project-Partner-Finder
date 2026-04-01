@@ -2,6 +2,14 @@ const mongoose = require("mongoose");
 
 const ProjectSchema = new mongoose.Schema({
 
+  projectId: {
+    type: String
+  },
+
+  itNumber: {
+    type: String
+  },
+
   title: {
     type: String
   },
@@ -18,11 +26,19 @@ const ProjectSchema = new mongoose.Schema({
     type: String
   },
 
-  academicConstraints: {
-    specialization: [String],
-    year: Number,
-    semester: Number,
-    minimumCGPA: Number
+  specialization:{
+    type: String
+  },
+
+  year: { 
+    type: Number 
+
+  },
+  semester: { 
+    type: Number 
+  },
+  minimumCGPA: { 
+    type: Number 
   },
 
   essentialSkills: {
