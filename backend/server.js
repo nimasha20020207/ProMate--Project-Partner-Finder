@@ -1,36 +1,41 @@
 const express = require("express");
-const cors = require("cors");
 const path = require("path");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 const dbconnection = require("./config/db");
 
+// Import routes
+const recommendationRoutes = require("./routes/recommendationRoutes");
+const feedbackRoutes = require("./routes/feedbackRoutes");
+const authRoutes = require("./routes/auth");
+const profileRoutes = require("./routes/profile");
+const postRoutes = require("./routes/posts");
+const notificationRoutes = require("./routes/notifications");
+
 const app = express();
+
+// Middleware
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // DB connection
 dbconnection();
 
-// Middleware
-app.use(cors({
-  origin: "http://localhost:5173",
-}));
-app.use(express.json()); // ✅ REQUIRED
-
 // Static folder for uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Test route
+// Root route
 app.get("/", (req, res) => res.send("Server is running.."));
 
-// Recommendation Routes
-const recommendationRoutes = require("./routes/recommendationRoutes");
+// Routes
+app.use("/api/posts", postRoutes);
+app.use("/api/notifications", notificationRoutes);
 app.use("/api/recommendations", recommendationRoutes);
-
-// Feedback Routes
-const feedbackRoutes = require("./routes/feedbackRoutes"); // ✅ fixed name
 app.use("/api/feedback", feedbackRoutes);
-
-// Auth & Profile Routes
-app.use("/api/auth", require("./routes/auth"));
-app.use("/api/profile", require("./routes/profile"));
+app.use("/api/auth", authRoutes);
+app.use("/api/profile", profileRoutes);
 
 // Server
 const PORT = process.env.PORT || 3000;
