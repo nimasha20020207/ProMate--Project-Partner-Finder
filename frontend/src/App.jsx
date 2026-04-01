@@ -13,6 +13,7 @@ import Navbar from './components/Navbar';
 import ForgotPassword from './pages/Users/ForgotPassword';
 import VerifyOTP from './pages/Users/VerifyOTP';
 import ResetPassword from './pages/Users/ResetPassword';
+import FAQChatbot from './components/FAQChatbot';
 
 const PrivateRoute = ({ children }) => {
   const { token, loading } = useAuth();
@@ -60,6 +61,7 @@ function App() {
             <PrivateRoute><Settings /></PrivateRoute>
           } />
         </Routes>
+        <FAQChatbot />
       </AuthProvider>
     </Router>
   );
