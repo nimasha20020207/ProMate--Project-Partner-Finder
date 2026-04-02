@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { CheckCircle2 } from 'lucide-react';
 import logo from '../../assets/images/logo.jpeg';
 
 const Register = () => {
@@ -10,6 +11,7 @@ const Register = () => {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   
   const [formData, setFormData] = useState({
     firstName: '',
@@ -20,11 +22,22 @@ const Register = () => {
     password: '',
     confirmPassword: '',
     studentId: '',
-    degreeProgram: '',
     specialization: '',
     semester: '',
-    bio: ''
+    bio: '',
+    contactNumber: '',
+    preferredRoles: []
   });
+
+  const rolesOptions = ["Frontend Developer", "Backend Developer", "Fullstack Developer", "Mobile App Developer", "ML Engineer", "Data Scientist", "UI/UX Designer", "DevOps Engineer", "QA Engineer", "Project Manager"];
+  const [activeDropdown, setActiveDropdown] = useState(null);
+
+  // Close dropdowns on click outside
+  useEffect(() => {
+    const handleClickOutside = () => setActiveDropdown(null);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
 
   const [agreedToTerms, setAgreedToTerms] = useState(false);
 
@@ -40,7 +53,6 @@ const Register = () => {
       return;
     }
     
-    // Prevent numbers in names
     const hasNumber = /\d/;
     if (hasNumber.test(firstName) || hasNumber.test(lastName)) {
       setError('Names cannot contain numbers.');
@@ -81,8 +93,8 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { studentId, degreeProgram, specialization, semester } = formData;
-    if (!studentId || !degreeProgram || !specialization || !semester) {
+    const { studentId, specialization, semester } = formData;
+    if (!studentId || !specialization || !semester) {
       setError('Please fill all required fields to create your account.');
       return;
     }
@@ -93,7 +105,6 @@ const Register = () => {
       return;
     }
     
-    // Combining first and last name for backend full name requirement
     const fullName = `${formData.firstName} ${formData.lastName}`.trim();
 
     const res = await register({
@@ -102,14 +113,15 @@ const Register = () => {
       email: formData.email,
       password: formData.password,
       department: formData.department,
-      degreeProgram: formData.degreeProgram,
       specialization: formData.specialization,
       yearOfStudy: formData.yearOfStudy,
       semester: formData.semester,
-      bio: formData.bio
+      bio: formData.bio,
+      contactNumber: formData.contactNumber,
+      preferredRoles: formData.preferredRoles
     });
     if (res.success) {
-      navigate('/dashboard');
+      setShowSuccess(true);
     } else {
       setError(res.message);
     }
@@ -163,10 +175,13 @@ const Register = () => {
                   <label className="form-label">Department</label>
                   <select className="form-input" name="department" value={formData.department} onChange={handleChange}>
                     <option value="">Select department</option>
-                    <option>Information Technology</option>
-                    <option>Computer Science</option>
-                    <option>Software Engineering</option>
-                    <option>Data Science</option>
+                    <option>Computing</option>
+                    <option>Business</option>
+                    <option>Engineering</option>
+                    <option>Humanities and Sciences</option>
+                    <option>Architecture</option>
+                    <option>Graduate Studies</option>
+                    <option>SLIIT International Programmes</option>
                   </select>
                 </div>
                 <div className="form-group">
@@ -222,21 +237,23 @@ const Register = () => {
                   <input type="text" className="form-input" name="studentId" value={formData.studentId} onChange={handleChange} placeholder="e.g. IT23341968" />
                 </div>
                 <div className="form-group">
-                  <label className="form-label">Degree Program</label>
-                  <input type="text" className="form-input" name="degreeProgram" value={formData.degreeProgram} onChange={handleChange} placeholder="e.g. BSc (Hons) IT" />
-                </div>
-              </div>
-              <div className="form-row">
-                <div className="form-group">
                   <label className="form-label">Specialization</label>
                   <select className="form-input" name="specialization" value={formData.specialization} onChange={handleChange}>
                     <option value="">Select specialization</option>
-                    <option>Software Engineering (SE)</option>
-                    <option>Data Science (DS)</option>
-                    <option>Computer Science (CS)</option>
-                    <option>Information Technology (IT)</option>
+                    <option value="Artificial Intelligence">Artificial Intelligence</option>
+                    <option value="Software Engineering">Software Engineering</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Information Technology">Information Technology</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="Cyber Security">Cyber Security</option>
+                    <option value="Computer System & Network Engineering">Computer System & Network Engineering</option>
+                    <option value="Information Systems Engineering">Information Systems Engineering</option>
+                    <option value="Interactive Media">Interactive Media</option>
+                    <option value="Computer Systems Engineering">Computer Systems Engineering</option>
                   </select>
                 </div>
+              </div>
+              <div className="form-row">
                 <div className="form-group">
                   <label className="form-label">Semester</label>
                   <select className="form-input" name="semester" value={formData.semester} onChange={handleChange}>
@@ -250,6 +267,58 @@ const Register = () => {
                 <label className="form-label">Bio <span style={{ fontWeight: 400, color: 'var(--mid)' }}>(optional)</span></label>
                 <input type="text" className="form-input" name="bio" value={formData.bio} onChange={handleChange} placeholder="Tell teammates a bit about yourself..." />
               </div>
+
+              <div className="form-group">
+                <label className="form-label">Contact Number <span style={{ fontWeight: 400, color: 'var(--mid)' }}>(optional)</span></label>
+                <input type="text" className="form-input" name="contactNumber" value={formData.contactNumber} onChange={handleChange} placeholder="+94 77 123 4567" />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Preferred Roles <span style={{ fontWeight: 400, color: 'var(--mid)' }}>(at least one)</span></label>
+                <div className="multiselect-container" onClick={(e) => e.stopPropagation()}>
+                  <div className={`multiselect-header ${activeDropdown === 'roles' ? 'multiselect-header-focus' : ''}`} onClick={() => setActiveDropdown(activeDropdown === 'roles' ? null : 'roles')}>
+                    {formData.preferredRoles.length === 0 ? (
+                      <span className="multiselect-placeholder">Select roles...</span>
+                    ) : (
+                      formData.preferredRoles.map(role => (
+                        <span key={role} className="multiselect-chip">
+                          {role}
+                          <span className="multiselect-chip-remove" onClick={(e) => { 
+                            e.stopPropagation(); 
+                            const updated = formData.preferredRoles.filter(r => r !== role);
+                            setFormData({ ...formData, preferredRoles: updated });
+                          }}>×</span>
+                        </span>
+                      ))
+                    )}
+                    <div style={{ marginLeft: 'auto', opacity: 0.5 }}>{activeDropdown === 'roles' ? '▲' : '▼'}</div>
+                  </div>
+
+                  {activeDropdown === 'roles' && (
+                    <div className="multiselect-dropdown" style={{ backgroundColor: 'white' }}>
+                      {rolesOptions.map(role => {
+                        const isSelected = formData.preferredRoles.includes(role);
+                        return (
+                          <div 
+                            key={role} 
+                            className={`multiselect-option ${isSelected ? 'selected' : ''}`}
+                            onClick={() => {
+                              const exists = formData.preferredRoles.includes(role);
+                              const updated = exists 
+                                ? formData.preferredRoles.filter(r => r !== role) 
+                                : [...formData.preferredRoles, role];
+                              setFormData({ ...formData, preferredRoles: updated });
+                            }}
+                          >
+                            {role}
+                            {isSelected && <span>✓</span>}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
               <div className="alert-info" style={{ marginBottom: '1rem', marginTop: '.75rem' }}>ℹ️ You can add skills, interests, and availability from your profile after signing up.</div>
               <div style={{ display: 'flex', gap: '.6rem' }}>
                 <button className="btn btn-outline" onClick={prevStep} type="button">← Back</button>
@@ -260,6 +329,21 @@ const Register = () => {
 
         </div>
       </div>
+
+      {showSuccess && (
+        <div className="success-modal-overlay">
+          <div className="success-modal-card">
+            <div className="success-bounce-icon">
+              <CheckCircle2 size={60} color="#10b981" />
+            </div>
+            <h2>Welcome to ProMate!</h2>
+            <p>Your account has been created successfully. Let's find your perfect project partner.</p>
+            <button className="btn btn-primary btn-full success-btn" onClick={() => navigate('/dashboard')}>
+              Get Started 🚀
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

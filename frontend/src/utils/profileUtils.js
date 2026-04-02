@@ -2,7 +2,7 @@ export const calculateProfileCompleteness = (user) => {
   if (!user) return { percentage: 0, checks: {} };
 
   const checks = {
-    personalInfo: !!(user.fullName && user.department && user.degreeProgram),
+    personalInfo: !!(user.fullName && user.department && (user.specialization || user.academicInfo?.specialization)),
     skills: false,
     interests: !!(user.interests && user.interests.length > 0),
     roles: !!(user.preferredRoles && user.preferredRoles.length > 0),

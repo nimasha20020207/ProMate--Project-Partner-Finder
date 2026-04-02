@@ -130,11 +130,18 @@ router.post("/upload", auth, upload.single('profilePicture'), async (req, res) =
     }
 });
 
-// @route   DELETE api/profile/me
+// @route   POST api/profile/delete-account
 // @desc    Delete user account
 // @access  Private
-router.delete("/me", auth, async (req, res) => {
+router.post("/delete-account", auth, async (req, res) => {
+    const { password } = req.body;
     try {
+        const student = await Student.findById(req.user.id);
+        if (!student) return res.status(404).json({ message: "User not found" });
+
+        const isMatch = await bcrypt.compare(password, student.password);
+        if (!isMatch) return res.status(400).json({ message: "Invalid password. Account deletion denied." });
+
         await Student.findByIdAndDelete(req.user.id);
         res.json({ message: "User deleted successfully" });
     } catch (err) {

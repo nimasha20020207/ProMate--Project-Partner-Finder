@@ -32,6 +32,7 @@ const studentSchema = new mongoose.Schema({
   degreeProgram: { type: String, default: "" },
   department: { type: String, default: "" },
   bio: { type: String, default: "" },
+  contactNumber: { type: String, default: "" },
 
   academicInfo: {
     specialization: { type: String, default: "" },

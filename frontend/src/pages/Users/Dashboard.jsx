@@ -35,7 +35,7 @@ const Dashboard = () => {
           <h2>{user?.fullName || 'Student'}</h2>
           <div className="ph-dept">📍 {user?.department || 'Dept. Unassigned'} · {user?.academicInfo?.year ? `Year ${user.academicInfo.year}` : 'Year N/A'}</div>
           <div className="ph-chips">
-            {user?.degreeProgram && <span className="ph-chip">🎓 {user.degreeProgram}</span>}
+            {(user?.specialization || user?.academicInfo?.specialization) && <span className="ph-chip">🎓 {user.specialization || user.academicInfo.specialization}</span>}
             {user?.availability?.weeklyHours && <span className="ph-chip">⏰ {user.availability.weeklyHours} hrs/week</span>}
             {user?.availability?.preferredDays?.length > 0 && <span className="ph-chip">🟢 Available</span>}
           </div>

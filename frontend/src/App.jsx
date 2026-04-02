@@ -1,6 +1,6 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import FAQChatbot from './components/FAQChatbot';
 
@@ -41,54 +41,53 @@ import './App.css';
 // 🔐 Protected Route Component
 import ProtectedRoute from './components/ProtectedRoute';
 
-function App() {
-  return (
-    <AuthProvider>
-      <Routes>
+// Simple Layout for pages that NEED the FAQ Chatbot but NO extra Navbar
+const BaseLayout = () => (
+  <>
+    <Outlet />
+    <FAQChatbot />
+  </>
+);
 
-        {/* 🌐 Public Routes */}
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/verify-otp" element={<VerifyOTP />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <BaseLayout />,
+    children: [
+      { index: true, element: <Landing /> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+      { path: "forgot-password", element: <ForgotPassword /> },
+      { path: "verify-otp", element: <VerifyOTP /> },
+      { path: "reset-password", element: <ResetPassword /> },
+      
+      // 👤 Student & Admin Routes (Protected routes handle their own Navbars)
+      { path: "dashboard", element: <ProtectedRoute allowedRoles={['student']}><Dashboard /></ProtectedRoute> },
+      { path: "change-password", element: <ProtectedRoute allowedRoles={['student']}><ChangePassword /></ProtectedRoute> },
+      { path: "profile", element: <ProtectedRoute allowedRoles={['student']}><ProfileView /></ProtectedRoute> },
+      { path: "profile/:id", element: <ProtectedRoute allowedRoles={['student', 'admin']}><ProfileView /></ProtectedRoute> },
+      { path: "edit-profile", element: <ProtectedRoute allowedRoles={['student']}><EditProfile /></ProtectedRoute> },
+      { path: "settings", element: <ProtectedRoute allowedRoles={['student']}><Settings /></ProtectedRoute> },
+      { path: "recs", element: <ProtectedRoute allowedRoles={['student']}><Recommendations /></ProtectedRoute> },
+      { path: "sturecs", element: <ProtectedRoute allowedRoles={['student']}><Candidates /></ProtectedRoute> },
+      { path: "feedbacks", element: <ProtectedRoute allowedRoles={['student']}><Feedbacks /></ProtectedRoute> },
+      { path: "recprojects", element: <ProtectedRoute allowedRoles={['student']}><RecProjects /></ProtectedRoute> },
+      { path: "insert-project", element: <ProtectedRoute allowedRoles={['student']}><InsertPost /></ProtectedRoute> },
+      { path: "your-projects", element: <ProtectedRoute allowedRoles={['student']}><YourProjects /></ProtectedRoute> },
+      { path: "all-projects", element: <ProtectedRoute allowedRoles={['student']}><AllProjects /></ProtectedRoute> },
+      { path: "notifications", element: <ProtectedRoute allowedRoles={['student']}><Notifications /></ProtectedRoute> },
+      { path: "admindashboard", element: <ProtectedRoute allowedRoles={['admin']}><Admindashboard /></ProtectedRoute> },
+      { path: "projectman", element: <ProtectedRoute allowedRoles={['admin']}><Projectmanagement /></ProtectedRoute> },
+      { path: "studentman", element: <ProtectedRoute allowedRoles={['admin']}><Studentmanagement /></ProtectedRoute> },
+      { path: "requestman", element: <ProtectedRoute allowedRoles={['admin']}><Requestmanagement /></ProtectedRoute> },
+      { path: "adminfeedbacks", element: <ProtectedRoute allowedRoles={['admin']}><AdminFeedbacks /></ProtectedRoute> },
+      
+      // 🚫 Fallback
+      { path: "*", element: <div className="flex items-center justify-center h-screen bg-slate-50"><h1 className="text-2xl font-bold text-gray-500">404 - Page Not Found</h1></div> }
+    ]
+  }
+]);
 
-        {/* 👤 Student Routes */}
-        <Route path="/dashboard" element={<ProtectedRoute allowedRoles={['student']}><Dashboard /></ProtectedRoute>} />
-        <Route path="/change-password" element={<ProtectedRoute allowedRoles={['student']}><ChangePassword /></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute allowedRoles={['student']}><ProfileView /></ProtectedRoute>} />
-        <Route path="/profile/:id" element={<ProtectedRoute allowedRoles={['student', 'admin']}><ProfileView /></ProtectedRoute>} />
-        <Route path="/edit-profile" element={<ProtectedRoute allowedRoles={['student']}><EditProfile /></ProtectedRoute>} />
-        <Route path="/settings" element={<ProtectedRoute allowedRoles={['student']}><Settings /></ProtectedRoute>} />
-
-        {/* 🤖 Recommendations (Student Only) */}
-        <Route path="/recs" element={<ProtectedRoute allowedRoles={['student']}><Recommendations /></ProtectedRoute>} />
-        <Route path="/sturecs" element={<ProtectedRoute allowedRoles={['student']}><Candidates /></ProtectedRoute>} />
-        <Route path="/feedbacks" element={<ProtectedRoute allowedRoles={['student']}><Feedbacks /></ProtectedRoute>} />
-        <Route path="/recprojects" element={<ProtectedRoute allowedRoles={['student']}><RecProjects /></ProtectedRoute>} />
-
-        {/* 📁 Projects (Student Only) */}
-        <Route path="/insert-project" element={<ProtectedRoute allowedRoles={['student']}><InsertPost /></ProtectedRoute>} />
-        <Route path="/your-projects" element={<ProtectedRoute allowedRoles={['student']}><YourProjects /></ProtectedRoute>} />
-        <Route path="/all-projects" element={<ProtectedRoute allowedRoles={['student']}><AllProjects /></ProtectedRoute>} />
-        <Route path="/notifications" element={<ProtectedRoute allowedRoles={['student']}><Notifications /></ProtectedRoute>} />
-
-        {/* 🛠 Admin Routes */}
-        <Route path="/admindashboard" element={<ProtectedRoute allowedRoles={['admin']}><Admindashboard /></ProtectedRoute>} />
-        <Route path="/projectman" element={<ProtectedRoute allowedRoles={['admin']}><Projectmanagement /></ProtectedRoute>} />
-        <Route path="/studentman" element={<ProtectedRoute allowedRoles={['admin']}><Studentmanagement /></ProtectedRoute>} />
-        <Route path="/requestman" element={<ProtectedRoute allowedRoles={['admin']}><Requestmanagement /></ProtectedRoute>} />
-        <Route path="/adminfeedbacks" element={<ProtectedRoute allowedRoles={['admin']}><AdminFeedbacks /></ProtectedRoute>} />
-
-        {/* 🚫 Fallback */}
-        <Route path="*" element={<div className="flex items-center justify-center h-screen bg-slate-50"><h1 className="text-2xl font-bold text-gray-500">404 - Page Not Found</h1></div>} />
-
-      </Routes>
-
-      <FAQChatbot />
-    </AuthProvider>
-  );
+export default function App() {
+  return null;
 }
-
-export default App;

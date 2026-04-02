@@ -58,7 +58,7 @@ const FAQChatbot = () => {
   return (
     <div style={{ position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 9999, fontFamily: "'Sora', sans-serif" }}>
       {isOpen && (
-        <div style={{ 
+        <div className="chatbot-container" style={{ 
           width: '350px', 
           height: '480px', 
           backgroundColor: '#ffffff', 
@@ -193,6 +193,14 @@ const FAQChatbot = () => {
           @keyframes chatBubbleAppear {
             0% { transform: scale(0.5); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
+          }
+          @media (max-width: 480px) {
+            .chatbot-container {
+              width: calc(100vw - 2rem) !important;
+              height: 400px !important;
+              right: 1rem !important;
+              bottom: 5rem !important;
+            }
           }
         `}
       </style>

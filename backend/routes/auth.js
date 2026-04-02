@@ -7,11 +7,8 @@ const Student = require("../models/Student");
 const { sendOTP } = require("../utils/mailer");
 const auth = require("../middleware/auth"); // You'll need to create this
 
-// @route   POST api/auth/register
-// @desc    Register a student
-// @access  Public
 router.post("/register", async (req, res) => {
-    const { fullName, studentId, email, password, department, yearOfStudy, degreeProgram, specialization, semester, bio } = req.body;
+    const { fullName, studentId, email, password, department, yearOfStudy, degreeProgram, specialization, semester, bio, contactNumber, preferredRoles } = req.body;
 
     try {
         // Basic validation
@@ -27,18 +24,7 @@ router.post("/register", async (req, res) => {
         if (!emailRegex.test(email)) {
             return res.status(400).json({ message: "Please provide a valid email address" });
         }
-
-        // Check for existing user duplicates
-        let emailExists = await Student.findOne({ email });
-        if (emailExists) {
-            return res.status(400).json({ message: "Email already registered" });
-        }
-
-        let studentIdExists = await Student.findOne({ studentId });
-        if (studentIdExists) {
-            return res.status(400).json({ message: "Student ID already registered" });
-        }
-
+        
         let user = new Student({
             fullName,
             studentId,
@@ -47,10 +33,12 @@ router.post("/register", async (req, res) => {
             department,
             degreeProgram,
             bio,
+            contactNumber: contactNumber || "",
+            preferredRoles: preferredRoles || [],
             academicInfo: {
                 specialization: specialization || "",
-                year: yearOfStudy ? parseInt(yearOfStudy.replace(/\D/g, ''), 10) : null,
-                semester: semester ? parseInt(semester.replace(/\D/g, ''), 10) : null
+                year: yearOfStudy ? parseInt(yearOfStudy.toString().replace(/\D/g, ''), 10) : null,
+                semester: semester ? parseInt(semester.toString().replace(/\D/g, ''), 10) : null
             }
         });
 
@@ -147,6 +135,7 @@ router.post("/login", async (req, res) => {
                         availability: user.availability,
                         interests: user.interests,
                         preferredRoles: user.preferredRoles,
+                        contactNumber: user.contactNumber,
                         profilePhoto: user.profilePhoto
                     }
                 });

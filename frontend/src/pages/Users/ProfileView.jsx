@@ -108,8 +108,8 @@ const ProfileView = () => {
           <h2 id="pv-hero-name" className="premium-name">{fullName}</h2>
           <div className="ph-dept premium-dept" id="pv-hero-dept">📍 {department} · {year}</div>
           <div className="ph-chips">
-            <span className="ph-chip glass-chip">🎓 {user?.degreeProgram || 'Degree Not Set'}</span>
-            <span className="ph-chip glass-chip">⏰ {user?.availability?.weeklyHours || 0} hrs/week</span>
+            <span className="ph-chip glass-chip">🎓 {user?.specialization || user?.academicInfo?.specialization || 'Specialization Not Set'}</span>
+            <span className="ph-chip glass-chip">📞 {user?.contactNumber || 'No Contact'}</span>
             <span className="ph-chip glass-chip">🟢 Available</span>
           </div>
         </div>
@@ -138,6 +138,7 @@ const ProfileView = () => {
             <div className="pv-detail"><span className="pv-detail-lbl">Department</span><span className="pv-detail-val" id="pv-dept-val">{department}</span></div>
             <div className="pv-detail"><span className="pv-detail-lbl">Year</span><span className="pv-detail-val" id="pv-year-val">{year}</span></div>
             <div className="pv-detail"><span className="pv-detail-lbl">Student ID</span><span className="pv-detail-val" id="pv-id-val">{studentId}</span></div>
+            <div className="pv-detail"><span className="pv-detail-lbl">Contact</span><span className="pv-detail-val">{user?.contactNumber || 'Not Provided'}</span></div>
             <div className="pv-detail"><span className="pv-detail-lbl">CGPA</span><span className="pv-detail-val" id="pv-cgpa-val">{user?.academicInfo?.cgpa || 'N/A'}</span></div>
             <div className="pv-detail"><span className="pv-detail-lbl">Domain</span><span className="pv-detail-val">{user?.academicInfo?.specialization || 'N/A'}</span></div>
             {isOwnProfile && <button className="btn btn-primary btn-full shadow-hover-btn" style={{ marginTop: '1rem' }} onClick={() => navigate('/edit-profile')}>✏️ Edit Profile</button>}

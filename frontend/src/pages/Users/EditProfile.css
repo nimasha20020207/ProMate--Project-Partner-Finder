@@ -1,0 +1,436 @@
+/* ── EDIT PROFILE MODERN FIXED FRAME ── */
+#page-edit-profile {
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.ep-outer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem 1.5rem;
+}
+
+.ep-main-card {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  background: var(--white);
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+  overflow: hidden;
+  min-height: 700px;
+}
+
+/* 📋 Sidebar */
+.ep-sidebar {
+  background: #fcfcfd;
+  border-right: 1px solid var(--border);
+  padding: 2.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.ep-sb-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.85rem 1.15rem;
+  border-radius: 12px;
+  color: var(--mid);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 6px;
+}
+
+.ep-sb-item:hover:not(:first-child) {
+  background: var(--bg);
+  color: var(--p);
+}
+
+.ep-sb-item.active {
+  background: var(--pl);
+  color: var(--p);
+  font-weight: 600;
+}
+
+.ep-sb-icon {
+  width: 18px;
+  height: 18px;
+  opacity: 0.8;
+}
+
+.ep-sb-promo {
+  margin-top: auto;
+  padding: 1.25rem;
+  background: var(--pl);
+  border-radius: 16px;
+  text-align: center;
+}
+
+/* 📝 Main Content */
+.ep-content {
+  padding: 2.5rem 3.5rem;
+  background: #fff;
+  height: 100%;
+}
+
+.ep-section-card {
+  animation: fadeIn 0.3s ease;
+}
+
+.ep-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.25rem;
+}
+
+.ep-section-header h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.ep-section-icon-bg {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--pl);
+  color: var(--p);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 👤 Personal Details */
+.pf-upload-card {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: #f8fafc;
+  padding: 2rem;
+  border-radius: 20px;
+  margin-bottom: 2.5rem;
+}
+
+.ep-avatar-lg {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.pf-upload-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--p);
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.pf-upload-btn:hover { transform: scale(1.1); }
+
+.pf-upload-info h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.25rem; }
+.pf-upload-info p { color: var(--mid); font-size: 0.9rem; }
+
+/* 🔧 Skills Selection */
+.ai-suggestion-banner {
+  background: linear-gradient(90deg, #eff6ff, #fff);
+  border: 1px solid #dbeafe;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2.5rem;
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.ai-suggestion-banner h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+.ai-suggestion-banner p { font-size: 0.85rem; color: var(--mid); margin: 0; }
+
+.skill-cat-row {
+  margin-bottom: 2rem;
+}
+
+.skill-cat-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--mid);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+.skill-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skill-chip-toggle {
+  padding: 8px 16px;
+  background: #f1f5f9;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  font-size: 0.85rem;
+  color: var(--dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.skill-chip-toggle:hover {
+  background: #e2e8f0;
+}
+
+.skill-chip-toggle.active {
+  background: var(--pl);
+  color: var(--p);
+  border-color: var(--p);
+  font-weight: 600;
+}
+
+.custom-skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 1rem;
+}
+
+.skill-tag-removable {
+  padding: 6px 12px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.skill-tag-removable:hover { border-color: var(--warn); color: var(--warn); }
+
+.custom-skill-adder {
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  background: #f8fafc;
+  border-radius: 16px;
+  border: 1px dashed var(--border);
+}
+
+.adder-flex {
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.adder-flex select, .adder-flex input {
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+/* 🕐 Availability Grid */
+.avail-info-box {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+}
+
+.avail-info-box input[type="range"] {
+  width: 100%;
+  height: 8px;
+  accent-color: var(--p);
+  margin-top: 1rem;
+}
+
+/* 🎨 Interest Selection Grid */
+.interest-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.interest-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--mid);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.interest-pill:hover {
+  background: #f8fafc;
+  border-color: var(--p);
+}
+
+.interest-pill.active {
+  background: var(--pl);
+  color: var(--p);
+  border-color: var(--p);
+  font-weight: 600;
+}
+
+.ep-form-input.readonly {
+  background: #f8fafc;
+  border-color: var(--border);
+  color: #64748b;
+  cursor: not-allowed;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.8;
+}
+
+.day-grid {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
+.day-btn {
+  flex: 1;
+  min-width: 60px;
+  padding: 12px 6px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  text-align: center;
+  font-size: 0.758rem;
+  font-weight: 700;
+  color: var(--mid);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.day-btn.active {
+  background: var(--pl);
+  color: var(--p);
+  border-color: var(--p);
+}
+
+.chip-grid {
+  display: flex;
+  gap: 10px;
+  margin-top: 0.75rem;
+}
+
+.chip-btn {
+  padding: 8px 24px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.chip-btn.active {
+  background: var(--pl);
+  color: var(--p);
+  border-color: var(--p);
+}
+
+/* 🎭 Roles */
+.role-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.role-card-select {
+  padding: 1.25rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.role-card-select:hover { border-color: var(--p); box-shadow: 0 4px 12px rgba(56, 189, 248, 0.05); }
+
+.role-card-select.active {
+  background: var(--pl);
+  border-color: var(--p);
+}
+
+.role-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--p);
+}
+
+.role-card-select.active .role-check { border-color: var(--p); }
+
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); }
+
+/* ── FOOTER ACTIONS ── */
+.ep-footer {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+/* ── HELPERS ── */
+.ep-form-input.readonly {
+  background: #f1f5f9;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── RESPONSIVENESS ── */
+@media (max-width: 968px) {
+  .ep-main-card { grid-template-columns: 1fr; }
+  .ep-sidebar { border-right: none; border-bottom: 1px solid var(--border); padding: 1.5rem; }
+  .ep-content { padding: 2rem 1.5rem; }
+}
