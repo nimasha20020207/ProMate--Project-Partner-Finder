@@ -372,7 +372,7 @@ const InsertProject = ({ onSuccess }) => {
               <CheckboxGroup
                 options={["Redux","Axios","jQuery","Lodash","TensorFlow","Keras","PyTorch","Scikit-learn","Pandas","NumPy","Chart.js","D3.js","Three.js","Socket.io","Bootstrap"]}
                 selectedValues={formData.essentialSkills.libraries}
-                onChange={(values) => handleSkillChange('essentialSkills', 'libraries', values)}
+                onChange={(values) => handleSkillChange('optionalSkills', 'libraries', values)}
               />
             </div>
 
