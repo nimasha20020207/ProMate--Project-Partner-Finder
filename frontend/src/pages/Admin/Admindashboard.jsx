@@ -10,16 +10,20 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const Admindashboard = () => {
+  const { token } = useAuth();
   const [report, setReport] = useState({});
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/admin/reports")
+      .get("http://localhost:3000/api/admin/reports", {
+        headers: { "x-auth-token": token },
+      })
       .then((res) => setReport(res.data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [token]);
 
   // 🔵 Dummy Pie Data
   const userStats = [

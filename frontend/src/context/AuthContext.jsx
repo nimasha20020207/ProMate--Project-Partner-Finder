@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
       });
       if (res.ok) {
         const data = await res.json();
-        setUser(data);
+        setUser(data); // data is the user object directly
       } else {
         setToken(null);
       }
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
     const data = await res.json();
     if (res.ok) {
       setToken(data.token);
-      return { success: true };
+      return { success: true, user: data.user };
     }
     return { success: false, message: data.message };
   };

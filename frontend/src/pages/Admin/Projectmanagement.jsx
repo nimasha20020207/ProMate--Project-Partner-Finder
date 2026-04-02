@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from "axios"
 import AdminNavbar from '../../components/AdminNavbar'
+import { useAuth } from "../../context/AuthContext"
 
 const Projectmanagement = () => {
+  const { token } = useAuth();
   const [projects, setProjects] = useState([]);
   const tableRef = useRef(null);
 
@@ -14,18 +16,22 @@ const Projectmanagement = () => {
   const [error, setError] = useState("");
 
   const fetchProjects = () => {
-    axios.get("http://localhost:3000/api/admin/projects")
+    axios.get("http://localhost:3000/api/admin/projects", {
+      headers: { "x-auth-token": token },
+    })
       .then(res => setProjects(res.data))
       .catch(err => console.log(err));
   };
 
   useEffect(() => {
     fetchProjects();
-  }, []);
+  }, [token]);
 
   const deleteProject = (id) => {
     if (window.confirm("Delete this project?")) {
-      axios.delete(`http://localhost:3000/api/admin/projects/${id}`)
+      axios.delete(`http://localhost:3000/api/admin/projects/${id}`, {
+        headers: { "x-auth-token": token },
+      })
         .then(fetchProjects)
         .catch(err => console.log(err));
     }

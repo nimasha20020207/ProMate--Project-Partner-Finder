@@ -8,6 +8,10 @@ const Student = require("../models/Student");
 // @access  Private
 router.get("/me", auth, async (req, res) => {
     try {
+        if (req.user.role === 'admin') {
+            return res.json({ role: 'admin', email: req.user.email, fullName: "Administrator" });
+        }
+
         const profile = await Student.findById(req.user.id).select("-password");
         if (!profile) {
             return res.status(400).json({ message: "There is no profile for this user" });

@@ -29,7 +29,7 @@ import YourProjects from './pages/Projects/YourProjects';
 import AllProjects from './pages/Projects/AllProjects';
 import Notifications from './pages/Notifications/Notifications';
 
-// Admin Pages (UNCHANGED PATHS)
+// Admin Pages
 import Admindashboard from './pages/Admin/Admindashboard';
 import Projectmanagement from './pages/Admin/Projectmanagement';
 import Studentmanagement from './pages/Admin/Studentmanagement';
@@ -38,29 +38,15 @@ import AdminFeedbacks from './pages/Admin/AdminFeedbacks';
 
 import './App.css';
 
-// 🔐 Private Route
-const PrivateRoute = ({ children }) => {
-  const { token, loading } = useAuth();
-
-  if (loading) return <div>Loading...</div>;
-  if (!token) return <Navigate to="/login" />;
-
-  return (
-    <div className="flex h-screen">
-      <Navbar />
-      <main className="main-area flex-1 overflow-y-auto p-4">
-        {children}
-      </main>
-    </div>
-  );
-};
+// 🔐 Protected Route Component
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
 
-        {/* 🌐 Public */}
+        {/* 🌐 Public Routes */}
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -68,35 +54,35 @@ function App() {
         <Route path="/verify-otp" element={<VerifyOTP />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* 👤 User */}
-        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-        <Route path="/change-password" element={<PrivateRoute><ChangePassword /></PrivateRoute>} />
-        <Route path="/profile" element={<PrivateRoute><ProfileView /></PrivateRoute>} />
-        <Route path="/profile/:id" element={<PrivateRoute><ProfileView /></PrivateRoute>} />
-        <Route path="/edit-profile" element={<PrivateRoute><EditProfile /></PrivateRoute>} />
-        <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
+        {/* 👤 Student Routes */}
+        <Route path="/dashboard" element={<ProtectedRoute allowedRoles={['student']}><Dashboard /></ProtectedRoute>} />
+        <Route path="/change-password" element={<ProtectedRoute allowedRoles={['student']}><ChangePassword /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute allowedRoles={['student']}><ProfileView /></ProtectedRoute>} />
+        <Route path="/profile/:id" element={<ProtectedRoute allowedRoles={['student', 'admin']}><ProfileView /></ProtectedRoute>} />
+        <Route path="/edit-profile" element={<ProtectedRoute allowedRoles={['student']}><EditProfile /></ProtectedRoute>} />
+        <Route path="/settings" element={<ProtectedRoute allowedRoles={['student']}><Settings /></ProtectedRoute>} />
 
-        {/* 🤖 Recommendations */}
-        <Route path="/recs" element={<PrivateRoute><Recommendations /></PrivateRoute>} />
-        <Route path="/sturecs" element={<PrivateRoute><Candidates /></PrivateRoute>} />
-        <Route path="/feedbacks" element={<PrivateRoute><Feedbacks /></PrivateRoute>} />
-        <Route path="/recprojects" element={<PrivateRoute><RecProjects /></PrivateRoute>} />
+        {/* 🤖 Recommendations (Student Only) */}
+        <Route path="/recs" element={<ProtectedRoute allowedRoles={['student']}><Recommendations /></ProtectedRoute>} />
+        <Route path="/sturecs" element={<ProtectedRoute allowedRoles={['student']}><Candidates /></ProtectedRoute>} />
+        <Route path="/feedbacks" element={<ProtectedRoute allowedRoles={['student']}><Feedbacks /></ProtectedRoute>} />
+        <Route path="/recprojects" element={<ProtectedRoute allowedRoles={['student']}><RecProjects /></ProtectedRoute>} />
 
-        {/* 📁 Projects */}
-        <Route path="/insert-project" element={<PrivateRoute><InsertPost /></PrivateRoute>} />
-        <Route path="/your-projects" element={<PrivateRoute><YourProjects /></PrivateRoute>} />
-        <Route path="/all-projects" element={<PrivateRoute><AllProjects /></PrivateRoute>} />
-        <Route path="/notifications" element={<PrivateRoute><Notifications /></PrivateRoute>} />
+        {/* 📁 Projects (Student Only) */}
+        <Route path="/insert-project" element={<ProtectedRoute allowedRoles={['student']}><InsertPost /></ProtectedRoute>} />
+        <Route path="/your-projects" element={<ProtectedRoute allowedRoles={['student']}><YourProjects /></ProtectedRoute>} />
+        <Route path="/all-projects" element={<ProtectedRoute allowedRoles={['student']}><AllProjects /></ProtectedRoute>} />
+        <Route path="/notifications" element={<ProtectedRoute allowedRoles={['student']}><Notifications /></ProtectedRoute>} />
 
-        {/* 🛠 Admin (UNCHANGED PATHS) */}
-        <Route path="/admindashboard" element={<PrivateRoute><Admindashboard /></PrivateRoute>} />
-        <Route path="/projectman" element={<PrivateRoute><Projectmanagement /></PrivateRoute>} />
-        <Route path="/studentman" element={<PrivateRoute><Studentmanagement /></PrivateRoute>} />
-        <Route path="/requestman" element={<PrivateRoute><Requestmanagement /></PrivateRoute>} />
-        <Route path="/adminfeedbacks" element={<PrivateRoute><AdminFeedbacks /></PrivateRoute>} />
+        {/* 🛠 Admin Routes */}
+        <Route path="/admindashboard" element={<ProtectedRoute allowedRoles={['admin']}><Admindashboard /></ProtectedRoute>} />
+        <Route path="/projectman" element={<ProtectedRoute allowedRoles={['admin']}><Projectmanagement /></ProtectedRoute>} />
+        <Route path="/studentman" element={<ProtectedRoute allowedRoles={['admin']}><Studentmanagement /></ProtectedRoute>} />
+        <Route path="/requestman" element={<ProtectedRoute allowedRoles={['admin']}><Requestmanagement /></ProtectedRoute>} />
+        <Route path="/adminfeedbacks" element={<ProtectedRoute allowedRoles={['admin']}><AdminFeedbacks /></ProtectedRoute>} />
 
         {/* 🚫 Fallback */}
-        <Route path="*" element={<div>Page not found</div>} />
+        <Route path="*" element={<div className="flex items-center justify-center h-screen bg-slate-50"><h1 className="text-2xl font-bold text-gray-500">404 - Page Not Found</h1></div>} />
 
       </Routes>
 

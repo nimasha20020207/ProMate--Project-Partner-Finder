@@ -1,22 +1,28 @@
 import React,{useEffect,useState} from 'react';
 import axios from "axios";
 import AdminNavbar from '../../components/AdminNavbar';
+import { useAuth } from "../../context/AuthContext";
 
 const Requestmanagement = () => {
-    const [requests, setRequests] = useState([]);
+  const { token } = useAuth();
+  const [requests, setRequests] = useState([]);
 
   const fetchRequests = () => {
-    axios.get("http://localhost:5000/api/admin/requests")
+    axios.get("http://localhost:3000/api/admin/requests", {
+      headers: { "x-auth-token": token },
+    })
       .then(res => setRequests(res.data))
       .catch(err => console.log(err));
   };
 
   useEffect(() => {
     fetchRequests();
-  }, []);
+  }, [token]);
 
   const updateStatus = (id, status) => {
-    axios.put(`http://localhost:3000/api/admin/requests/${id}`, { status })
+    axios.put(`http://localhost:3000/api/admin/requests/${id}`, { status }, {
+      headers: { "x-auth-token": token },
+    })
       .then(fetchRequests)
       .catch(err => console.log(err));
   };

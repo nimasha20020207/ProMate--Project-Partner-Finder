@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import AdminNavbar from "../../components/AdminNavbar";
+import { useAuth } from "../../context/AuthContext";
 
 const StudentManagement = () => {
+  const { token } = useAuth();
   const [students, setStudents] = useState([]);
   const [showSuspendModal, setShowSuspendModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -16,14 +18,16 @@ const StudentManagement = () => {
 
   const fetchStudents = () => {
     axios
-      .get("http://localhost:3000/api/admin/students")
+      .get("http://localhost:3000/api/admin/students", {
+        headers: { "x-auth-token": token },
+      })
       .then((res) => setStudents(res.data))
       .catch((err) => console.log(err));
   };
 
   useEffect(() => {
     fetchStudents();
-  }, []);
+  }, [token]);
 
   const openSuspendModal = (student) => {
     setSelectedStudent(student);

@@ -63,7 +63,8 @@ router.post("/register", async (req, res) => {
         // Create JWT payload
         const payload = {
             user: {
-                id: user.id
+                id: user.id,
+                role: user.role
             }
         };
 
@@ -79,7 +80,8 @@ router.post("/register", async (req, res) => {
                         id: user.id,
                         fullName: user.fullName,
                         email: user.email,
-                        studentId: user.studentId
+                        studentId: user.studentId,
+                        role: user.role
                     }
                 });
             }
@@ -119,7 +121,8 @@ router.post("/login", async (req, res) => {
         // Create JWT payload
         const payload = {
             user: {
-                id: user.id
+                id: user.id,
+                role: user.role
             }
         };
 
@@ -136,6 +139,7 @@ router.post("/login", async (req, res) => {
                         fullName: user.fullName,
                         email: user.email,
                         studentId: user.studentId,
+                        role: user.role,
                         department: user.department,
                         degreeProgram: user.degreeProgram,
                         academicInfo: user.academicInfo,
@@ -160,7 +164,10 @@ router.post("/login", async (req, res) => {
 router.get("/me", auth, async (req, res) => {
     try {
         const user = await Student.findById(req.user.id).select("-password");
-        res.json({ user });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.json(user);
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: "Server error" });

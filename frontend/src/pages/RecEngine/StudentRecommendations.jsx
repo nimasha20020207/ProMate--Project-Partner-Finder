@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import DummyProfile from '../../assets/images/pic1.jpg'; // dummy profile image
+import DummyProfile from '../../assets/images/pic1.jpeg'; // dummy profile image
 
 const StudentRecommendations = () => {
   const [students, setStudents] = useState([]);
