@@ -143,7 +143,7 @@ const YourProjects = () => {
               <div className="skills-grid">
                 <div className="details-section box-essential">
                   <h4>Must Have Skills</h4>
-                  {['languages', 'frameworks', 'databases', 'tools'].map(cat => (
+                  {['languages', 'frameworks', 'databases', 'libraries', 'tools'].map(cat => (
                     viewingProject.essentialSkills?.[cat]?.length > 0 && (
                       <div key={cat} className="skill-category">
                         <h5>{cat}</h5>
@@ -155,14 +155,14 @@ const YourProjects = () => {
                       </div>
                     )
                   ))}
-                  {!['languages', 'frameworks', 'databases', 'tools'].some(cat => viewingProject.essentialSkills?.[cat]?.length > 0) && (
+                  {!['languages', 'frameworks', 'databases', 'libraries', 'tools'].some(cat => viewingProject.essentialSkills?.[cat]?.length > 0) && (
                     <span className="empty-text">No essential skills specified.</span>
                   )}
                 </div>
 
                 <div className="details-section box-optional">
                   <h4>Nice to Have</h4>
-                  {['languages', 'frameworks', 'databases', 'tools'].map(cat => (
+                  {['languages', 'frameworks', 'databases', 'libraries', 'tools'].map(cat => (
                     viewingProject.optionalSkills?.[cat]?.length > 0 && (
                       <div key={cat} className="skill-category">
                         <h5>{cat}</h5>
@@ -174,7 +174,7 @@ const YourProjects = () => {
                       </div>
                     )
                   ))}
-                  {!['languages', 'frameworks', 'databases', 'tools'].some(cat => viewingProject.optionalSkills?.[cat]?.length > 0) && (
+                  {!['languages', 'frameworks', 'databases', 'libraries', 'tools'].some(cat => viewingProject.optionalSkills?.[cat]?.length > 0) && (
                     <span className="empty-text">No optional skills specified.</span>
                   )}
                 </div>
