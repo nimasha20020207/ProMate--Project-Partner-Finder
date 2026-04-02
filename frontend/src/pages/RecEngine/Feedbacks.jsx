@@ -50,10 +50,10 @@ const Feedbacks = () => {
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-gray-100 to-gray-200">
 
-      {/* Sidebar */}
+      {/* Sidebar
       <div className="w-64 bg-gray-900 text-white shadow-xl">
         <Navbar />
-      </div>
+      </div> */}
 
       {/* Main Content */}
       <div className="flex-1 p-10 bg-surface">
