@@ -2,10 +2,12 @@ import React,{useEffect,useState} from 'react';
 import axios from "axios";
 import AdminNavbar from '../../components/AdminNavbar';
 import { useAuth } from "../../context/AuthContext";
+import {useNavigate} from "react-router-dom";
 
 const Requestmanagement = () => {
   const { token } = useAuth();
   const [requests, setRequests] = useState([]);
+  const navigate = useNavigate();
 
   const fetchRequests = () => {
     axios.get("http://localhost:3000/api/admin/requests", {
@@ -36,6 +38,10 @@ const Requestmanagement = () => {
 
       {/* Main content */}
       <div className="flex-1 p-6 bg-surface">
+
+        <button onClick={()=> navigate(`/history`)}
+          className="bg-[#3B82F6] text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          >View Suspension History</button>
             <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Requests</h1>
       <table className="min-w-full bg-white">

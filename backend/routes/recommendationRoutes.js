@@ -15,4 +15,4 @@ router.get("/projects", auth, getRecommendedProjects);
 // 🔥 NEW
 router.get("/students/:projectId", getRecommendedStudents);
 
-module.exports = router
+module.exports = router;

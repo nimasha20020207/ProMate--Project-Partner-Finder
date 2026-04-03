@@ -13,6 +13,7 @@ const profileRoutes = require("./routes/profile");
 const postRoutes = require("./routes/posts");
 const notificationRoutes = require("./routes/notifications");
 const adminRoutes = require("./routes/adminRoutes"); // from geeth
+const adminSuspendRoutes = require("./routes/adminSuspendRoutes");
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use("/api/feedback", feedbackRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/admin", adminRoutes); // geeth branch
+app.use("/api/admin", adminSuspendRoutes);
 
 // Server
 const PORT = process.env.PORT || 3000;

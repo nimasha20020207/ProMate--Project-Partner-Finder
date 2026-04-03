@@ -35,6 +35,7 @@ import Projectmanagement from './pages/Admin/Projectmanagement';
 import Studentmanagement from './pages/Admin/Studentmanagement';
 import Requestmanagement from './pages/Admin/Requestmanagement';
 import AdminFeedbacks from './pages/Admin/AdminFeedbacks';
+import History from './pages/Admin/History'
 
 import './App.css';
 
@@ -81,6 +82,7 @@ export const router = createBrowserRouter([
       { path: "studentman", element: <ProtectedRoute allowedRoles={['admin']}><Studentmanagement /></ProtectedRoute> },
       { path: "requestman", element: <ProtectedRoute allowedRoles={['admin']}><Requestmanagement /></ProtectedRoute> },
       { path: "adminfeedbacks", element: <ProtectedRoute allowedRoles={['admin']}><AdminFeedbacks /></ProtectedRoute> },
+      { path: "history", element: <ProtectedRoute allowedRoles={['admin']}><History /></ProtectedRoute> },
       
       // 🚫 Fallback
       { path: "*", element: <div className="flex items-center justify-center h-screen bg-slate-50"><h1 className="text-2xl font-bold text-gray-500">404 - Page Not Found</h1></div> }

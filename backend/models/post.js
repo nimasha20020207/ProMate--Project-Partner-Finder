@@ -31,11 +31,10 @@ const ProjectSchema = new mongoose.Schema({
   },
 
   year: { 
-    type: Number 
-
+    type: Number
   },
   semester: { 
-    type: Number 
+    type: Number
   },
   minimumCGPA: { 
     type: Number 

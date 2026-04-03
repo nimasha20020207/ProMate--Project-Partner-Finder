@@ -42,29 +42,38 @@ const StudentManagement = () => {
     setShowSuspendModal(true);
   };
 
-  const handleSuspend = () => {
-    if (!reason) {
-      setError("Please select a reason.");
-      return;
-    }
-    if (additionalComments.trim().length < 5) {
-      setError("Additional comments must be at least 5 characters.");
-      return;
-    }
-    if (!suspendDate) {
-      setError("Please select a suspension date.");
-      return;
-    }
+  const handleSuspend = async() => {
+  if (!reason) return setError("Please select a reason.");
+  if (additionalComments.trim().length < 5)
+    return setError("Additional comments must be at least 5 characters.");
+  if (!suspendDate) return setError("Please select a suspension date.");
 
-    console.log("Suspending student:", selectedStudent._id, {
-      reason,
-      additionalComments,
-      suspendDate,
-    });
+  try {
+    await axios.post(
+      `http://localhost:3000/api/admin/suspend/${selectedStudent._id}`,
+      {
+        reason,
+        additionalComments,
+        suspendDate
+      },
+      {
+        headers: { "x-auth-token": token }
+      }
+    );
+
+    // ✅ Remove student from UI immediately
+    setStudents((prev) =>
+      prev.filter((s) => s._id !== selectedStudent._id)
+    );
 
     setShowSuspendModal(false);
-    alert(`Student ${selectedStudent.fullName} suspended successfully!`);
-  };
+    alert("Student suspended successfully!");
+
+  } catch (err) {
+    console.error(err);
+    setError("Failed to suspend student");
+  }
+};
 
   const verifyStudent = (id) => {
     alert("Student verified (mock action)");
