@@ -79,12 +79,12 @@
   border-left-color: #3b82f6;
 }
 
-.notif-card.accepted {
+.notif-card.accepted, .notif-card.you_accepted {
   background-color: #f0fdf4;
   border-left-color: #10b981;
 }
 
-.notif-card.rejected {
+.notif-card.rejected, .notif-card.you_rejected {
   background-color: #fef2f2;
   border-left-color: #ef4444;
 }
@@ -115,12 +115,12 @@
   color: #3b82f6;
 }
 
-.notif-icon.accepted {
+.notif-icon.accepted, .notif-icon.you_accepted {
   background: #ecfdf5;
   color: #10b981;
 }
 
-.notif-icon.rejected {
+.notif-icon.rejected, .notif-icon.you_rejected {
   background: #fef2f2;
   color: #ef4444;
 }
@@ -194,12 +194,12 @@
   text-transform: uppercase;
 }
 
-.status-badge.accepted {
+.status-badge.accepted, .status-badge.you_accepted {
   background: #ecfdf5;
   color: #059669;
 }
 
-.status-badge.rejected {
+.status-badge.rejected, .status-badge.you_rejected {
   background: #fef2f2;
   color: #dc2626;
 }

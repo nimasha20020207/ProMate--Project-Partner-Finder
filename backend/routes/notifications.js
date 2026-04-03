@@ -24,4 +24,11 @@ router.delete("/:id", (req, res) => {
         .catch((err) => res.status(400).json({ msg: "unable to delete notification", error: err }));
 });
 
+// Update notification by id
+router.put("/:id", (req, res) => {
+    Notification.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        .then((notif) => res.json({ msg: "notification updated successfully", data: notif }))
+        .catch((err) => res.status(400).json({ msg: "unable to update notification", error: err }));
+});
+
 module.exports = router;
