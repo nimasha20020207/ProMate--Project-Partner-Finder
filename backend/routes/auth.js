@@ -24,7 +24,21 @@ router.post("/register", async (req, res) => {
         if (!emailRegex.test(email)) {
             return res.status(400).json({ message: "Please provide a valid email address" });
         }
+
+        // Check if user already exists
+        let existingUser = await Student.findOne({ 
+            $or: [{ email }, { studentId }] 
+        });
         
+        if (existingUser) {
+            if (existingUser.email === email) {
+                return res.status(400).json({ message: "Email already in use" });
+            }
+            if (existingUser.studentId === studentId) {
+                return res.status(400).json({ message: "Student ID already in use" });
+            }
+        }
+
         let user = new Student({
             fullName,
             studentId,
@@ -76,7 +90,44 @@ router.post("/register", async (req, res) => {
         );
     } catch (err) {
         console.error(err.message);
+        if (err.code === 11000) {
+            const field = Object.keys(err.keyPattern)[0];
+            return res.status(400).json({ 
+                message: `${field.charAt(0).toUpperCase() + field.slice(1)} already in use` 
+            });
+        }
         res.status(500).json({ message: "Server error during registration" });
+    }
+});
+
+// @route   POST api/auth/check-availability
+// @desc    Check if email or studentId is already taken
+// @access  Public
+router.post("/check-availability", async (req, res) => {
+    const { email, studentId } = req.body;
+    console.log(`Checking availability for: ${email || studentId}`);
+
+    try {
+        if (email) {
+            const user = await Student.findOne({ email });
+            return res.json({ 
+                available: !user, 
+                message: user ? "This email is already registered" : "Email is available" 
+            });
+        }
+
+        if (studentId) {
+            const user = await Student.findOne({ studentId });
+            return res.json({ 
+                available: !user, 
+                message: user ? "Student ID already in use" : "Student ID is available" 
+            });
+        }
+
+        return res.status(400).json({ message: "Email or Student ID is required" });
+    } catch (err) {
+        console.error("Availability check error:", err.message);
+        res.status(500).json({ message: "Server error during availability check" });
     }
 });
 
