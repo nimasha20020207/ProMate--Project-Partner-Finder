@@ -1,64 +1,35 @@
-const Student = require("../models/Student");
-const Project = require("../models/post");
+const students = require("../dummydata/dummystudents");
+const projects = require("../dummydata/dummyprojects");
 const { calculateScore } = require("../services/recommendationEngine");
 
-// // ✅ Student → Projects
-// const getRecommendedProjects = (req, res) => {
-//   const studentId = req.params.studentId;
+// ✅ Student → Projects
+const getRecommendedProjects = (req, res) => {
+  const studentId = req.params.studentId;
 
-//   const student = students.find(s => s.id === studentId);
+  const student = students.find(s => s.id === studentId);
 
-//   if (!student) {
-//     return res.status(404).json({ message: "student not found" });
-//   }
-
-//   let results = [];
-
-//   projects.forEach(project => {
-//     const result = calculateScore(student, project);
-
-//     if (result) {
-//       results.push({
-//         project,
-//         score: result.score,
-//         explanation: result.explanation,
-//         details: result.details
-//       });
-//     }
-//   });
-
-//   results.sort((a, b) => b.score - a.score);
-
-//   res.json(results);
-// };
-
-const getRecommendedProjects = async (req, res) => {
-  try {
-    const studentId = req.user?.id || req.params.studentId;
-
-    const student = await Student.findById(studentId);
-    if (!student) return res.json([]); // ✅ return empty array instead of object
-
-    const allProjects = await Project.find();
-
-    const results = allProjects
-      .map(project => {
-        const result = calculateScore(student, project);
-        return result ? {
-          project,
-          score: result.score,
-          explanation: result.explanation,
-          details: result.details
-        } : null;
-      })
-      .filter(r => r !== null)
-      .sort((a, b) => b.score - a.score);
-
-    res.json(results); // always an array
-  } catch (err) {
-    console.error(err);
-    res.json([]); // ✅ fallback empty array
+  if (!student) {
+    return res.status(404).json({ message: "student not found" });
   }
+
+  let results = [];
+
+  projects.forEach(project => {
+    const result = calculateScore(student, project);
+
+    if (result) {
+      results.push({
+        project,
+        score: result.score,
+        explanation: result.explanation,
+        details: result.details
+      });
+    }
+  });
+
+  results.sort((a, b) => b.score - a.score);
+
+  res.json(results);
 };
 
 // ✅ Project → Students
@@ -94,4 +65,3 @@ module.exports = {
   getRecommendedProjects,
   getRecommendedStudents
 };
-

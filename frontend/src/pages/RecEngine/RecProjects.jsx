@@ -4,33 +4,15 @@ import Navbar from "../../components/Navbar";
 const ProjectRecommendations = () => {
   const [projects, setProjects] = useState([]);
 
-  // useEffect(() => {
-  //   fetch("http://localhost:3000/api/recommendations/projects/S1")
-  //     .then((res) => res.json())
-  //     .then((data) => setProjects(data));
-  // }, []);
-
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    fetch("http://localhost:3000/api/recommendations/projects", {
-      method: "GET",
-      headers: { "Authorization": `Bearer ${token}` }
-    })
-    .then(res => res.json())
-    .then(data => {
-      console.log("Fetched projects:", data); // <-- check this
-      setProjects(Array.isArray(data) ? data : []);
-    })
-    .catch(err => console.error(err));
+    fetch("http://localhost:3000/api/recommendations/projects/S1")
+      .then((res) => res.json())
+      .then((data) => setProjects(data));
   }, []);
 
   return (
     <div className="flex h-screen overflow-hidden bg-surface">
       
-      {/* Sidebar (fixed)
-      <div className="w-64 bg-gray-800 text-white h-full">
-        <Navbar />
-      </div> */}
 
       {/* Main content (scrollable only) */}
       <div className="flex-1 p-6 overflow-y-auto">
