@@ -43,13 +43,13 @@ const AdminFeedbacks = () => {
   return (
     <div className="flex h-screen overflow-hidden">
 
-      {/* Sidebar */}
+      {/* Sidebar
       <div className="w-64 bg-gray-800 text-white fixed h-full">
         <AdminNavbar />
-      </div>
+      </div> */}
 
       {/* Main Content */}
-      <div className="flex-1 ml-64 p-6 overflow-y-auto bg-gray-50">
+      <div className="flex-1 p-6 bg-surface">
 
         <h2 className="text-2xl font-bold mb-6 text-textPrimary">User Feedbacks⭐</h2>
 

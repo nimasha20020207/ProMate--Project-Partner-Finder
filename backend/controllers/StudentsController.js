@@ -1,4 +1,4 @@
-const Student = require("../models/StudentsMock");
+const Student = require("../models/Student");
 
 // Get all students
 exports.getStudents = async (req, res) => {

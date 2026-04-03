@@ -43,8 +43,8 @@ const Admindashboard = () => {
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
     
-    {/* Sidebar */}
-    <AdminNavbar />
+    {/* Sidebar
+    <AdminNavbar /> */}
 
     {/* Main Content */}
     <div className="flex-1 p-8">

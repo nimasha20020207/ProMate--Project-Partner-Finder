@@ -75,12 +75,12 @@ const Projectmanagement = () => {
     <div className="flex h-screen overflow-hidden">
 
       {/* Sidebar */}
-      <div className="w-64 bg-gray-800 text-white fixed h-full">
+      {/* <div className="w-64 bg-gray-800 text-white fixed h-full">
         <AdminNavbar />
-      </div>
+      </div> */}
 
       {/* Main */}
-      <div className="flex-1 ml-64 p-6 overflow-y-auto bg-gray-50">
+      <div className="flex-1 p-6 bg-surface">
 
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
@@ -158,7 +158,9 @@ const Projectmanagement = () => {
                 </div>
 
                 <div className="flex gap-2">
-                  <button className="text-blue-500 border border-blue-500 px-3 py-1 rounded text-sm hover:bg-blue-50">
+                  <button 
+                  onClick={() => navigate(`/profile/${s._id}`)}
+                  className="text-blue-500 border border-blue-500 px-3 py-1 rounded text-sm hover:bg-blue-50">
                     View
                   </button>
 

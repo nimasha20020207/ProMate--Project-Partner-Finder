@@ -90,7 +90,6 @@ const ProfileView = () => {
       <div className="page-hdr">
         <div className="page-hdr-left">
           <h1>My Profile</h1>
-          <p>This is how other students see your profile</p>
         </div>
         <div className="page-hdr-right">
           <button className="btn btn-outline btn-sm" onClick={() => navigate('/dashboard')}>← Dashboard</button>

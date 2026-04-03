@@ -29,10 +29,10 @@ const Requestmanagement = () => {
 
   return (
     <div className="flex min-h-screen">
-      {/* Sidebar */}
+      {/* Sidebar
       <div className="w-64 bg-gray-800 text-white">
         <AdminNavbar />
-      </div>
+      </div> */}
 
       {/* Main content */}
       <div className="flex-1 p-6 bg-surface">

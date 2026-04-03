@@ -2,8 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import AdminNavbar from "../../components/AdminNavbar";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const StudentManagement = () => {
+
+  const navigate = useNavigate();
+
   const { token } = useAuth();
   const [students, setStudents] = useState([]);
   const [showSuspendModal, setShowSuspendModal] = useState(false);
@@ -77,13 +81,7 @@ const StudentManagement = () => {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
-      <div className="w-64 bg-gray-800 text-white flex-shrink-0">
-        <AdminNavbar />
-      </div>
-
-      {/* Scrollable Content */}
-      <div className="flex-1 overflow-auto p-6 bg-[#F9FAFB]">
+      <div className="flex-1 p-6 bg-surface">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-textPrimary">New Users 👨‍🎓👩‍🎓</h1>
@@ -116,7 +114,9 @@ const StudentManagement = () => {
               </div>
 
               <div className="flex justify-between mt-4 gap-2">
-                <button className="bg-[#3B82F6] text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition">
+                <button 
+                onClick={() => navigate(`/profile/${s._id}`)}
+                className="bg-[#3B82F6] text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition">
                   View Profile
                 </button>
                 <button
@@ -179,7 +179,9 @@ const StudentManagement = () => {
                     <td className="p-2 border">{s.academicInfo?.year}</td>
                     <td className="p-2 border">{s.academicInfo?.semester}</td>
                     <td className="p-2 border space-x-2">
-                      <button className="bg-[#3B82F6] text-white px-2 py-1 rounded text-sm hover:bg-blue-700 transition">
+                      <button 
+                      onClick={() => navigate(`/profile/${s._id}`)}
+                      className="bg-[#3B82F6] text-white px-2 py-1 rounded text-sm hover:bg-blue-700 transition">
                         View Profile
                       </button>
                       <button
