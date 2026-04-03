@@ -12,7 +12,7 @@ const AllProjects = () => {
 
   const handleJoin = async (project) => {
     const payload = {
-      senderIt: user?.studentId || 'Unknown',
+      senderIt: user ? `${user.studentId} - ${user.fullName}` : 'Unknown',
       targetIt: project.itNumber || 'Unknown',
       message: `Requested to join ${project.displayTitle} project`,
       type: 'join_request'

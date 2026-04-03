@@ -41,8 +41,8 @@ const Notifications = () => {
 
     // Create new status notification replacing the action request
     const payload = {
-      senderIt: user?.studentId || 'Unknown',
-      targetIt: notif.senderIt,
+      senderIt: user ? `${user.studentId} - ${user.fullName}` : 'Unknown',
+      targetIt: notif.senderIt.split(' - ')[0],
       message: isAccepted ? `Request accepted ${projectName} project` : `Request rejected ${projectName} project`,
       type: status
     };
