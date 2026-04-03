@@ -69,15 +69,15 @@ const EditProfile = () => {
 
   // Predefined Skill Lists
   const skillData = {
-    languages: ['JavaScript', 'Python', 'Java', 'C++', 'C#', 'Go', 'TypeScript', 'Swift', 'PHP'],
-    frameworks: ['React', 'Node.js', 'Django', 'Spring Boot', 'Angular', 'Vue', 'Express', 'Flask'],
-    libraries: ['Redux', 'jQuery', 'TensorFlow', 'PyTorch', 'Pandas', 'NumPy'],
-    databases: ['MongoDB', 'PostgreSQL', 'MySQL', 'Redis', 'Firebase'],
-    tools: ['Git', 'Docker', 'Kubernetes', 'AWS', 'Figma', 'Jenkins', 'Postman']
+    languages: ['JavaScript', 'TypeScript', 'Python', 'Java', 'C', 'C++', 'C#', 'Go', 'Rust', 'Kotlin', 'Swift', 'PHP', 'Ruby', 'Dart', 'R', 'MATLAB'],
+    frameworks: ['React', 'Angular', 'Vue.js', 'Next.js', 'Nuxt.js', 'Node.js', 'Express.js', 'Django', 'Flask', 'Spring Boot', 'ASP.NET', 'Laravel', 'Ruby on Rails', 'Flutter', 'React Native'],
+    libraries: ['Redux', 'Axios', 'jQuery', 'Loash', 'TensorFlow', 'Keras', 'PyTorch', 'Scikit-learn', 'Pandas', 'NumPy', 'Chart.js', 'D3.js', 'Three.js', 'Socket.io', 'Bootstrap'],
+    databases: ['MongoDB', 'MySQL','PostgreSQL', 'SQLite', 'Oracle', 'Microsoft SQL Server', 'Firebase', 'Redis', 'Cassandra', 'DynamoDB', 'Neo4j'],
+    tools: ['Git', 'GitHub', 'GitLab', 'Docker', 'Kubernetes', 'Postman', 'Jira', 'Trello', 'Figma', 'Adobe XD', 'VS Code', 'IntelliJ IDEA', 'Eclipse', 'Webpack', 'Babel']
   };
 
   const skillCategories = ['languages', 'frameworks', 'libraries', 'databases', 'tools'];
-  const interests = ["AI / ML", "Web Dev", "Mobile", "UI/UX", "DevOps", "Databases", "Security", "Cloud", "IoT", "Blockchain", "Game Dev", "Cybersecurity", "Data Science"];
+  const interests = ["AI / ML", "Web Development", "Mobile Development", "UI/UX", "DevOps", "Data Science", "Cloud Computing", "IoT", "Blockchain", "Game Development", "Cybersecurity"];
   const rolesOptions = ["Frontend Developer", "Backend Developer", "Fullstack Developer", "Mobile App Developer", "ML Engineer", "Data Scientist", "UI/UX Designer", "DevOps Engineer", "QA Engineer", "Project Manager"];
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const times = ["Morning", "Afternoon", "Evening", "Night"];

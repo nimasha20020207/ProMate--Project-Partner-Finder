@@ -5,7 +5,7 @@ import { CheckCircle2 } from 'lucide-react';
 import logo from '../../assets/images/logo.jpeg';
 
 const Register = () => {
-  const { register } = useAuth();
+  const { register, checkAvailability } = useAuth();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [error, setError] = useState('');
@@ -29,6 +29,11 @@ const Register = () => {
     preferredRoles: []
   });
 
+  const [fieldErrors, setFieldErrors] = useState({
+    email: '',
+    studentId: ''
+  });
+
   const rolesOptions = ["Frontend Developer", "Backend Developer", "Fullstack Developer", "Mobile App Developer", "ML Engineer", "Data Scientist", "UI/UX Designer", "DevOps Engineer", "QA Engineer", "Project Manager"];
   const [activeDropdown, setActiveDropdown] = useState(null);
 
@@ -42,11 +47,13 @@ const Register = () => {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
     if (error) setError('');
+    if (fieldErrors[name]) setFieldErrors({ ...fieldErrors, [name]: '' });
   };
 
-  const handleNextStep1 = () => {
+  const handleNextStep1 = async () => {
     const { firstName, lastName, email, department, yearOfStudy } = formData;
     if (!firstName || !lastName || !email || !department || !yearOfStudy) {
       setError('Please fill all required fields to continue.');
@@ -64,7 +71,26 @@ const Register = () => {
       setError('Please provide a valid email address.');
       return;
     }
+
+    // Check availability
+    const res = await checkAvailability({ email });
+    
+    // Only block if the backend explicitly confirms the email is already registered
+    if (res.available === false) {
+      setFieldErrors(prev => ({ ...prev, email: res.message }));
+      return;
+    }
+
+    // If there was a technical error (server error during check), we log it
+    // but DON'T block the user. The final Create Account call will still catch it.
+    if (res.success === false) {
+      console.warn('Availability check failed technically:', res.message);
+      // We clear the error so they aren't stuck by a 500 error
+      setFieldErrors(prev => ({ ...prev, email: '' }));
+    }
+
     setError('');
+    setFieldErrors(prev => ({ ...prev, email: '' }));
     setStep(2);
   };
 
@@ -102,6 +128,13 @@ const Register = () => {
     const studentIdRegex = /^it\d{8}$/i;
     if (!studentIdRegex.test(studentId)) {
       setError('Student ID must start with "IT" followed by exactly 8 digits.');
+      return;
+    }
+
+    // Check studentId availability
+    const resAvail = await checkAvailability({ studentId });
+    if (!resAvail.available) {
+      setFieldErrors(prev => ({ ...prev, studentId: resAvail.message }));
       return;
     }
     
@@ -167,7 +200,8 @@ const Register = () => {
               </div>
               <div className="form-group">
                 <label className="form-label">Email Address</label>
-                <input type="email" className="form-input" name="email" value={formData.email} onChange={handleChange} placeholder="student@example.com" />
+                <input type="email" className={`form-input ${fieldErrors.email ? 'input-error' : ''}`} name="email" value={formData.email} onChange={handleChange} placeholder="student@example.com" />
+                {fieldErrors.email && <div className="field-error" style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: '0.35rem', fontWeight: 500 }}>{fieldErrors.email}</div>}
                 <div className="form-hint">Enter your primary email address</div>
               </div>
               <div className="form-row">
@@ -234,7 +268,8 @@ const Register = () => {
               <div className="form-row">
                 <div className="form-group">
                   <label className="form-label">Student ID</label>
-                  <input type="text" className="form-input" name="studentId" value={formData.studentId} onChange={handleChange} placeholder="e.g. IT23341968" />
+                  <input type="text" className={`form-input ${fieldErrors.studentId ? 'input-error' : ''}`} name="studentId" value={formData.studentId} onChange={handleChange} placeholder="e.g. IT23341968" />
+                  {fieldErrors.studentId && <div className="field-error" style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: '0.35rem', fontWeight: 500 }}>{fieldErrors.studentId}</div>}
                 </div>
                 <div className="form-group">
                   <label className="form-label">Specialization</label>

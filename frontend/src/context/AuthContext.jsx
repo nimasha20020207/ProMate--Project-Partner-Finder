@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchProfile = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/profile/me', {
+      const res = await fetch('http://127.0.0.1:3000/api/profile/me', {
         headers: {
           'x-auth-token': token
         }
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (identifier, password) => {
-    const res = await fetch('http://localhost:3000/api/auth/login', {
+    const res = await fetch('http://127.0.0.1:3000/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ identifier, password })
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (userData) => {
-    const res = await fetch('http://localhost:3000/api/auth/register', {
+    const res = await fetch('http://127.0.0.1:3000/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData)
@@ -71,12 +71,30 @@ export const AuthProvider = ({ children }) => {
     return { success: false, message: data.message };
   };
 
+  const checkAvailability = async (fields) => {
+    try {
+      const res = await fetch('http://127.0.0.1:3000/api/auth/check-availability', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(fields)
+      });
+      if (!res.ok) {
+        return { success: false, available: true, message: 'Server error during check' };
+      }
+      const data = await res.json();
+      return { success: true, available: data.available, message: data.message };
+    } catch (error) {
+      console.error('Error checking availability:', error);
+      return { success: false, available: true, message: 'Server unreachable' };
+    }
+  };
+
   const logout = () => {
     setToken(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, logout, fetchProfile }}>
+    <AuthContext.Provider value={{ user, token, loading, login, register, logout, fetchProfile, checkAvailability }}>
       {!loading ? children : <div>Loading...</div>}
     </AuthContext.Provider>
   );

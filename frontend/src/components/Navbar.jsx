@@ -18,6 +18,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import ProMateLogo from '../assets/images/logo.jpeg';
 import DummyProfile from '../assets/images/pic1.jpeg';
+import { calculateProfileCompleteness } from '../utils/profileUtils';
 
 const Navbar = () => {
   const location = useLocation();
@@ -33,18 +34,7 @@ const Navbar = () => {
   const getInitials = (name) => name ? name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'U';
 
   // Profile completion score
-  const calculateCompletion = (u) => {
-    if (!u) return 0;
-    let score = 20;
-    if (u.profilePicture) score += 10;
-    if (u.bio) score += 10;
-    if (u.skills && Object.values(u.skills).some(arr => arr?.length > 0)) score += 20;
-    if (u.availability?.weeklyHours || u.availability?.preferredDays?.length > 0) score += 20;
-    if (u.interests?.length > 0) score += 10;
-    if (u.preferredRoles?.length > 0) score += 10;
-    return Math.min(score, 100);
-  };
-  const completion = calculateCompletion(user);
+  const { percentage: completion } = calculateProfileCompleteness(user);
 
   const navItems = [
     { text: "Dashboard", icon: <LayoutDashboard size={20} />, path: "/dashboard", section: "Main" },
@@ -145,7 +135,8 @@ const Navbar = () => {
       </div>
 
       {/* Profile Card */}
-      <div className="mt-8 p-4 bg-slate-50 rounded-3xl border border-slate-100 relative group overflow-hidden">
+      <Link to="/profile" className="block">
+        <div className="mt-8 p-4 bg-slate-50 rounded-3xl border border-slate-100 relative group overflow-hidden hover:bg-slate-100 transition-colors cursor-pointer">
         <div className="absolute top-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity">
            <ChevronRight size={16} className="text-gray-400" />
         </div>
@@ -179,7 +170,8 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
+  </div>
   );
 };
 
