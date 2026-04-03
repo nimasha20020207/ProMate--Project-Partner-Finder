@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import './Notifications.css';
 
 const Notifications = () => {
+  const { user } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchNotifications = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/notifications');
+      // Only fetch notifications targeted at the currently logged-in user
+      const url = user?.studentId 
+        ? `http://localhost:3000/api/notifications?targetIt=${user.studentId}`
+        : 'http://localhost:3000/api/notifications';
+        
+      const res = await fetch(url);
       if (res.ok) {
         const data = await res.json();
         setNotifications(data);
@@ -34,8 +41,8 @@ const Notifications = () => {
 
     // Create new status notification replacing the action request
     const payload = {
-      senderIt: notif.senderIt,
-      targetIt: 'IT23272736',
+      senderIt: user?.studentId || 'Unknown',
+      targetIt: notif.senderIt,
       message: isAccepted ? `Request accepted ${projectName} project` : `Request rejected ${projectName} project`,
       type: status
     };
