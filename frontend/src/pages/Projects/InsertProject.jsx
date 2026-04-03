@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import './InsertProject.css';
 
 const CheckboxGroup = ({ options, selectedValues, onChange }) => (
-  <div className="checkbox-group">
+  <div className="checkbox-group-ip">
     {options.map((option) => (
-      <label key={option} className="checkbox-label">
+      <label key={option} className="checkbox-label-ip">
         <input
           type="checkbox"
           value={option}
@@ -198,42 +198,42 @@ const InsertProject = ({ onSuccess }) => {
   };
 
   return (
-    <div className="insert-project-container">
-      <div className="insert-project-card">
-        <h1 className="insert-project-title">Create New Project</h1>
-        <p className="insert-project-subtitle">Post a new project outline to find the perfect team members.</p>
+    <div className="insert-project-container-ip">
+      <div className="insert-project-card-ip">
+        <h1 className="insert-project-title-ip">Create New Project</h1>
+        <p className="insert-project-subtitle-ip">Post a new project outline to find the perfect team members.</p>
 
-        <form onSubmit={handleSubmit} className="insert-project-form" noValidate>
+        <form onSubmit={handleSubmit} className="insert-project-form-ip" noValidate>
           {/* Section: Basic Info */}
-          <div className="form-section">
+          <div className="form-section-ip">
             <h2>Basic Information</h2>
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>IT Number *</label>
-              <input type="text" name="itNumber" value={formData.itNumber} onChange={handleChange} onBlur={handleBlur} className={touched.itNumber && errors.itNumber ? 'input-error' : ''} placeholder="e.g. IT23272736" maxLength="10" />
-              {touched.itNumber && errors.itNumber && <span className="error-message">{errors.itNumber}</span>}
+              <input type="text" name="itNumber" value={formData.itNumber} onChange={handleChange} onBlur={handleBlur} className={touched.itNumber && errors.itNumber ? 'input-error-ip' : ''} placeholder="e.g. IT23272736" maxLength="10" />
+              {touched.itNumber && errors.itNumber && <span className="error-message-ip">{errors.itNumber}</span>}
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Project Title *</label>
-              <input type="text" name="title" value={formData.title} onChange={handleChange} onBlur={handleBlur} className={touched.title && errors.title ? 'input-error' : ''} placeholder="Enter project title" />
-              {touched.title && errors.title && <span className="error-message">{errors.title}</span>}
+              <input type="text" name="title" value={formData.title} onChange={handleChange} onBlur={handleBlur} className={touched.title && errors.title ? 'input-error-ip' : ''} placeholder="Enter project title" />
+              {touched.title && errors.title && <span className="error-message-ip">{errors.title}</span>}
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Description *</label>
-              <textarea name="description" value={formData.description} onChange={handleChange} onBlur={handleBlur} className={touched.description && errors.description ? 'input-error' : ''} placeholder="What is this project about? Provide some context and goals."></textarea>
-              {touched.description && errors.description && <span className="error-message">{errors.description}</span>}
+              <textarea name="description" value={formData.description} onChange={handleChange} onBlur={handleBlur} className={touched.description && errors.description ? 'input-error-ip' : ''} placeholder="What is this project about? Provide some context and goals."></textarea>
+              {touched.description && errors.description && <span className="error-message-ip">{errors.description}</span>}
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
+            <div className="form-row-ip">
+              <div className="form-group-ip">
                 <label>Team Size *</label>
-                <input type="number" name="teamSize" value={formData.teamSize} onChange={handleChange} onBlur={handleBlur} className={touched.teamSize && errors.teamSize ? 'input-error' : ''} min="1" placeholder="e.g. 4" />
-                {touched.teamSize && errors.teamSize && <span className="error-message">{errors.teamSize}</span>}
+                <input type="number" name="teamSize" value={formData.teamSize} onChange={handleChange} onBlur={handleBlur} className={touched.teamSize && errors.teamSize ? 'input-error-ip' : ''} min="1" placeholder="e.g. 4" />
+                {touched.teamSize && errors.teamSize && <span className="error-message-ip">{errors.teamSize}</span>}
               </div>
-              <div className="form-group">
+              <div className="form-group-ip">
                 <label>Project Type *</label>
-                <select name="projectType" value={formData.projectType} onChange={handleChange} onBlur={handleBlur} className={touched.projectType && errors.projectType ? 'input-error' : ''}>
+                <select name="projectType" value={formData.projectType} onChange={handleChange} onBlur={handleBlur} className={touched.projectType && errors.projectType ? 'input-error-ip' : ''}>
                   <option value="">Select Type</option>
                   <option value="Research">Research</option>
                   <option value="Development">Development</option>
@@ -241,11 +241,11 @@ const InsertProject = ({ onSuccess }) => {
                   <option value="Hackathon">Hackathon</option>
                   <option value="Open Source">Open Source</option>
                 </select>
-                {touched.projectType && errors.projectType && <span className="error-message">{errors.projectType}</span>}
+                {touched.projectType && errors.projectType && <span className="error-message-ip">{errors.projectType}</span>}
               </div>
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Domain *</label>
               <CheckboxGroup
                 options={["Web Development","Mobile Development","AI / ML","Data Science","Cybersecurity","Cloud Computing","Game Development","IoT","Blockchain","DevOps"]}
@@ -256,12 +256,12 @@ const InsertProject = ({ onSuccess }) => {
           </div>
 
           {/* Section: Academic Constraints */}
-          <div className="form-section">
+          <div className="form-section-ip">
             <h2>Academic Details</h2>
-            <div className="form-row">
-              <div className="form-group">
+            <div className="form-row-ip">
+              <div className="form-group-ip">
                 <label>Specialization *</label>
-                <select name="specialization" value={formData.specialization} onChange={handleChange} onBlur={handleBlur} className={touched.specialization && errors.specialization ? 'input-error' : ''}>
+                <select name="specialization" value={formData.specialization} onChange={handleChange} onBlur={handleBlur} className={touched.specialization && errors.specialization ? 'input-error-ip' : ''}>
                   <option value="">Select Specialization</option>
                   <option value="SE">Software Engineering (SE)</option>
                   <option value="CS">Computer Science (CS)</option>
@@ -270,32 +270,32 @@ const InsertProject = ({ onSuccess }) => {
                   <option value="IS">Information Systems (IS)</option>
                   <option value="Any">Any</option>
                 </select>
-                {touched.specialization && errors.specialization && <span className="error-message">{errors.specialization}</span>}
+                {touched.specialization && errors.specialization && <span className="error-message-ip">{errors.specialization}</span>}
               </div>
-              <div className="form-group">
+              <div className="form-group-ip">
                 <label>Year *</label>
-                <input type="number" name="year" value={formData.year} onChange={handleChange} onBlur={handleBlur} className={touched.year && errors.year ? 'input-error' : ''} min="1" max="4" placeholder="e.g. 3" />
-                {touched.year && errors.year && <span className="error-message">{errors.year}</span>}
+                <input type="number" name="year" value={formData.year} onChange={handleChange} onBlur={handleBlur} className={touched.year && errors.year ? 'input-error-ip' : ''} min="1" max="4" placeholder="e.g. 3" />
+                {touched.year && errors.year && <span className="error-message-ip">{errors.year}</span>}
               </div>
             </div>
-            <div className="form-row">
-              <div className="form-group">
+            <div className="form-row-ip">
+              <div className="form-group-ip">
                 <label>Semester *</label>
-                <input type="number" name="semester" value={formData.semester} onChange={handleChange} onBlur={handleBlur} className={touched.semester && errors.semester ? 'input-error' : ''} min="1" max="2" placeholder="e.g. 1" />
-                {touched.semester && errors.semester && <span className="error-message">{errors.semester}</span>}
+                <input type="number" name="semester" value={formData.semester} onChange={handleChange} onBlur={handleBlur} className={touched.semester && errors.semester ? 'input-error-ip' : ''} min="1" max="2" placeholder="e.g. 1" />
+                {touched.semester && errors.semester && <span className="error-message-ip">{errors.semester}</span>}
               </div>
-              <div className="form-group">
+              <div className="form-group-ip">
                 <label>Minimum CGPA *</label>
-                <input type="number" step="0.01" name="minimumCGPA" value={formData.minimumCGPA} onChange={handleChange} onBlur={handleBlur} className={touched.minimumCGPA && errors.minimumCGPA ? 'input-error' : ''} placeholder="e.g. 3.0" />
-                {touched.minimumCGPA && errors.minimumCGPA && <span className="error-message">{errors.minimumCGPA}</span>}
+                <input type="number" step="0.01" name="minimumCGPA" value={formData.minimumCGPA} onChange={handleChange} onBlur={handleBlur} className={touched.minimumCGPA && errors.minimumCGPA ? 'input-error-ip' : ''} placeholder="e.g. 3.0" />
+                {touched.minimumCGPA && errors.minimumCGPA && <span className="error-message-ip">{errors.minimumCGPA}</span>}
               </div>
             </div>
           </div>
 
           {/* Section: Essential Skills */}
-          <div className="form-section">
+          <div className="form-section-ip">
             <h2>Essential Skills (Must Have)</h2>
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Languages *</label>
               <CheckboxGroup
                 options={["JavaScript","TypeScript","Python","Java","C","C++","C#","Go","Rust","Kotlin","Swift","PHP","Ruby","Dart","R","MATLAB"]}
@@ -303,7 +303,7 @@ const InsertProject = ({ onSuccess }) => {
                 onChange={(values) => handleSkillChange('essentialSkills', 'languages', values)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Frameworks *</label>
               <CheckboxGroup
                 options={["React","Angular","Vue.js","Next.js","Nuxt.js","Node.js","Express.js","Django","Flask","Spring Boot","ASP.NET","Laravel","Ruby on Rails","Flutter","React Native"]}
@@ -311,7 +311,7 @@ const InsertProject = ({ onSuccess }) => {
                 onChange={(values) => handleSkillChange('essentialSkills', 'frameworks', values)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Databases *</label>
               <CheckboxGroup
                 options={["MongoDB","MySQL","PostgreSQL","SQLite","Oracle","Microsoft SQL Server","Firebase","Redis","Cassandra","DynamoDB","Neo4j"]}
@@ -320,7 +320,7 @@ const InsertProject = ({ onSuccess }) => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Libraries *</label>
               <CheckboxGroup
                 options={["Redux","Axios","jQuery","Lodash","TensorFlow","Keras","PyTorch","Scikit-learn","Pandas","NumPy","Chart.js","D3.js","Three.js","Socket.io","Bootstrap"]}
@@ -329,7 +329,7 @@ const InsertProject = ({ onSuccess }) => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Tools *</label>
               <CheckboxGroup
                 options={["Git","GitHub","GitLab","Docker","Kubernetes","Postman","Jira","Trello","Figma","Adobe XD","VS Code","IntelliJ IDEA","Eclipse","Webpack","Babel"]}
@@ -340,9 +340,9 @@ const InsertProject = ({ onSuccess }) => {
           </div>
 
           {/* Section: Optional Skills */}
-          <div className="form-section">
+          <div className="form-section-ip">
             <h2>Optional Skills (Nice to Have)</h2>
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Languages</label>
               <CheckboxGroup
                 options={["JavaScript","TypeScript","Python","Java","C","C++","C#","Go","Rust","Kotlin","Swift","PHP","Ruby","Dart","R","MATLAB"]}
@@ -350,7 +350,7 @@ const InsertProject = ({ onSuccess }) => {
                 onChange={(values) => handleSkillChange('optionalSkills', 'languages', values)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Frameworks</label>
               <CheckboxGroup
                 options={["React","Angular","Vue.js","Next.js","Nuxt.js","Node.js","Express.js","Django","Flask","Spring Boot","ASP.NET","Laravel","Ruby on Rails","Flutter","React Native"]}
@@ -358,7 +358,7 @@ const InsertProject = ({ onSuccess }) => {
                 onChange={(values) => handleSkillChange('optionalSkills', 'frameworks', values)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Databases</label>
               <CheckboxGroup
                 options={["MongoDB","MySQL","PostgreSQL","SQLite","Oracle","Microsoft SQL Server","Firebase","Redis","Cassandra","DynamoDB","Neo4j"]}
@@ -367,7 +367,7 @@ const InsertProject = ({ onSuccess }) => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Libraries </label>
               <CheckboxGroup
                 options={["Redux","Axios","jQuery","Lodash","TensorFlow","Keras","PyTorch","Scikit-learn","Pandas","NumPy","Chart.js","D3.js","Three.js","Socket.io","Bootstrap"]}
@@ -376,7 +376,7 @@ const InsertProject = ({ onSuccess }) => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Tools </label>
               <CheckboxGroup
                 options={["Git","GitHub","GitLab","Docker","Kubernetes","Postman","Jira","Trello","Figma","Adobe XD","VS Code","IntelliJ IDEA","Eclipse","Webpack","Babel"]}
@@ -387,9 +387,9 @@ const InsertProject = ({ onSuccess }) => {
           </div>
 
           {/* Section: Roles & Availability */}
-          <div className="form-section">
+          <div className="form-section-ip">
             <h2>Roles & Availability</h2>
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Required Roles *</label>
               <CheckboxGroup
                 options={["Frontend Developer","Backend Developer","Fullstack Developer","Mobile App Developer","ML Engineer","Data Scientist","UI/UX Designer","DevOps Engineer","QA Engineer","Project Manager"]}
@@ -398,20 +398,20 @@ const InsertProject = ({ onSuccess }) => {
               />
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
+            <div className="form-row-ip">
+              <div className="form-group-ip">
                 <label>Weekly Hours Required *</label>
-                <input type="number" name="weeklyHours" value={formData.availabilityRequirement.weeklyHours} onChange={(e) => handleNestedChange('availabilityRequirement', 'weeklyHours', e.target.value)} onBlur={() => handleNestedBlur('availabilityRequirement', 'weeklyHours')} className={touched.weeklyHours && errors.weeklyHours ? 'input-error' : ''} min="1" placeholder="e.g. 10" />
-                {touched.weeklyHours && errors.weeklyHours && <span className="error-message">{errors.weeklyHours}</span>}
+                <input type="number" name="weeklyHours" value={formData.availabilityRequirement.weeklyHours} onChange={(e) => handleNestedChange('availabilityRequirement', 'weeklyHours', e.target.value)} onBlur={() => handleNestedBlur('availabilityRequirement', 'weeklyHours')} className={touched.weeklyHours && errors.weeklyHours ? 'input-error-ip' : ''} min="1" placeholder="e.g. 10" />
+                {touched.weeklyHours && errors.weeklyHours && <span className="error-message-ip">{errors.weeklyHours}</span>}
               </div>
-              <div className="form-group">
+              <div className="form-group-ip">
                 <label>Duration (Weeks) *</label>
-                <input type="number" name="durationWeeks" value={formData.availabilityRequirement.durationWeeks} onChange={(e) => handleNestedChange('availabilityRequirement', 'durationWeeks', e.target.value)} onBlur={() => handleNestedBlur('availabilityRequirement', 'durationWeeks')} className={touched.durationWeeks && errors.durationWeeks ? 'input-error' : ''} min="1" placeholder="e.g. 12" />
-                {touched.durationWeeks && errors.durationWeeks && <span className="error-message">{errors.durationWeeks}</span>}
+                <input type="number" name="durationWeeks" value={formData.availabilityRequirement.durationWeeks} onChange={(e) => handleNestedChange('availabilityRequirement', 'durationWeeks', e.target.value)} onBlur={() => handleNestedBlur('availabilityRequirement', 'durationWeeks')} className={touched.durationWeeks && errors.durationWeeks ? 'input-error-ip' : ''} min="1" placeholder="e.g. 12" />
+                {touched.durationWeeks && errors.durationWeeks && <span className="error-message-ip">{errors.durationWeeks}</span>}
               </div>
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Preferred Meeting Days *</label>
               <CheckboxGroup
                 options={['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']}
@@ -421,8 +421,8 @@ const InsertProject = ({ onSuccess }) => {
             </div>
           </div>
 
-          <div className="form-actions">
-            <button type="submit" className="submit-btn">Create Project</button>
+          <div className="form-actions-ip">
+            <button type="submit" className="submit-btn-ip">Create Project</button>
           </div>
         </form>
       </div>
