@@ -106,6 +106,11 @@ function normalize(text) {
 
 // Main scoring function
 function calculateScore(student, project) {
+
+  console.log("=== calculateScore ===");
+console.log("Student specialization:", student.academicInfo?.specialization);
+console.log("Project specialization:", project.specialization);
+
   // 1️⃣ Academic filter
   const studentSpec = normalize(student.academicInfo?.specialization);
   const projectSpec = normalize(project.specialization);
