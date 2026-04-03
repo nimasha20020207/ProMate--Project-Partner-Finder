@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import Modal from '../../components/Modal';
 import './AllProjects.css';
 
 const AllProjects = () => {
+  const { user } = useAuth();
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [viewingProject, setViewingProject] = useState(null);
@@ -51,8 +53,8 @@ const AllProjects = () => {
           };
         });
 
-        // Discard IT23272736 project cards entirely for "All Projects"
-        const filteredData = mappedData.filter(project => project.itNumber !== 'IT23272736');
+        // Discard user project cards entirely for "All Projects"
+        const filteredData = mappedData.filter(project => project.itNumber !== user?.studentId);
         
         setProjects(filteredData.reverse()); // Newest first
       }

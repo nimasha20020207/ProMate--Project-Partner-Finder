@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import './InsertProject.css';
 
 const CheckboxGroup = ({ options, selectedValues, onChange }) => (
@@ -24,15 +25,12 @@ const CheckboxGroup = ({ options, selectedValues, onChange }) => (
 );
 
 const InsertProject = ({ onSuccess }) => {
+  const { token } = useAuth();
   const [formData, setFormData] = useState({
-    itNumber: '',
     title: '',
     description: '',
     teamSize: '',
     projectType: '',
-    specialization: '',
-    year: '',
-    semester: '',
     minimumCGPA: '',
     essentialSkills: { languages: [], frameworks: [], libraries: [], databases: [], tools: [] },
     optionalSkills: { languages: [], frameworks: [], libraries: [], databases: [], tools: [] },
@@ -129,7 +127,7 @@ const InsertProject = ({ onSuccess }) => {
 
   const validateAll = () => {
     const newErrors = {};
-    const textFields = ['itNumber', 'title', 'description', 'teamSize', 'projectType', 'specialization', 'year', 'semester', 'minimumCGPA'];
+    const textFields = ['title', 'description', 'teamSize', 'projectType', 'minimumCGPA'];
 
     textFields.forEach(field => {
       const err = validateField(field, formData[field]);
@@ -170,15 +168,14 @@ const InsertProject = ({ onSuccess }) => {
       return;
     }
 
-    const itn = formData.itNumber.trim().toUpperCase();
-
     try {
       const response = await fetch('http://localhost:3000/api/posts', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-auth-token': token
         },
-        body: JSON.stringify({ ...formData, itNumber: itn })
+        body: JSON.stringify(formData)
       });
 
       if (response.ok) {
@@ -207,11 +204,6 @@ const InsertProject = ({ onSuccess }) => {
           {/* Section: Basic Info */}
           <div className="form-section-ip">
             <h2>Basic Information</h2>
-            <div className="form-group-ip">
-              <label>IT Number *</label>
-              <input type="text" name="itNumber" value={formData.itNumber} onChange={handleChange} onBlur={handleBlur} className={touched.itNumber && errors.itNumber ? 'input-error-ip' : ''} placeholder="e.g. IT23272736" maxLength="10" />
-              {touched.itNumber && errors.itNumber && <span className="error-message-ip">{errors.itNumber}</span>}
-            </div>
 
             <div className="form-group-ip">
               <label>Project Title *</label>
@@ -257,35 +249,11 @@ const InsertProject = ({ onSuccess }) => {
 
           {/* Section: Academic Constraints */}
           <div className="form-section-ip">
-            <h2>Academic Details</h2>
+            <h2>Academic Details (Auto-filled from Profile)</h2>
+            <p style={{fontSize: '13px', color: '#64748b', marginBottom: '16px'}}>Your IT Number, Specialization, Year, and Semester are automatically linked to this project.</p>
             <div className="form-row-ip">
               <div className="form-group-ip">
-                <label>Specialization *</label>
-                <select name="specialization" value={formData.specialization} onChange={handleChange} onBlur={handleBlur} className={touched.specialization && errors.specialization ? 'input-error-ip' : ''}>
-                  <option value="">Select Specialization</option>
-                  <option value="SE">Software Engineering (SE)</option>
-                  <option value="CS">Computer Science (CS)</option>
-                  <option value="IT">Information Technology (IT)</option>
-                  <option value="DS">Data Science (DS)</option>
-                  <option value="IS">Information Systems (IS)</option>
-                  <option value="Any">Any</option>
-                </select>
-                {touched.specialization && errors.specialization && <span className="error-message-ip">{errors.specialization}</span>}
-              </div>
-              <div className="form-group-ip">
-                <label>Year *</label>
-                <input type="number" name="year" value={formData.year} onChange={handleChange} onBlur={handleBlur} className={touched.year && errors.year ? 'input-error-ip' : ''} min="1" max="4" placeholder="e.g. 3" />
-                {touched.year && errors.year && <span className="error-message-ip">{errors.year}</span>}
-              </div>
-            </div>
-            <div className="form-row-ip">
-              <div className="form-group-ip">
-                <label>Semester *</label>
-                <input type="number" name="semester" value={formData.semester} onChange={handleChange} onBlur={handleBlur} className={touched.semester && errors.semester ? 'input-error-ip' : ''} min="1" max="2" placeholder="e.g. 1" />
-                {touched.semester && errors.semester && <span className="error-message-ip">{errors.semester}</span>}
-              </div>
-              <div className="form-group-ip">
-                <label>Minimum CGPA *</label>
+                <label>Minimum CGPA Requirement (Optional)</label>
                 <input type="number" step="0.01" name="minimumCGPA" value={formData.minimumCGPA} onChange={handleChange} onBlur={handleBlur} className={touched.minimumCGPA && errors.minimumCGPA ? 'input-error-ip' : ''} placeholder="e.g. 3.0" />
                 {touched.minimumCGPA && errors.minimumCGPA && <span className="error-message-ip">{errors.minimumCGPA}</span>}
               </div>
