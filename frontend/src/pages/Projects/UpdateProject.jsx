@@ -33,8 +33,8 @@ const UpdateProject = ({ project, onSave }) => {
     description: '',
     projectType: '',
     domain: [],
-    essentialSkills: { languages: [], frameworks: [], databases: [], tools: [] },
-    optionalSkills: { languages: [], frameworks: [], databases: [], tools: [] },
+    essentialSkills: { languages: [], frameworks: [], databases: [], libraries: [], tools: [] },
+    optionalSkills: { languages: [], frameworks: [], databases: [], libraries: [], tools: [] },
     requiredRoles: [],
     teamSize: '',
     minimumCGPA: '',
@@ -56,13 +56,15 @@ const UpdateProject = ({ project, onSave }) => {
         essentialSkills: { 
           languages: project.essentialSkills?.languages || [], 
           frameworks: project.essentialSkills?.frameworks || [], 
-          databases: project.essentialSkills?.databases || [], 
+          databases: project.essentialSkills?.databases || [],
+          libraries: project.essentialSkills?.libraries || [], 
           tools: project.essentialSkills?.tools || [] 
         },
         optionalSkills: { 
           languages: project.optionalSkills?.languages || [], 
           frameworks: project.optionalSkills?.frameworks || [], 
           databases: project.optionalSkills?.databases || [], 
+          libraries: project.optionalSkills?.libraries || [],
           tools: project.optionalSkills?.tools || [] 
         },
         requiredRoles: project.requiredRoles || [],
@@ -225,7 +227,7 @@ const UpdateProject = ({ project, onSave }) => {
             <div className="form-group">
               <label>Languages</label>
               <CheckboxGroup 
-                options={['JavaScript', 'Python', 'Java', 'C++', 'C#', 'Ruby', 'Go', 'Rust']}
+                options={["JavaScript","TypeScript","Python","Java","C","C++","C#","Go","Rust","Kotlin","Swift","PHP","Ruby","Dart","R","MATLAB"]}
                 selectedValues={formData.essentialSkills.languages}
                 onChange={(values) => handleSkillChange('essentialSkills', 'languages', values)}
               />
@@ -233,7 +235,7 @@ const UpdateProject = ({ project, onSave }) => {
             <div className="form-group">
               <label>Frameworks</label>
               <CheckboxGroup 
-                options={['React', 'Node.js', 'Django', 'Spring Boot', 'Angular', 'Vue', 'Express']}
+                options={["React","Angular","Vue.js","Next.js","Nuxt.js","Node.js","Express.js","Django","Flask","Spring Boot","ASP.NET","Laravel","Ruby on Rails","Flutter","React Native"]}
                 selectedValues={formData.essentialSkills.frameworks}
                 onChange={(values) => handleSkillChange('essentialSkills', 'frameworks', values)}
               />
@@ -241,20 +243,78 @@ const UpdateProject = ({ project, onSave }) => {
             <div className="form-group">
               <label>Databases</label>
               <CheckboxGroup 
-                options={['MongoDB', 'PostgreSQL', 'MySQL', 'Redis', 'Firebase', 'Oracle', 'SQLite']}
+                options={["MongoDB","MySQL","PostgreSQL","SQLite","Oracle","Microsoft SQL Server","Firebase","Redis","Cassandra","DynamoDB","Neo4j"]}
                 selectedValues={formData.essentialSkills.databases}
                 onChange={(values) => handleSkillChange('essentialSkills', 'databases', values)}
               />
             </div>
+
             <div className="form-group">
-              <label>Tools & Libraries</label>
+              <label>Libraries</label>
               <CheckboxGroup 
-                options={['Git', 'Docker', 'Kubernetes', 'AWS', 'Figma', 'TensorFlow', 'Pandas', 'Redux']}
+                options={["Redux","Axios","jQuery","Lodash","TensorFlow","Keras","PyTorch","Scikit-learn","Pandas","NumPy","Chart.js","D3.js","Three.js","Socket.io","Bootstrap"]}
+                selectedValues={formData.essentialSkills.libraries}
+                onChange={(values) => handleSkillChange('essentialSkills', 'libraries', values)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Tools</label>
+              <CheckboxGroup 
+                options={["Git","GitHub","GitLab","Docker","Kubernetes","Postman","Jira","Trello","Figma","Adobe XD","VS Code","IntelliJ IDEA","Eclipse","Webpack","Babel"]}
                 selectedValues={formData.essentialSkills.tools}
                 onChange={(values) => handleSkillChange('essentialSkills', 'tools', values)}
               />
             </div>
           </div>
+
+
+          <div className="form-section">
+            <h2>Optional Skills (Nice to Have)</h2>
+            <div className="form-group">
+              <label>Languages</label>
+              <CheckboxGroup 
+                options={["JavaScript","TypeScript","Python","Java","C","C++","C#","Go","Rust","Kotlin","Swift","PHP","Ruby","Dart","R","MATLAB"]}
+                selectedValues={formData.optionalSkills.languages}
+                onChange={(values) => handleSkillChange('optionalSkills', 'languages', values)}
+              />
+            </div>
+            <div className="form-group">
+              <label>Frameworks</label>
+              <CheckboxGroup 
+                options={["React","Angular","Vue.js","Next.js","Nuxt.js","Node.js","Express.js","Django","Flask","Spring Boot","ASP.NET","Laravel","Ruby on Rails","Flutter","React Native"]}
+                selectedValues={formData.optionalSkills.frameworks}
+                onChange={(values) => handleSkillChange('optionalSkills', 'frameworks', values)}
+              />
+            </div>
+            <div className="form-group">
+              <label>Databases</label>
+              <CheckboxGroup 
+                options={["MongoDB","MySQL","PostgreSQL","SQLite","Oracle","Microsoft SQL Server","Firebase","Redis","Cassandra","DynamoDB","Neo4j"]}
+                selectedValues={formData.optionalSkills.databases}
+                onChange={(values) => handleSkillChange('optionalSkills', 'databases', values)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Libraries</label>
+              <CheckboxGroup 
+                options={["Redux","Axios","jQuery","Lodash","TensorFlow","Keras","PyTorch","Scikit-learn","Pandas","NumPy","Chart.js","D3.js","Three.js","Socket.io","Bootstrap"]}
+                selectedValues={formData.optionalSkills.libraries}
+                onChange={(values) => handleSkillChange('optionalSkills', 'libraries', values)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Tools</label>
+              <CheckboxGroup 
+                options={["Git","GitHub","GitLab","Docker","Kubernetes","Postman","Jira","Trello","Figma","Adobe XD","VS Code","IntelliJ IDEA","Eclipse","Webpack","Babel"]}
+                selectedValues={formData.optionalSkills.tools}
+                onChange={(values) => handleSkillChange('optionalSkills', 'tools', values)}
+              />
+            </div>
+          </div>
+
 
           <div className="form-section">
             <h2>Roles & Availability</h2>
