@@ -85,7 +85,7 @@ const Dashboard = () => {
             <button className="btn btn-primary btn-full" onClick={() => navigate('/edit-profile')} type="button">✏️ Edit My Profile</button>
             <button className="btn btn-outline btn-full" onClick={() => navigate('/profile')} type="button">👁️ Preview Profile</button>
             <button className="btn btn-outline btn-full" style={{ color: 'var(--mid)' }} onClick={() => navigate('/profile')} type="button">📋 Browse Projects</button>
-            <button className="btn btn-outline btn-full" style={{ color: 'var(--mid)' }} onClick={() => navigate('/recs')} type="button">⭐ View Matches</button>
+            <button className="btn btn-outline btn-full" style={{ color: 'var(--mid)' }} onClick={() => navigate('/recprojects')} type="button">⭐ View Matches</button>
           </div>
         </div>
       </div>

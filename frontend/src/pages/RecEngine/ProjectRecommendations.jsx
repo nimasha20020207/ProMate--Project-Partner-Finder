@@ -4,11 +4,25 @@ import Navbar from "../../components/Navbar";
 const Recommendations = () => {
   const [projects, setProjects] = useState([]);
 
+  // useEffect(() => {
+  //   fetch("http://localhost:3000/api/recommendations/projects/S1")
+  //     .then((res) => res.json())
+  //     .then((data) => setProjects(data));
+  // }, []);
+
   useEffect(() => {
-    fetch("http://localhost:3000/api/recommendations/projects/S1")
-      .then((res) => res.json())
-      .then((data) => setProjects(data));
-  }, []);
+  const token = localStorage.getItem("token");
+  fetch("http://localhost:3000/api/recommendations/projects", {
+    method: "GET",
+    headers: { "Authorization": `Bearer ${token}` }
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log("Fetched projects:", data); // <-- check this
+    setProjects(Array.isArray(data) ? data : []);
+  })
+  .catch(err => console.error(err));
+}, []);
 
   return (
     <div className="flex min-h-screen">

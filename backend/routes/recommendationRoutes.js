@@ -6,7 +6,11 @@ const {
     getRecommendedStudents,
 } = require("../controllers/recommendationController");
 
-router.get("/projects/:studentId",getRecommendedProjects)
+// ✅ Import your auth middleware
+const auth = require("../middleware/auth");  // <-- THIS LINE
+
+// router.get("/projects/:studentId",getRecommendedProjects)
+router.get("/projects", auth, getRecommendedProjects);
 
 // 🔥 NEW
 router.get("/students/:projectId", getRecommendedStudents);

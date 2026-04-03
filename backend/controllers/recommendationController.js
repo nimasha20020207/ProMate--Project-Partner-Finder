@@ -1,108 +1,64 @@
-// const students = require("../dummydata/dummystudents")
-// const projects = require("../dummydata/dummyprojects")
+const Student = require("../models/Student");
+const Project = require("../models/post");
+const { calculateScore } = require("../services/recommendationEngine");
 
-// const {calculateScore} = require("../services/recommendationEngine")
+// // ✅ Student → Projects
+// const getRecommendedProjects = (req, res) => {
+//   const studentId = req.params.studentId;
 
-// const getRecommendedProjects = (req,res)=>{
+//   const student = students.find(s => s.id === studentId);
 
-// const studentId = req.params.studentId
-
-// const student = students.find(s=>s.id===studentId)
-
-// if(!student)
-// return res.status(404).json({message:"student not found"})
-
-// let results=[]
-
-// projects.forEach(project=>{
-
-// const result = calculateScore(student,project)
-
-// if(result){
-
-// results.push({
-
-// project,
-// score:result.score,
-// explanation:result.explanation
-
-// })
-
-// }
-
-// })
-
-// results.sort((a,b)=>b.score-a.score)
-
-// res.json(results)
-
-// }
-
-// // 🔥 NEW FUNCTION
-// exports.getRecommendedStudents = (req, res) => {
-//   const { projectId } = req.params;
-
-//   // 1. Find project
-//   const project = projects.find(p => p.id === projectId);
-
-//   if (!project) {
-//     return res.status(404).json({ message: "Project not found" });
+//   if (!student) {
+//     return res.status(404).json({ message: "student not found" });
 //   }
 
-//   // 2. Loop all students
-//   const results = students
-//     .map(student => {
-//       const result = calculateScore(student, project);
+//   let results = [];
 
-//       if (!result) return null;
+//   projects.forEach(project => {
+//     const result = calculateScore(student, project);
 
-//       return {
-//         student,
+//     if (result) {
+//       results.push({
+//         project,
 //         score: result.score,
 //         explanation: result.explanation,
 //         details: result.details
-//       };
-//     })
-//     .filter(r => r !== null) // remove failed filters
-//     .sort((a, b) => b.score - a.score); // sort highest first
+//       });
+//     }
+//   });
+
+//   results.sort((a, b) => b.score - a.score);
 
 //   res.json(results);
 // };
 
-// module.exports = {getRecommendedProjects}
+const getRecommendedProjects = async (req, res) => {
+  try {
+    const studentId = req.user?.id || req.params.studentId;
 
-const students = require("../dummydata/dummystudents");
-const projects = require("../dummydata/dummyprojects");
-const { calculateScore } = require("../services/recommendationEngine");
+    const student = await Student.findById(studentId);
+    if (!student) return res.json([]); // ✅ return empty array instead of object
 
-// ✅ Student → Projects
-const getRecommendedProjects = (req, res) => {
-  const studentId = req.params.studentId;
+    const allProjects = await Project.find();
 
-  const student = students.find(s => s.id === studentId);
+    const results = allProjects
+      .map(project => {
+        const result = calculateScore(student, project);
+        return result ? {
+          project,
+          score: result.score,
+          explanation: result.explanation,
+          details: result.details
+        } : null;
+      })
+      .filter(r => r !== null)
+      .sort((a, b) => b.score - a.score);
 
-  if (!student) {
-    return res.status(404).json({ message: "student not found" });
+    res.json(results); // always an array
+  } catch (err) {
+    console.error(err);
+    res.json([]); // ✅ fallback empty array
   }
-
-  let results = [];
-
-  projects.forEach(project => {
-    const result = calculateScore(student, project);
-
-    if (result) {
-      results.push({
-        project,
-        score: result.score,
-        explanation: result.explanation,
-        details: result.details
-      });
-    }
-  });
-
-  results.sort((a, b) => b.score - a.score);
-
-  res.json(results);
 };
 
 // ✅ Project → Students
@@ -138,3 +94,4 @@ module.exports = {
   getRecommendedProjects,
   getRecommendedStudents
 };
+
