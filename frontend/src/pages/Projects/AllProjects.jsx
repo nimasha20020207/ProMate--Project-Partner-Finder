@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import Modal from '../../components/Modal';
 import './AllProjects.css';
 
 const AllProjects = () => {
+  const { user } = useAuth();
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [viewingProject, setViewingProject] = useState(null);
@@ -10,7 +12,7 @@ const AllProjects = () => {
 
   const handleJoin = async (project) => {
     const payload = {
-      senderIt: 'IT23272736',
+      senderIt: user ? `${user.studentId} - ${user.fullName}` : 'Unknown',
       targetIt: project.itNumber || 'Unknown',
       message: `Requested to join ${project.displayTitle} project`,
       type: 'join_request'
@@ -40,7 +42,7 @@ const AllProjects = () => {
       const res = await fetch('http://localhost:3000/api/posts');
       if (res.ok) {
         const data = await res.json();
-        
+
         // Use the persistent projectId from the backend 
         const mappedData = data.map((project) => {
           const displayId = project.projectId || 'P0000';
@@ -51,9 +53,9 @@ const AllProjects = () => {
           };
         });
 
-        // Discard IT23272736 project cards entirely for "All Projects"
-        const filteredData = mappedData.filter(project => project.itNumber !== 'IT23272736');
-        
+        // Discard user project cards entirely for "All Projects"
+        const filteredData = mappedData.filter(project => project.itNumber !== user?.studentId);
+
         setProjects(filteredData.reverse()); // Newest first
       }
     } catch (error) {
@@ -70,16 +72,16 @@ const AllProjects = () => {
   const filteredProjects = projects.filter(project => {
     if (!searchQuery) return true;
     const lowerQuery = searchQuery.toLowerCase();
-    
+
     // Check Title
     if (project.displayTitle?.toLowerCase().includes(lowerQuery) || project.title?.toLowerCase().includes(lowerQuery)) return true;
-    
+
     // Check Specialization
     if (project.specialization?.toLowerCase().includes(lowerQuery)) return true;
-    
+
     // Check Domain arrays
     if (project.domain?.some(d => d.toLowerCase().includes(lowerQuery))) return true;
-    
+
     // Check Essential Skills
     let hasSkill = false;
     if (project.essentialSkills) {
@@ -97,15 +99,15 @@ const AllProjects = () => {
       <div className="all-projects-header">
         <h1>All Projects</h1>
         <p>Discover partnership opportunities from other students.</p>
-        
+
         <div className="all-search-wrapper">
           <svg className="all-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
           </svg>
-          <input 
-            type="text" 
-            className="all-search-input" 
-            placeholder="Search by title, domain, or specific skills..." 
+          <input
+            type="text"
+            className="all-search-input"
+            placeholder="Search by title, domain, or specific skills..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -120,6 +122,8 @@ const AllProjects = () => {
           <p>Try adjusting your search terms</p>
         </div>
       ) : (
+
+        // Project card in grid layout in all-projects page 
         <div className="all-projects-grid">
           {filteredProjects.map((project, i) => (
             <div key={i} className="all-card">
@@ -162,8 +166,12 @@ const AllProjects = () => {
               </div>
             </div>
           ))}
+          {/* end of project card grid layout */}
         </div>
       )}
+
+
+      {/* Project details modal */}
 
       <Modal isOpen={!!viewingProject} onClose={() => setViewingProject(null)} title={viewingProject?.displayTitle || "Details"}>
         {viewingProject && (

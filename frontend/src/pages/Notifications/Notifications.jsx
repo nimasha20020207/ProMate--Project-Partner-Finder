@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import './Notifications.css';
 
 const Notifications = () => {
+  const { user } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchNotifications = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/notifications');
+      // Only fetch notifications targeted at the currently logged-in user
+      const url = user?.studentId 
+        ? `http://localhost:3000/api/notifications?targetIt=${user.studentId}`
+        : 'http://localhost:3000/api/notifications';
+        
+      const res = await fetch(url);
       if (res.ok) {
         const data = await res.json();
         setNotifications(data);
@@ -34,8 +41,8 @@ const Notifications = () => {
 
     // Create new status notification replacing the action request
     const payload = {
-      senderIt: notif.senderIt,
-      targetIt: 'IT23272736',
+      senderIt: user ? `${user.studentId} - ${user.fullName}` : 'Unknown',
+      targetIt: notif.senderIt.split(' - ')[0],
       message: isAccepted ? `Request accepted ${projectName} project` : `Request rejected ${projectName} project`,
       type: status
     };
@@ -48,9 +55,16 @@ const Notifications = () => {
         body: JSON.stringify(payload)
       });
 
-      // 2. Delete the pending request since we resolved it
+      // 2. Update the pending request instead of deleting it
+      const updatePayload = {
+        message: isAccepted ? `You accepted - ${projectName} project` : `You rejected - ${projectName} project`,
+        type: isAccepted ? 'you_accepted' : 'you_rejected'
+      };
+
       await fetch(`http://localhost:3000/api/notifications/${notif._id}`, {
-        method: 'DELETE'
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatePayload)
       });
 
       // 3. Hot-reload feed
@@ -99,10 +113,10 @@ const Notifications = () => {
                     {notif.type === 'join_request' && (
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                     )}
-                    {notif.type === 'accepted' && (
+                    {(notif.type === 'accepted' || notif.type === 'you_accepted') && (
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 13l4 4L19 7"></path></svg>
                     )}
-                    {notif.type === 'rejected' && (
+                    {(notif.type === 'rejected' || notif.type === 'you_rejected') && (
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 18L18 6M6 6l12 12"></path></svg>
                     )}
                   </div>
@@ -119,7 +133,9 @@ const Notifications = () => {
                   </div>
                 ) : (
                   <div className="notif-actions-simple flex items-center gap-4 w-full md:w-auto mt-2 md:mt-0">
-                    <span className={`status-badge ${notif.type}`}>{notif.type === 'accepted' ? 'Accepted' : 'Rejected'}</span>
+                    <span className={`status-badge ${notif.type}`}>
+                      {notif.type.includes('accepted') ? 'Accepted' : 'Rejected'}
+                    </span>
                     <button className="btn-notif btn-dismiss" onClick={() => handleDelete(notif._id)}>Dismiss</button>
                   </div>
                 )}

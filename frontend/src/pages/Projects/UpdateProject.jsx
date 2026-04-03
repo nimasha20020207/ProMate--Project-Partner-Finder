@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import './UpdateProject.css';
 
 const CheckboxGroup = ({ options, selectedValues = [], onChange }) => {
@@ -27,8 +28,8 @@ const CheckboxGroup = ({ options, selectedValues = [], onChange }) => {
 };
 
 const UpdateProject = ({ project, onSave }) => {
+  const { token } = useAuth();
   const [formData, setFormData] = useState({
-    itNumber: '',
     title: '',
     description: '',
     projectType: '',
@@ -38,9 +39,6 @@ const UpdateProject = ({ project, onSave }) => {
     requiredRoles: [],
     teamSize: '',
     minimumCGPA: '',
-    specialization: '',
-    year: '',
-    semester: '',
     availabilityRequirement: { durationWeeks: '', weeklyHours: '', meetingDays: [] }
   });
 
@@ -48,7 +46,6 @@ const UpdateProject = ({ project, onSave }) => {
     if (project) {
       setFormData({
         ...project,
-        itNumber: project.itNumber || '',
         title: project.title || '',
         description: project.description || '',
         projectType: project.projectType || '',
@@ -70,9 +67,6 @@ const UpdateProject = ({ project, onSave }) => {
         requiredRoles: project.requiredRoles || [],
         teamSize: project.teamSize || '',
         minimumCGPA: project.minimumCGPA || '',
-        specialization: project.specialization || '',
-        year: project.year || '',
-        semester: project.semester || '',
         availabilityRequirement: { 
           durationWeeks: project.availabilityRequirement?.durationWeeks || '', 
           weeklyHours: project.availabilityRequirement?.weeklyHours || '', 
@@ -111,7 +105,10 @@ const UpdateProject = ({ project, onSave }) => {
     try {
       const response = await fetch(`http://localhost:3000/api/posts/${project._id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-auth-token': token
+        },
         body: JSON.stringify(formData)
       });
 
@@ -137,10 +134,6 @@ const UpdateProject = ({ project, onSave }) => {
           {/* Section: Basic Info */}
           <div className="form-section">
             <h2>Basic Information</h2>
-            <div className="form-group">
-              <label>IT Number (Cannot be changed)</label>
-              <input type="text" name="itNumber" value={formData.itNumber} disabled style={{ backgroundColor: '#f1f5f9', color: '#94a3b8', cursor: 'not-allowed', border: '1px solid #e2e8f0' }} />
-            </div>
 
             <div className="form-group">
               <label>Project Title *</label>
@@ -177,39 +170,7 @@ const UpdateProject = ({ project, onSave }) => {
           </div>
 
           <div className="form-section">
-            <h2>Academic Requirements & Constraints</h2>
-            <div className="form-row">
-              <div className="form-group">
-                <label>Specialization Stream</label>
-                <select name="specialization" value={formData.specialization} onChange={handleChange}>
-                  <option value="">Any</option>
-                  <option value="Software Engineering">Software Engineering</option>
-                  <option value="Data Science">Data Science</option>
-                  <option value="Cyber Security">Cyber Security</option>
-                  <option value="IT">IT</option>
-                </select>
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label>Year</label>
-                <select name="year" value={formData.year} onChange={handleChange}>
-                   <option value="">Any</option>
-                   <option value="1st Year">1st Year</option>
-                   <option value="2nd Year">2nd Year</option>
-                   <option value="3rd Year">3rd Year</option>
-                   <option value="4th Year">4th Year</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Semester</label>
-                <select name="semester" value={formData.semester} onChange={handleChange}>
-                   <option value="">Any</option>
-                   <option value="1st Semester">1st Semester</option>
-                   <option value="2nd Semester">2nd Semester</option>
-                </select>
-              </div>
-            </div>
+            <h2>Academic Requirements & Constraints (Auto-filled from Profile)</h2>
             <div className="form-row">
               <div className="form-group">
                 <label>Team Size Limit *</label>

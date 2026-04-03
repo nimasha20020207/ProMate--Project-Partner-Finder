@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import ProjectCard from '../../components/ProjectCard';
 import Modal from '../../components/Modal';
 import InsertProject from './InsertProject';
@@ -6,6 +7,7 @@ import UpdateProject from './UpdateProject';
 import './YourProjects.css';
 
 const YourProjects = () => {
+  const { user, token } = useAuth();
   const [projects, setProjects] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -29,7 +31,7 @@ const YourProjects = () => {
           };
         });
 
-        const filteredData = mappedData.filter(project => project.itNumber === 'IT23272736');
+        const filteredData = mappedData.filter(project => project.itNumber === user?.studentId);
         setProjects(filteredData.reverse()); // Newest first
       }
     } catch (error) {
@@ -46,7 +48,12 @@ const YourProjects = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this project forever?')) return;
     try {
-      const res = await fetch(`http://localhost:3000/api/posts/${id}`, { method: 'DELETE' });
+      const res = await fetch(`http://localhost:3000/api/posts/${id}`, { 
+        method: 'DELETE',
+        headers: {
+          'x-auth-token': token
+        }
+      });
       if (res.ok) {
         setProjects(prev => prev.filter(p => p._id !== id));
         setViewingProject(null);
