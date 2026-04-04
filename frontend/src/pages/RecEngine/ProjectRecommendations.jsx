@@ -136,7 +136,9 @@ const Recommendations = () => {
                   </div>
 
                   {/* Button */}
-                  <button className="w-full py-2 rounded-lg font-medium text-white bg-primary hover:from-secondary hover:to-primary transition-all duration-300 shadow-sm hover:shadow-md text-sm">
+                  <button 
+                  onClick={() => window.location.href = "/projectview"}
+                  className="w-full py-2 rounded-lg font-medium text-white bg-primary hover:from-secondary hover:to-primary transition-all duration-300 shadow-sm hover:shadow-md text-sm">
                     View Project
                   </button>
                 </div>

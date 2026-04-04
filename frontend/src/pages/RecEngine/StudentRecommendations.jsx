@@ -17,10 +17,6 @@ const StudentRecommendations = () => {
   return (
     <div className="flex min-h-screen bg-gray-100">
 
-      {/* Sidebar */}
-      <div className="w-64 bg-gray-800 text-white">
-        <Navbar />
-      </div>
 
       {/* Main content */}
       <div className="flex-1 p-6 bg-surface">

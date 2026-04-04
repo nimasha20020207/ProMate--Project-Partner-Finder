@@ -17,17 +17,28 @@ const ProjectRecommendations = () => {
       {/* Main content (scrollable only) */}
       <div className="flex-1 p-6 overflow-y-auto">
         
-        {/* Header + Button */}
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-textPrimary">
-            🔹 Recommended Projects
-          </h2>
+        {/* Header + Buttons */}
+<div className="flex justify-between items-center mb-6 flex-wrap gap-2">
+  <h2 className="text-2xl font-bold text-textPrimary">
+    🔹 Recommended Projects
+  </h2>
 
-          <button onClick={() => window.location.href = "/recs"}
-          className="px-5 py-2 rounded-lg text-white text-sm font-medium bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 shadow-md hover:scale-105 hover:shadow-xl active:scale-95 transition duration-300">
-            Find your best match project💡
-          </button>
-        </div>
+  <div className="flex gap-2 flex-wrap">
+    <button
+      onClick={() => window.location.href = "/recs"}
+      className="px-5 py-2 rounded-lg text-white text-sm font-medium bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 shadow-md hover:scale-105 hover:shadow-xl active:scale-95 transition duration-300"
+    >
+      Find your best match project💡
+    </button>
+
+    <button
+      onClick={() => window.location.href = "/sturecs"} // change URL as needed
+      className="px-5 py-2 rounded-lg text-white text-sm font-medium bg-gradient-to-r from-secondary  to-primary shadow-md hover:scale-105 hover:shadow-xl active:scale-95 transition duration-300"
+    >
+      Top match candidates for you 🏆
+    </button>
+  </div>
+</div>
 
         {/* Summary Card */}
         <div className="mb-6">
@@ -121,7 +132,9 @@ const ProjectRecommendations = () => {
 
                 {/* Buttons */}
                 <div className="flex gap-3 mt-4">
-                  <button className="flex-1 py-2 rounded-lg font-medium text-white bg-primary hover:bg-secondary transition duration-300 text-sm">
+                  <button 
+                  onClick={() => window.location.href = "/projectview"}
+                  className="flex-1 py-2 rounded-lg font-medium text-white bg-primary hover:bg-secondary transition duration-300 text-sm">
                     View Project
                   </button>
                   <button className="flex-1 py-2 rounded-lg font-medium text-white bg-secondary hover:bg-primary transition duration-300 text-sm">

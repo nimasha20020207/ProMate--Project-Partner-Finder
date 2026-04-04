@@ -22,7 +22,7 @@ import Recommendations from './pages/RecEngine/ProjectRecommendations';
 import Candidates from './pages/RecEngine/StudentRecommendations';
 import Feedbacks from './pages/RecEngine/Feedbacks';
 import RecProjects from './pages/RecEngine/RecProjects';
-
+import ProjectView from './pages/RecEngine/ProjectView';
 // Project Pages
 import InsertPost from './pages/Projects/InsertProject';
 import YourProjects from './pages/Projects/YourProjects';
@@ -73,6 +73,7 @@ export const router = createBrowserRouter([
       { path: "sturecs", element: <ProtectedRoute allowedRoles={['student']}><Candidates /></ProtectedRoute> },
       { path: "feedbacks", element: <ProtectedRoute allowedRoles={['student']}><Feedbacks /></ProtectedRoute> },
       { path: "recprojects", element: <ProtectedRoute allowedRoles={['student']}><RecProjects /></ProtectedRoute> },
+      { path: "projectview", element: <ProtectedRoute allowedRoles={['student']}><ProjectView /></ProtectedRoute> },
       { path: "insert-project", element: <ProtectedRoute allowedRoles={['student']}><InsertPost /></ProtectedRoute> },
       { path: "your-projects", element: <ProtectedRoute allowedRoles={['student']}><YourProjects /></ProtectedRoute> },
       { path: "all-projects", element: <ProtectedRoute allowedRoles={['student']}><AllProjects /></ProtectedRoute> },
