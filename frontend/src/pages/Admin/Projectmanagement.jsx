@@ -2,9 +2,12 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from "axios"
 import AdminNavbar from '../../components/AdminNavbar'
 import { useAuth } from "../../context/AuthContext"
+import { useNavigate } from "react-router-dom"
+import { Eye, Check, X } from "lucide-react" // ✅ icons
 
 const Projectmanagement = () => {
   const { token } = useAuth();
+  const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const tableRef = useRef(null);
 
@@ -41,7 +44,6 @@ const Projectmanagement = () => {
     tableRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // ✅ Open Reject Modal
   const openRejectModal = (project) => {
     setSelectedProject(project);
     setReason("");
@@ -50,7 +52,6 @@ const Projectmanagement = () => {
     setShowRejectModal(true);
   };
 
-  // ✅ Handle Reject
   const handleReject = () => {
     if (!reason) {
       setError("Please select a reason");
@@ -74,12 +75,6 @@ const Projectmanagement = () => {
   return (
     <div className="flex h-screen overflow-hidden">
 
-      {/* Sidebar */}
-      {/* <div className="w-64 bg-gray-800 text-white fixed h-full">
-        <AdminNavbar />
-      </div> */}
-
-      {/* Main */}
       <div className="flex-1 p-6 bg-surface">
 
         {/* Header */}
@@ -90,92 +85,105 @@ const Projectmanagement = () => {
 
           <button
             onClick={scrollToTable}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm shadow"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm shadow transition-all duration-200 hover:scale-105"
           >
             View All Projects
           </button>
         </div>
 
         {/* ================= CARDS ================= */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
           {projects.map((p) => (
             <div
               key={p._id}
-              className="bg-white rounded-2xl shadow-md p-5 hover:shadow-xl transition border flex flex-col justify-between"
+              className="bg-white rounded-2xl shadow-md p-5 border flex flex-col h-full 
+              transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
             >
-              {/* Header */}
-              <div className="mb-3">
-                <h2 className="text-lg font-bold text-gray-800">
-                  {p.title}
-                </h2>
-                <p className="text-sm text-gray-500 line-clamp-2">
-                  {p.description}
-                </p>
-              </div>
+              {/* Content */}
+              <div className="flex-grow">
 
-              {/* Tags */}
-              <div className="flex flex-wrap gap-2 mb-3 text-xs">
-                <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded">
-                  {p.projectType}
-                </span>
-                <span className="bg-green-100 text-green-600 px-2 py-1 rounded">
-                  Team: {p.teamSize}
-                </span>
-                <span className="bg-purple-100 text-purple-600 px-2 py-1 rounded">
-                  {p.domain?.[0]}
-                </span>
-              </div>
+                {/* Header */}
+                <div className="mb-3">
+                  <h2 className="text-lg font-bold text-gray-800">
+                    {p.title}
+                  </h2>
+                  <p className="text-sm text-gray-500 line-clamp-2">
+                    {p.description}
+                  </p>
+                </div>
 
-              {/* Key Info */}
-              <div className="text-sm text-gray-700 space-y-1 mb-3">
-                <p>
-                  <strong>Year:</strong> {p.academicConstraints?.year} |
-                  <strong> Sem:</strong> {p.academicConstraints?.semester}
-                </p>
-
-                <p>
-                  <strong>CGPA:</strong>{" "}
-                  <span className="text-yellow-500 font-semibold">
-                    {p.academicConstraints?.minimumCGPA}
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-3 text-xs">
+                  <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded">
+                    {p.projectType}
                   </span>
-                </p>
+                  <span className="bg-green-100 text-green-600 px-2 py-1 rounded">
+                    Team: {p.teamSize}
+                  </span>
+                  <span className="bg-purple-100 text-purple-600 px-2 py-1 rounded">
+                    {p.domain?.[0]}
+                  </span>
+                </div>
 
-                <p>
-                  <strong>Skills:</strong>{" "}
-                  {p.essentialSkills?.languages?.slice(0, 2).join(", ")}
-                </p>
+                {/* Info */}
+                <div className="text-sm text-gray-700 space-y-1 mb-3">
+                  <p>
+                    <strong>Year:</strong> {p.academicConstraints?.year} |
+                    <strong> Sem:</strong> {p.academicConstraints?.semester}
+                  </p>
 
-                <p>
-                  <strong>Roles:</strong>{" "}
-                  {p.requiredRoles?.slice(0, 2).join(", ")}
-                </p>
+                  <p>
+                    <strong>CGPA:</strong>{" "}
+                    <span className="text-yellow-500 font-semibold">
+                      {p.academicConstraints?.minimumCGPA}
+                    </span>
+                  </p>
+
+                  <p>
+                    <strong>Skills:</strong>{" "}
+                    {p.essentialSkills?.languages?.slice(0, 2).join(", ")}
+                  </p>
+
+                  <p>
+                    <strong>Roles:</strong>{" "}
+                    {p.requiredRoles?.slice(0, 2).join(", ")}
+                  </p>
+                </div>
               </div>
 
               {/* Footer */}
-              <div className="flex justify-between items-center mt-auto">
-                <div className="text-xs text-gray-500">
-                  {p.availabilityRequirement?.weeklyHours}h/week
-                </div>
+<div className="mt-auto flex justify-between items-center">
+  <div className="text-xs text-gray-500 whitespace-nowrap">
+    {p.availabilityRequirement?.weeklyHours}h/week
+  </div>
 
-                <div className="flex gap-2">
-                  <button 
-                  onClick={() => navigate(`/profile/${s._id}`)}
-                  className="text-blue-500 border border-blue-500 px-3 py-1 rounded text-sm hover:bg-blue-50">
-                    View
-                  </button>
+  <div className="flex gap-1 flex-nowrap">
 
-                  <button className="bg-accent text-white px-3 py-1 rounded text-sm hover:bg-accent-600">
-                    Approve
-                  </button>
+    {/* View */}
+    <button
+      onClick={() => navigate(`/project/${p._id}`)}
+      className="px-2 py-0.5 text-xs rounded-md border border-blue-500 text-blue-500 hover:bg-blue-50 transition whitespace-nowrap"
+    >
+      View
+    </button>
 
-                  <button
-                    onClick={() => openRejectModal(p)}
-                    className="bg-secondary text-white px-3 py-1 rounded text-sm hover:bg-secondary-600"
-                  >
-                    Reject
-                  </button>
-                </div>
-              </div>
+    {/* Approve */}
+    <button
+      className="px-2 py-0.5 text-xs rounded-md bg-secondary text-white hover:bg-green-600 transition whitespace-nowrap"
+    >
+      Approve
+    </button>
+
+    {/* Reject */}
+    <button
+      onClick={() => openRejectModal(p)}
+      className="px-2 py-0.5 text-xs rounded-md bg-red-500 text-white hover:bg-red-600 transition whitespace-nowrap"
+    >
+      Reject
+    </button>
+
+  </div>
+</div>
             </div>
           ))}
         </div>
@@ -212,7 +220,6 @@ const Projectmanagement = () => {
                     </td>
 
                     <td>{p.teamSize}</td>
-
                     <td>{p.projectType}</td>
 
                     <td>
@@ -240,7 +247,10 @@ const Projectmanagement = () => {
                     </td>
 
                     <td className="space-x-2">
-                      <button className="text-blue-500 border border-blue-500 px-2 py-1 rounded text-xs">
+                      <button
+                        onClick={() => navigate(`/project/${p._id}`)}
+                        className="text-blue-500 border border-blue-500 px-2 py-1 rounded text-xs"
+                      >
                         View
                       </button>
 

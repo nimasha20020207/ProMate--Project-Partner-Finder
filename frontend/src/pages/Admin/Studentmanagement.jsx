@@ -122,25 +122,26 @@ const StudentManagement = () => {
                 <p><strong>Semester:</strong> {s.academicInfo?.semester}</p>
               </div>
 
-              <div className="flex justify-between mt-4 gap-2">
-                <button 
-                onClick={() => navigate(`/profile/${s._id}`)}
-                className="bg-[#3B82F6] text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition">
-                  View Profile
-                </button>
-                <button
-                  onClick={() => verifyStudent(s._id)}
-                  className="bg-secondary text-white px-3 py-1 rounded text-sm hover:opacity-90 transition"
-                >
-                  Verify⭐
-                </button>
-                <button
-                  onClick={() => openSuspendModal(s)}
-                  className="bg-[#6B7280] text-white px-3 py-1 rounded text-sm hover:bg-gray-500 transition"
-                >
-                  Suspend
-                </button>
-              </div>
+              <div className="flex justify-between mt-4 gap-2 flex-wrap">
+  <button
+    onClick={() => navigate(`/profile/${s._id}`)}
+    className="flex-1 text-xs bg-[#3B82F6] text-white px-2 py-1 rounded hover:bg-blue-700 transition whitespace-nowrap"
+  >
+    View Profile
+  </button>
+  <button
+    onClick={() => verifyStudent(s._id)}
+    className="flex-1 text-xs bg-secondary text-white px-2 py-1 rounded hover:opacity-90 transition whitespace-nowrap"
+  >
+    Verify⭐
+  </button>
+  <button
+    onClick={() => openSuspendModal(s)}
+    className="flex-1 text-xs bg-[#6B7280] text-white px-2 py-1 rounded hover:bg-gray-500 transition whitespace-nowrap"
+  >
+    Suspend
+  </button>
+</div>
             </div>
           ))}
         </div>
@@ -241,11 +242,12 @@ const StudentManagement = () => {
 
             <label className="block text-sm font-medium mb-1">Suspension Date</label>
             <input
-              type="date"
-              className="w-full border rounded p-2 mb-2 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
-              value={suspendDate}
-              onChange={(e) => setSuspendDate(e.target.value)}
-            />
+  type="date"
+  className="w-full border rounded p-2 mb-2 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]"
+  value={suspendDate}
+  onChange={(e) => setSuspendDate(e.target.value)}
+  min={new Date().toISOString().split("T")[0]} // ✅ Prevent past dates
+/>
 
             {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
 

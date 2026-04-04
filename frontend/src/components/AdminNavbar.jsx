@@ -33,7 +33,7 @@ const AdminNavbar = () => {
     { text: "Dashboard", icon: <LayoutDashboard size={20} />, path: "/admindashboard", section: "Management" },
     { text: "Students", icon: <StudentsIcon size={20} />, path: "/studentman", section: "Management" },
     { text: "Projects", icon: <Briefcase size={20} />, badge: "3", path: "/projectman", section: "Management" },
-    { text: "Activity", icon: <Activity size={20} />, path: "/requestman", section: "Operations" },
+    { text: "Activity", icon: <Activity size={20} />, path: "/history", section: "Operations" },
     { text: "Ratings & Feedbacks", icon: <Star size={20} />, path: "/adminfeedbacks", section: "Operations" },
   ];
 
