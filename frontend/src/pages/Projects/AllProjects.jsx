@@ -129,6 +129,11 @@ const AllProjects = () => {
             <div key={i} className="all-card">
               <h3 className="all-card-title">{project.displayTitle}</h3>
 
+              <div className="all-academic-info" style={{ marginBottom: '16px' }}>
+                <div><span>Owner:</span> {project.itNumber || 'Unknown'}</div>
+                <div><span>Need More:</span> {project.teamSize || 'N/A'}</div>
+              </div>
+
               <div className="all-section">
                 <p className="all-section-title">Essential Skills:</p>
                 <div className="all-skills-container">

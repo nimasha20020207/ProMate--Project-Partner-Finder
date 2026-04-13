@@ -52,10 +52,20 @@ const InsertProject = ({ onSuccess }) => {
         else if (!/^IT\d{8}$/i.test(strVal)) errorMsg = 'IT Number must be exactly 10 characters starting with "IT".';
         break;
       case 'title':
-        if (!strVal) errorMsg = 'Project title cannot be empty.';
+        if (!strVal) {
+          errorMsg = 'Project title cannot be empty.';
+        } else if (/^\d+$/.test(strVal)) {
+          errorMsg = 'Project title cannot be only numbers.';
+        } else if (/^\d/.test(strVal)) {
+          errorMsg = 'Project title cannot start with a number.';
+        }
         break;
       case 'description':
-        if (!strVal) errorMsg = 'Description cannot be empty.';
+        if (!strVal) {
+          errorMsg = 'Description cannot be empty.';
+        } else if (/^\d+$/.test(strVal)) {
+          errorMsg = 'Description cannot be only numbers.';
+        }
         break;
       case 'teamSize':
         if (!strVal || parseInt(strVal) < 1) errorMsg = 'Team size must be at least 1.';
@@ -119,10 +129,22 @@ const InsertProject = ({ onSuccess }) => {
   };
 
   const handleSkillChange = (type, category, newValues) => {
-    setFormData((prev) => ({
-      ...prev,
-      [type]: { ...prev[type], [category]: newValues }
-    }));
+    setFormData((prev) => {
+      const updatedData = {
+        ...prev,
+        [type]: { ...prev[type], [category]: newValues }
+      };
+      
+      if (type === 'essentialSkills' && touched.essentialSkills) {
+        const hasEssentialSkills = Object.values(updatedData.essentialSkills).some(arr => arr && arr.length > 0);
+        setErrors(e => ({
+          ...e,
+          essentialSkills: hasEssentialSkills ? '' : "Essential Skills can't be empty."
+        }));
+      }
+
+      return updatedData;
+    });
   };
 
   const validateAll = () => {
@@ -140,10 +162,15 @@ const InsertProject = ({ onSuccess }) => {
       if (err) newErrors[field] = err;
     });
 
+    const hasEssentialSkills = Object.values(formData.essentialSkills).some(arr => arr && arr.length > 0);
+    if (!hasEssentialSkills) {
+      newErrors.essentialSkills = "Essential Skills can't be empty.";
+    }
+
     setErrors(newErrors);
 
     const allTouched = {};
-    [...textFields, ...nestedFields].forEach(f => allTouched[f] = true);
+    [...textFields, ...nestedFields, 'essentialSkills'].forEach(f => allTouched[f] = true);
     setTouched(allTouched);
 
     if (formData.domain.length === 0) {
@@ -240,7 +267,7 @@ const InsertProject = ({ onSuccess }) => {
             <div className="form-group-ip">
               <label>Domain *</label>
               <CheckboxGroup
-                options={["Web Development","Mobile Development","AI / ML","Data Science","Cybersecurity","Cloud Computing","Game Development","IoT","Blockchain","DevOps"]}
+                options={["Web Development", "Mobile Development", "AI / ML", "Data Science", "Cybersecurity", "Cloud Computing", "Game Development", "IoT", "Blockchain", "DevOps"]}
                 selectedValues={formData.domain}
                 onChange={(values) => setFormData(prev => ({ ...prev, domain: values }))}
               />
@@ -250,7 +277,7 @@ const InsertProject = ({ onSuccess }) => {
           {/* Section: Academic Constraints */}
           <div className="form-section-ip">
             <h2>Academic Details (Auto-filled from Profile)</h2>
-            <p style={{fontSize: '13px', color: '#64748b', marginBottom: '16px'}}>Your IT Number, Specialization, Year, and Semester are automatically linked to this project.</p>
+            <p style={{ fontSize: '13px', color: '#64748b', marginBottom: '16px' }}>Your IT Number, Specialization, Year, and Semester are automatically linked to this project.</p>
             <div className="form-row-ip">
               <div className="form-group-ip">
                 <label>Minimum CGPA Requirement (Optional)</label>
@@ -263,10 +290,15 @@ const InsertProject = ({ onSuccess }) => {
           {/* Section: Essential Skills */}
           <div className="form-section-ip">
             <h2>Essential Skills (Must Have)</h2>
+            {touched.essentialSkills && errors.essentialSkills && (
+              <span className="error-message-ip" style={{ display: 'block', marginBottom: '15px' }}>
+                {errors.essentialSkills}
+              </span>
+            )}
             <div className="form-group-ip">
               <label>Languages *</label>
               <CheckboxGroup
-                options={["JavaScript","TypeScript","Python","Java","C","C++","C#","Go","Rust","Kotlin","Swift","PHP","Ruby","Dart","R","MATLAB"]}
+                options={["JavaScript", "TypeScript", "Python", "Java", "C", "C++", "C#", "Go", "Rust", "Kotlin", "Swift", "PHP", "Ruby", "Dart", "R", "MATLAB"]}
                 selectedValues={formData.essentialSkills.languages}
                 onChange={(values) => handleSkillChange('essentialSkills', 'languages', values)}
               />
@@ -274,7 +306,7 @@ const InsertProject = ({ onSuccess }) => {
             <div className="form-group-ip">
               <label>Frameworks *</label>
               <CheckboxGroup
-                options={["React","Angular","Vue.js","Next.js","Nuxt.js","Node.js","Express.js","Django","Flask","Spring Boot","ASP.NET","Laravel","Ruby on Rails","Flutter","React Native"]}
+                options={["React", "Angular", "Vue.js", "Next.js", "Nuxt.js", "Node.js", "Express.js", "Django", "Flask", "Spring Boot", "ASP.NET", "Laravel", "Ruby on Rails", "Flutter", "React Native"]}
                 selectedValues={formData.essentialSkills.frameworks}
                 onChange={(values) => handleSkillChange('essentialSkills', 'frameworks', values)}
               />
@@ -282,7 +314,7 @@ const InsertProject = ({ onSuccess }) => {
             <div className="form-group-ip">
               <label>Databases *</label>
               <CheckboxGroup
-                options={["MongoDB","MySQL","PostgreSQL","SQLite","Oracle","Microsoft SQL Server","Firebase","Redis","Cassandra","DynamoDB","Neo4j"]}
+                options={["MongoDB", "MySQL", "PostgreSQL", "SQLite", "Oracle", "Microsoft SQL Server", "Firebase", "Redis", "Cassandra", "DynamoDB", "Neo4j"]}
                 selectedValues={formData.essentialSkills.databases}
                 onChange={(values) => handleSkillChange('essentialSkills', 'databases', values)}
               />
@@ -291,7 +323,7 @@ const InsertProject = ({ onSuccess }) => {
             <div className="form-group-ip">
               <label>Libraries *</label>
               <CheckboxGroup
-                options={["Redux","Axios","jQuery","Lodash","TensorFlow","Keras","PyTorch","Scikit-learn","Pandas","NumPy","Chart.js","D3.js","Three.js","Socket.io","Bootstrap"]}
+                options={["Redux", "Axios", "jQuery", "Lodash", "TensorFlow", "Keras", "PyTorch", "Scikit-learn", "Pandas", "NumPy", "Chart.js", "D3.js", "Three.js", "Socket.io", "Bootstrap"]}
                 selectedValues={formData.essentialSkills.libraries}
                 onChange={(values) => handleSkillChange('essentialSkills', 'libraries', values)}
               />
@@ -300,7 +332,7 @@ const InsertProject = ({ onSuccess }) => {
             <div className="form-group-ip">
               <label>Tools *</label>
               <CheckboxGroup
-                options={["Git","GitHub","GitLab","Docker","Kubernetes","Postman","Jira","Trello","Figma","Adobe XD","VS Code","IntelliJ IDEA","Eclipse","Webpack","Babel"]}
+                options={["Git", "GitHub", "GitLab", "Docker", "Kubernetes", "Postman", "Jira", "Trello", "Figma", "Adobe XD", "VS Code", "IntelliJ IDEA", "Eclipse", "Webpack", "Babel"]}
                 selectedValues={formData.essentialSkills.tools}
                 onChange={(values) => handleSkillChange('essentialSkills', 'tools', values)}
               />
@@ -313,7 +345,7 @@ const InsertProject = ({ onSuccess }) => {
             <div className="form-group-ip">
               <label>Languages</label>
               <CheckboxGroup
-                options={["JavaScript","TypeScript","Python","Java","C","C++","C#","Go","Rust","Kotlin","Swift","PHP","Ruby","Dart","R","MATLAB"]}
+                options={["JavaScript", "TypeScript", "Python", "Java", "C", "C++", "C#", "Go", "Rust", "Kotlin", "Swift", "PHP", "Ruby", "Dart", "R", "MATLAB"]}
                 selectedValues={formData.optionalSkills.languages}
                 onChange={(values) => handleSkillChange('optionalSkills', 'languages', values)}
               />
@@ -321,7 +353,7 @@ const InsertProject = ({ onSuccess }) => {
             <div className="form-group-ip">
               <label>Frameworks</label>
               <CheckboxGroup
-                options={["React","Angular","Vue.js","Next.js","Nuxt.js","Node.js","Express.js","Django","Flask","Spring Boot","ASP.NET","Laravel","Ruby on Rails","Flutter","React Native"]}
+                options={["React", "Angular", "Vue.js", "Next.js", "Nuxt.js", "Node.js", "Express.js", "Django", "Flask", "Spring Boot", "ASP.NET", "Laravel", "Ruby on Rails", "Flutter", "React Native"]}
                 selectedValues={formData.optionalSkills.frameworks}
                 onChange={(values) => handleSkillChange('optionalSkills', 'frameworks', values)}
               />
@@ -329,7 +361,7 @@ const InsertProject = ({ onSuccess }) => {
             <div className="form-group-ip">
               <label>Databases</label>
               <CheckboxGroup
-                options={["MongoDB","MySQL","PostgreSQL","SQLite","Oracle","Microsoft SQL Server","Firebase","Redis","Cassandra","DynamoDB","Neo4j"]}
+                options={["MongoDB", "MySQL", "PostgreSQL", "SQLite", "Oracle", "Microsoft SQL Server", "Firebase", "Redis", "Cassandra", "DynamoDB", "Neo4j"]}
                 selectedValues={formData.optionalSkills.databases}
                 onChange={(values) => handleSkillChange('optionalSkills', 'databases', values)}
               />
@@ -338,7 +370,7 @@ const InsertProject = ({ onSuccess }) => {
             <div className="form-group-ip">
               <label>Libraries </label>
               <CheckboxGroup
-                options={["Redux","Axios","jQuery","Lodash","TensorFlow","Keras","PyTorch","Scikit-learn","Pandas","NumPy","Chart.js","D3.js","Three.js","Socket.io","Bootstrap"]}
+                options={["Redux", "Axios", "jQuery", "Lodash", "TensorFlow", "Keras", "PyTorch", "Scikit-learn", "Pandas", "NumPy", "Chart.js", "D3.js", "Three.js", "Socket.io", "Bootstrap"]}
                 selectedValues={formData.optionalSkills.libraries}
                 onChange={(values) => handleSkillChange('optionalSkills', 'libraries', values)}
               />
@@ -347,7 +379,7 @@ const InsertProject = ({ onSuccess }) => {
             <div className="form-group-ip">
               <label>Tools </label>
               <CheckboxGroup
-                options={["Git","GitHub","GitLab","Docker","Kubernetes","Postman","Jira","Trello","Figma","Adobe XD","VS Code","IntelliJ IDEA","Eclipse","Webpack","Babel"]}
+                options={["Git", "GitHub", "GitLab", "Docker", "Kubernetes", "Postman", "Jira", "Trello", "Figma", "Adobe XD", "VS Code", "IntelliJ IDEA", "Eclipse", "Webpack", "Babel"]}
                 selectedValues={formData.optionalSkills.tools}
                 onChange={(values) => handleSkillChange('optionalSkills', 'tools', values)}
               />
@@ -360,7 +392,7 @@ const InsertProject = ({ onSuccess }) => {
             <div className="form-group-ip">
               <label>Required Roles *</label>
               <CheckboxGroup
-                options={["Frontend Developer","Backend Developer","Fullstack Developer","Mobile App Developer","ML Engineer","Data Scientist","UI/UX Designer","DevOps Engineer","QA Engineer","Project Manager"]}
+                options={["Frontend Developer", "Backend Developer", "Fullstack Developer", "Mobile App Developer", "ML Engineer", "Data Scientist", "UI/UX Designer", "DevOps Engineer", "QA Engineer", "Project Manager"]}
                 selectedValues={formData.requiredRoles}
                 onChange={(values) => setFormData(prev => ({ ...prev, requiredRoles: values }))}
               />
