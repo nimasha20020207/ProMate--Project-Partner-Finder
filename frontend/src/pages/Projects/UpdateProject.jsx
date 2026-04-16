@@ -157,6 +157,8 @@ const UpdateProject = () => {
     return <div className="loading-spinner">Loading project data...</div>;
   }
 
+  const todayStr = new Date().toISOString().split('T')[0];
+
   return (
     <div className="update-project-container wrapper-page-layout" style={{ paddingTop: '40px', maxWidth: '900px', margin: '0 auto' }}>
       {/* Back Button */}
@@ -211,7 +213,7 @@ const UpdateProject = () => {
 
             <div className="form-group">
               <label>Due Date *</label>
-              <input type="date" name="dueDate" value={formData.dueDate} onChange={handleChange} required />
+              <input type="date" name="dueDate" value={formData.dueDate} onChange={handleChange} min={todayStr} required />
             </div>
           </div>
 

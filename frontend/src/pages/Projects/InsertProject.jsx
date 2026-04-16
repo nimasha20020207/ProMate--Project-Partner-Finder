@@ -237,6 +237,8 @@ const InsertProject = ({ onSuccess }) => {
     }
   };
 
+  const todayStr = new Date().toISOString().split('T')[0];
+
   return (
     <div className="insert-project-container-ip">
       <div className="insert-project-card-ip">
@@ -282,7 +284,7 @@ const InsertProject = ({ onSuccess }) => {
 
             <div className="form-group-ip">
               <label>Due Date *</label>
-              <input type="date" name="dueDate" value={formData.dueDate} onChange={handleChange} onBlur={handleBlur} className={touched.dueDate && errors.dueDate ? 'input-error-ip' : ''} />
+              <input type="date" name="dueDate" value={formData.dueDate} onChange={handleChange} onBlur={handleBlur} min={todayStr} className={touched.dueDate && errors.dueDate ? 'input-error-ip' : ''} />
               {touched.dueDate && errors.dueDate && <span className="error-message-ip">{errors.dueDate}</span>}
             </div>
 
