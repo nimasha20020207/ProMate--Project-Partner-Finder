@@ -1,40 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import Modal from '../../components/Modal';
+import { useNavigate } from 'react-router-dom';
 import './AllProjects.css';
 
 const AllProjects = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [viewingProject, setViewingProject] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleJoin = async (project) => {
-    const payload = {
-      senderIt: user ? `${user.studentId} - ${user.fullName}` : 'Unknown',
-      targetIt: project.itNumber || 'Unknown',
-      message: `Requested to join ${project.displayTitle} project`,
-      type: 'join_request'
-    };
 
-    try {
-      const res = await fetch('http://localhost:3000/api/notifications', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (res.ok) {
-        alert('Join Request Sent to the Notifications Page!');
-        setViewingProject(null); // auto close modal explicitly
-      } else {
-        alert('Failed to send request');
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Network error');
-    }
-  };
 
   const fetchProjects = async () => {
     try {
@@ -132,6 +108,7 @@ const AllProjects = () => {
               <div className="all-academic-info" style={{ marginBottom: '16px' }}>
                 <div><span>Owner:</span> {project.itNumber || 'Unknown'}</div>
                 <div><span>Need More:</span> {project.teamSize || 'N/A'}</div>
+                {project.dueDate && (<div><span>Due Date:</span> {new Date(project.dueDate).toLocaleDateString('en-GB')}</div>)}
               </div>
 
               <div className="all-section">
@@ -166,8 +143,7 @@ const AllProjects = () => {
               </div>
 
               <div className="all-card-actions">
-                <button className="all-btn-view" onClick={() => setViewingProject(project)}>View Project</button>
-
+                <button className="all-btn-view" onClick={() => navigate('/projects/' + project._id)}>View Project</button>
               </div>
             </div>
           ))}
@@ -176,118 +152,7 @@ const AllProjects = () => {
       )}
 
 
-      {/* Project details modal */}
 
-      <Modal isOpen={!!viewingProject} onClose={() => setViewingProject(null)} title={viewingProject?.displayTitle || "Details"}>
-        {viewingProject && (
-          <div className="all-project-details-view relative">
-            <div className="all-details-body">
-              <div className="all-details-meta">
-                <span className="all-details-badge">{viewingProject.projectType || 'Project'}</span>
-                {viewingProject.teamSize && (
-                  <span className="all-details-badge all-badge-team">Team of {viewingProject.teamSize}</span>
-                )}
-                {viewingProject.itNumber && (
-                  <span className="all-details-badge" style={{ backgroundColor: '#f8fafc', color: '#475569', border: '1px solid #e2e8f0' }}>
-                    IT NO: {viewingProject.itNumber}
-                  </span>
-                )}
-              </div>
-
-              <h3 className="all-section-title-mod">Project Description</h3>
-              <p className="all-details-desc">{viewingProject.description || 'No description provided.'}</p>
-
-              <div className="all-details-grid">
-                <div className="all-details-section">
-                  <h4>Target Domain</h4>
-                  <div className="all-details-tags">
-                    {viewingProject.domain?.length > 0 ? viewingProject.domain.map((d, i) => (
-                      <span key={i} className="all-skill-tag all-domain-tag-mod">{d}</span>
-                    )) : <span className="all-empty-text">Not specified</span>}
-                  </div>
-                </div>
-                <div className="all-details-section">
-                  <h4>Academic Constraints</h4>
-                  <ul className="all-stats-list">
-                    <li><span>Specialization:</span> <strong>{viewingProject.specialization || 'Any'}</strong></li>
-                    <li><span>Year/Sem:</span> <strong>{viewingProject.year || '-'} / {viewingProject.semester || '-'}</strong></li>
-                    <li><span>Min CGPA:</span> <strong>{viewingProject.minimumCGPA || 'None'}</strong></li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="all-skills-grid">
-                <div className="all-details-section all-box-essential">
-                  <h4>Must Have Skills</h4>
-                  {['languages', 'frameworks', 'databases', 'libraries', 'tools'].map(cat => (
-                    viewingProject.essentialSkills?.[cat]?.length > 0 && (
-                      <div key={cat} className="all-skill-category">
-                        <h5>{cat}</h5>
-                        <div className="all-details-tags">
-                          {viewingProject.essentialSkills[cat].map((skill, i) => (
-                            <span key={i} className="all-skill-tag all-essential-skill">{skill}</span>
-                          ))}
-                        </div>
-                      </div>
-                    )
-                  ))}
-                  {!['languages', 'frameworks', 'databases', 'libraries', 'tools'].some(cat => viewingProject.essentialSkills?.[cat]?.length > 0) && (
-                    <span className="all-empty-text">No essential skills specified.</span>
-                  )}
-                </div>
-
-                <div className="all-details-section all-box-optional">
-                  <h4>Nice to Have</h4>
-                  {['languages', 'frameworks', 'databases', 'libraries', 'tools'].map(cat => (
-                    viewingProject.optionalSkills?.[cat]?.length > 0 && (
-                      <div key={cat} className="all-skill-category">
-                        <h5>{cat}</h5>
-                        <div className="all-details-tags">
-                          {viewingProject.optionalSkills[cat].map((skill, i) => (
-                            <span key={i} className="all-skill-tag all-optional-skill">{skill}</span>
-                          ))}
-                        </div>
-                      </div>
-                    )
-                  ))}
-                  {!['languages', 'frameworks', 'databases', 'libraries', 'tools'].some(cat => viewingProject.optionalSkills?.[cat]?.length > 0) && (
-                    <span className="all-empty-text">No optional skills specified.</span>
-                  )}
-                </div>
-              </div>
-
-              <div className="all-details-section all-box-roles">
-                <h4>Engagement & Expected Roles</h4>
-                <div className="all-details-grid">
-                  <div>
-                    <h5>Required Roles:</h5>
-                    <div className="all-details-tags">
-                      {viewingProject.requiredRoles?.length > 0 ? viewingProject.requiredRoles.map((role, i) => (
-                        <span key={i} className="all-skill-tag all-role-tag">{role}</span>
-                      )) : <span className="all-empty-text">Not specified</span>}
-                    </div>
-                  </div>
-                  <div>
-                    <h5>Commitment:</h5>
-                    <ul className="all-stats-list">
-                      <li><span>Weekly Hours:</span> <strong>{viewingProject.availabilityRequirement?.weeklyHours ? `${viewingProject.availabilityRequirement.weeklyHours} hrs` : '-'}</strong></li>
-                      <li><span>Duration:</span> <strong>{viewingProject.availabilityRequirement?.durationWeeks ? `${viewingProject.availabilityRequirement.durationWeeks} weeks` : '-'}</strong></li>
-                      <li style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <span style={{ marginBottom: 4 }}>Meeting Days:</span>
-                        <strong>{viewingProject.availabilityRequirement?.meetingDays?.join(', ') || 'Flexible'}</strong>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="all-details-footer">
-              <button className="all-btn-join" onClick={() => handleJoin(viewingProject)}>Join Project</button>
-            </div>
-          </div>
-        )}
-      </Modal>
     </div>
   );
 };

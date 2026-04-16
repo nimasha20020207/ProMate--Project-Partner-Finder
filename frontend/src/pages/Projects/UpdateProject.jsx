@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useParams, useNavigate } from 'react-router-dom';
 import './UpdateProject.css';
 
 const CheckboxGroup = ({ options, selectedValues = [], onChange }) => {
@@ -27,8 +28,11 @@ const CheckboxGroup = ({ options, selectedValues = [], onChange }) => {
   );
 };
 
-const UpdateProject = ({ project, onSave }) => {
+const UpdateProject = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const { token } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -39,42 +43,55 @@ const UpdateProject = ({ project, onSave }) => {
     requiredRoles: [],
     teamSize: '',
     minimumCGPA: '',
-    availabilityRequirement: { durationWeeks: '', weeklyHours: '', meetingDays: [] }
+    availabilityRequirement: { durationWeeks: '', weeklyHours: '', meetingDays: [] },
+    dueDate: ''
   });
 
   useEffect(() => {
-    if (project) {
-      setFormData({
-        ...project,
-        title: project.title || '',
-        description: project.description || '',
-        projectType: project.projectType || '',
-        domain: project.domain || [],
-        essentialSkills: { 
-          languages: project.essentialSkills?.languages || [], 
-          frameworks: project.essentialSkills?.frameworks || [], 
-          databases: project.essentialSkills?.databases || [],
-          libraries: project.essentialSkills?.libraries || [], 
-          tools: project.essentialSkills?.tools || [] 
-        },
-        optionalSkills: { 
-          languages: project.optionalSkills?.languages || [], 
-          frameworks: project.optionalSkills?.frameworks || [], 
-          databases: project.optionalSkills?.databases || [], 
-          libraries: project.optionalSkills?.libraries || [],
-          tools: project.optionalSkills?.tools || [] 
-        },
-        requiredRoles: project.requiredRoles || [],
-        teamSize: project.teamSize || '',
-        minimumCGPA: project.minimumCGPA || '',
-        availabilityRequirement: { 
-          durationWeeks: project.availabilityRequirement?.durationWeeks || '', 
-          weeklyHours: project.availabilityRequirement?.weeklyHours || '', 
-          meetingDays: project.availabilityRequirement?.meetingDays || [] 
+    const fetchProject = async () => {
+      try {
+        const res = await fetch(`http://localhost:3000/api/posts/${id}`);
+        if (res.ok) {
+          const fetchedProject = await res.json();
+          setFormData({
+            ...fetchedProject,
+            title: fetchedProject.title || '',
+            description: fetchedProject.description || '',
+            projectType: fetchedProject.projectType || '',
+            domain: fetchedProject.domain || [],
+            essentialSkills: {
+              languages: fetchedProject.essentialSkills?.languages || [],
+              frameworks: fetchedProject.essentialSkills?.frameworks || [],
+              databases: fetchedProject.essentialSkills?.databases || [],
+              libraries: fetchedProject.essentialSkills?.libraries || [],
+              tools: fetchedProject.essentialSkills?.tools || []
+            },
+            optionalSkills: {
+              languages: fetchedProject.optionalSkills?.languages || [],
+              frameworks: fetchedProject.optionalSkills?.frameworks || [],
+              databases: fetchedProject.optionalSkills?.databases || [],
+              libraries: fetchedProject.optionalSkills?.libraries || [],
+              tools: fetchedProject.optionalSkills?.tools || []
+            },
+            requiredRoles: fetchedProject.requiredRoles || [],
+            teamSize: fetchedProject.teamSize || '',
+            minimumCGPA: fetchedProject.minimumCGPA || '',
+            availabilityRequirement: {
+              durationWeeks: fetchedProject.availabilityRequirement?.durationWeeks || '',
+              weeklyHours: fetchedProject.availabilityRequirement?.weeklyHours || '',
+              meetingDays: fetchedProject.availabilityRequirement?.meetingDays || []
+            },
+            dueDate: fetchedProject.dueDate ? new Date(fetchedProject.dueDate).toISOString().split('T')[0] : ''
+          });
         }
-      });
-    }
-  }, [project]);
+      } catch (err) {
+        console.error("Failed to fetch project for update", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProject();
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -101,11 +118,22 @@ const UpdateProject = ({ project, onSave }) => {
       alert('Please select at least one domain.');
       return;
     }
+    if (!formData.dueDate) {
+      alert('Please select a due date.');
+      return;
+    }
+    const selectedDate = new Date(formData.dueDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (selectedDate <= today) {
+      alert('Due date must be a future date.');
+      return;
+    }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/posts/${project._id}`, {
+      const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
         method: 'PUT',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'x-auth-token': token
         },
@@ -113,7 +141,8 @@ const UpdateProject = ({ project, onSave }) => {
       });
 
       if (response.ok) {
-        onSave({...formData, _id: project._id}); // Pass updated data up immediately
+        alert('Project updated successfully!');
+        navigate('/projects/' + id); // Navigate back to details
       } else {
         const errorData = await response.json();
         alert(`Failed to update project: ${errorData.msg || 'Unknown error'}`);
@@ -124,8 +153,20 @@ const UpdateProject = ({ project, onSave }) => {
     }
   };
 
+  if (isLoading) {
+    return <div className="loading-spinner">Loading project data...</div>;
+  }
+
   return (
-    <div className="update-project-container">
+    <div className="update-project-container wrapper-page-layout" style={{ paddingTop: '40px', maxWidth: '900px', margin: '0 auto' }}>
+      {/* Back Button */}
+      <button
+        onClick={() => navigate(-1)}
+        style={{ marginBottom: '20px', background: 'none', border: 'none', color: '#3B82F6', cursor: 'pointer', fontWeight: '600', fontSize: '15px' }}
+      >
+        ← Cancel
+      </button>
+
       <div className="update-project-card">
         <h1 className="update-project-title">Update Project Details</h1>
         <p className="update-project-subtitle">Modify the fields and hit save to update the database.</p>
@@ -161,11 +202,16 @@ const UpdateProject = ({ project, onSave }) => {
 
             <div className="form-group">
               <label>Domain *</label>
-              <CheckboxGroup 
+              <CheckboxGroup
                 options={['AI/ML', 'Web Development', 'Mobile Apps', 'Cybersecurity', 'Data Science', 'IoT', 'Blockchain', 'Game Dev']}
                 selectedValues={formData.domain}
                 onChange={(values) => setFormData(prev => ({ ...prev, domain: values }))}
               />
+            </div>
+
+            <div className="form-group">
+              <label>Due Date *</label>
+              <input type="date" name="dueDate" value={formData.dueDate} onChange={handleChange} required />
             </div>
           </div>
 
@@ -187,24 +233,24 @@ const UpdateProject = ({ project, onSave }) => {
             <h2>Essential Skills (Must Have)</h2>
             <div className="form-group">
               <label>Languages</label>
-              <CheckboxGroup 
-                options={["JavaScript","TypeScript","Python","Java","C","C++","C#","Go","Rust","Kotlin","Swift","PHP","Ruby","Dart","R","MATLAB"]}
+              <CheckboxGroup
+                options={["JavaScript", "TypeScript", "Python", "Java", "C", "C++", "C#", "Go", "Rust", "Kotlin", "Swift", "PHP", "Ruby", "Dart", "R", "MATLAB"]}
                 selectedValues={formData.essentialSkills.languages}
                 onChange={(values) => handleSkillChange('essentialSkills', 'languages', values)}
               />
             </div>
             <div className="form-group">
               <label>Frameworks</label>
-              <CheckboxGroup 
-                options={["React","Angular","Vue.js","Next.js","Nuxt.js","Node.js","Express.js","Django","Flask","Spring Boot","ASP.NET","Laravel","Ruby on Rails","Flutter","React Native"]}
+              <CheckboxGroup
+                options={["React", "Angular", "Vue.js", "Next.js", "Nuxt.js", "Node.js", "Express.js", "Django", "Flask", "Spring Boot", "ASP.NET", "Laravel", "Ruby on Rails", "Flutter", "React Native"]}
                 selectedValues={formData.essentialSkills.frameworks}
                 onChange={(values) => handleSkillChange('essentialSkills', 'frameworks', values)}
               />
             </div>
             <div className="form-group">
               <label>Databases</label>
-              <CheckboxGroup 
-                options={["MongoDB","MySQL","PostgreSQL","SQLite","Oracle","Microsoft SQL Server","Firebase","Redis","Cassandra","DynamoDB","Neo4j"]}
+              <CheckboxGroup
+                options={["MongoDB", "MySQL", "PostgreSQL", "SQLite", "Oracle", "Microsoft SQL Server", "Firebase", "Redis", "Cassandra", "DynamoDB", "Neo4j"]}
                 selectedValues={formData.essentialSkills.databases}
                 onChange={(values) => handleSkillChange('essentialSkills', 'databases', values)}
               />
@@ -212,8 +258,8 @@ const UpdateProject = ({ project, onSave }) => {
 
             <div className="form-group">
               <label>Libraries</label>
-              <CheckboxGroup 
-                options={["Redux","Axios","jQuery","Lodash","TensorFlow","Keras","PyTorch","Scikit-learn","Pandas","NumPy","Chart.js","D3.js","Three.js","Socket.io","Bootstrap"]}
+              <CheckboxGroup
+                options={["Redux", "Axios", "jQuery", "Lodash", "TensorFlow", "Keras", "PyTorch", "Scikit-learn", "Pandas", "NumPy", "Chart.js", "D3.js", "Three.js", "Socket.io", "Bootstrap"]}
                 selectedValues={formData.essentialSkills.libraries}
                 onChange={(values) => handleSkillChange('essentialSkills', 'libraries', values)}
               />
@@ -221,8 +267,8 @@ const UpdateProject = ({ project, onSave }) => {
 
             <div className="form-group">
               <label>Tools</label>
-              <CheckboxGroup 
-                options={["Git","GitHub","GitLab","Docker","Kubernetes","Postman","Jira","Trello","Figma","Adobe XD","VS Code","IntelliJ IDEA","Eclipse","Webpack","Babel"]}
+              <CheckboxGroup
+                options={["Git", "GitHub", "GitLab", "Docker", "Kubernetes", "Postman", "Jira", "Trello", "Figma", "Adobe XD", "VS Code", "IntelliJ IDEA", "Eclipse", "Webpack", "Babel"]}
                 selectedValues={formData.essentialSkills.tools}
                 onChange={(values) => handleSkillChange('essentialSkills', 'tools', values)}
               />
@@ -234,24 +280,24 @@ const UpdateProject = ({ project, onSave }) => {
             <h2>Optional Skills (Nice to Have)</h2>
             <div className="form-group">
               <label>Languages</label>
-              <CheckboxGroup 
-                options={["JavaScript","TypeScript","Python","Java","C","C++","C#","Go","Rust","Kotlin","Swift","PHP","Ruby","Dart","R","MATLAB"]}
+              <CheckboxGroup
+                options={["JavaScript", "TypeScript", "Python", "Java", "C", "C++", "C#", "Go", "Rust", "Kotlin", "Swift", "PHP", "Ruby", "Dart", "R", "MATLAB"]}
                 selectedValues={formData.optionalSkills.languages}
                 onChange={(values) => handleSkillChange('optionalSkills', 'languages', values)}
               />
             </div>
             <div className="form-group">
               <label>Frameworks</label>
-              <CheckboxGroup 
-                options={["React","Angular","Vue.js","Next.js","Nuxt.js","Node.js","Express.js","Django","Flask","Spring Boot","ASP.NET","Laravel","Ruby on Rails","Flutter","React Native"]}
+              <CheckboxGroup
+                options={["React", "Angular", "Vue.js", "Next.js", "Nuxt.js", "Node.js", "Express.js", "Django", "Flask", "Spring Boot", "ASP.NET", "Laravel", "Ruby on Rails", "Flutter", "React Native"]}
                 selectedValues={formData.optionalSkills.frameworks}
                 onChange={(values) => handleSkillChange('optionalSkills', 'frameworks', values)}
               />
             </div>
             <div className="form-group">
               <label>Databases</label>
-              <CheckboxGroup 
-                options={["MongoDB","MySQL","PostgreSQL","SQLite","Oracle","Microsoft SQL Server","Firebase","Redis","Cassandra","DynamoDB","Neo4j"]}
+              <CheckboxGroup
+                options={["MongoDB", "MySQL", "PostgreSQL", "SQLite", "Oracle", "Microsoft SQL Server", "Firebase", "Redis", "Cassandra", "DynamoDB", "Neo4j"]}
                 selectedValues={formData.optionalSkills.databases}
                 onChange={(values) => handleSkillChange('optionalSkills', 'databases', values)}
               />
@@ -259,8 +305,8 @@ const UpdateProject = ({ project, onSave }) => {
 
             <div className="form-group">
               <label>Libraries</label>
-              <CheckboxGroup 
-                options={["Redux","Axios","jQuery","Lodash","TensorFlow","Keras","PyTorch","Scikit-learn","Pandas","NumPy","Chart.js","D3.js","Three.js","Socket.io","Bootstrap"]}
+              <CheckboxGroup
+                options={["Redux", "Axios", "jQuery", "Lodash", "TensorFlow", "Keras", "PyTorch", "Scikit-learn", "Pandas", "NumPy", "Chart.js", "D3.js", "Three.js", "Socket.io", "Bootstrap"]}
                 selectedValues={formData.optionalSkills.libraries}
                 onChange={(values) => handleSkillChange('optionalSkills', 'libraries', values)}
               />
@@ -268,8 +314,8 @@ const UpdateProject = ({ project, onSave }) => {
 
             <div className="form-group">
               <label>Tools</label>
-              <CheckboxGroup 
-                options={["Git","GitHub","GitLab","Docker","Kubernetes","Postman","Jira","Trello","Figma","Adobe XD","VS Code","IntelliJ IDEA","Eclipse","Webpack","Babel"]}
+              <CheckboxGroup
+                options={["Git", "GitHub", "GitLab", "Docker", "Kubernetes", "Postman", "Jira", "Trello", "Figma", "Adobe XD", "VS Code", "IntelliJ IDEA", "Eclipse", "Webpack", "Babel"]}
                 selectedValues={formData.optionalSkills.tools}
                 onChange={(values) => handleSkillChange('optionalSkills', 'tools', values)}
               />
@@ -281,7 +327,7 @@ const UpdateProject = ({ project, onSave }) => {
             <h2>Roles & Availability</h2>
             <div className="form-group">
               <label>Required Roles *</label>
-              <CheckboxGroup 
+              <CheckboxGroup
                 options={['Frontend Developer', 'Backend Developer', 'Full Stack Developer', 'UI/UX Designer', 'QA Engineer', 'Data Scientist', 'DevOps Engineer', 'Product Manager']}
                 selectedValues={formData.requiredRoles}
                 onChange={(values) => setFormData(prev => ({ ...prev, requiredRoles: values }))}
@@ -301,7 +347,7 @@ const UpdateProject = ({ project, onSave }) => {
 
             <div className="form-group">
               <label>Preferred Meeting Days</label>
-              <CheckboxGroup 
+              <CheckboxGroup
                 options={['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']}
                 selectedValues={formData.availabilityRequirement.meetingDays}
                 onChange={(values) => handleNestedChange('availabilityRequirement', 'meetingDays', values)}

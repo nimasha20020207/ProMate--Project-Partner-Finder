@@ -64,7 +64,11 @@ const ProjectSchema = new mongoose.Schema({
     durationWeeks: Number
   },
 
-  domain: [String] 
+  domain: [String],
+  
+  dueDate: {
+    type: Date
+  }
 
 }, { timestamps: true });
 

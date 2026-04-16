@@ -25,8 +25,10 @@ import RecProjects from './pages/RecEngine/RecProjects';
 import ProjectView from './pages/RecEngine/ProjectView';
 // Project Pages
 import InsertPost from './pages/Projects/InsertProject';
+import UpdateProject from './pages/Projects/UpdateProject';
 import YourProjects from './pages/Projects/YourProjects';
 import AllProjects from './pages/Projects/AllProjects';
+import ProjectDetailsView from './pages/Projects/ProjectDetailsView';
 import Notifications from './pages/Notifications/Notifications';
 
 // Admin Pages
@@ -61,7 +63,7 @@ export const router = createBrowserRouter([
       { path: "forgot-password", element: <ForgotPassword /> },
       { path: "verify-otp", element: <VerifyOTP /> },
       { path: "reset-password", element: <ResetPassword /> },
-      
+
       // 👤 Student & Admin Routes (Protected routes handle their own Navbars)
       { path: "dashboard", element: <ProtectedRoute allowedRoles={['student']}><Dashboard /></ProtectedRoute> },
       { path: "change-password", element: <ProtectedRoute allowedRoles={['student']}><ChangePassword /></ProtectedRoute> },
@@ -75,8 +77,10 @@ export const router = createBrowserRouter([
       { path: "recprojects", element: <ProtectedRoute allowedRoles={['student']}><RecProjects /></ProtectedRoute> },
       { path: "projectview", element: <ProtectedRoute allowedRoles={['student']}><ProjectView /></ProtectedRoute> },
       { path: "insert-project", element: <ProtectedRoute allowedRoles={['student']}><InsertPost /></ProtectedRoute> },
+      { path: "update-project/:id", element: <ProtectedRoute allowedRoles={['student']}><UpdateProject /></ProtectedRoute> },
       { path: "your-projects", element: <ProtectedRoute allowedRoles={['student']}><YourProjects /></ProtectedRoute> },
       { path: "all-projects", element: <ProtectedRoute allowedRoles={['student']}><AllProjects /></ProtectedRoute> },
+      { path: "projects/:id", element: <ProtectedRoute allowedRoles={['student']}><ProjectDetailsView /></ProtectedRoute> },
       { path: "notifications", element: <ProtectedRoute allowedRoles={['student']}><Notifications /></ProtectedRoute> },
       { path: "admindashboard", element: <ProtectedRoute allowedRoles={['admin']}><Admindashboard /></ProtectedRoute> },
       { path: "projectman", element: <ProtectedRoute allowedRoles={['admin']}><Projectmanagement /></ProtectedRoute> },
@@ -84,7 +88,7 @@ export const router = createBrowserRouter([
       { path: "requestman", element: <ProtectedRoute allowedRoles={['admin']}><Requestmanagement /></ProtectedRoute> },
       { path: "adminfeedbacks", element: <ProtectedRoute allowedRoles={['admin']}><AdminFeedbacks /></ProtectedRoute> },
       { path: "history", element: <ProtectedRoute allowedRoles={['admin']}><History /></ProtectedRoute> },
-      
+
       // 🚫 Fallback
       { path: "*", element: <div className="flex items-center justify-center h-screen bg-slate-50"><h1 className="text-2xl font-bold text-gray-500">404 - Page Not Found</h1></div> }
     ]

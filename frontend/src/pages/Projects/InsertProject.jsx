@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './InsertProject.css';
 
@@ -26,6 +27,7 @@ const CheckboxGroup = ({ options, selectedValues, onChange }) => (
 
 const InsertProject = ({ onSuccess }) => {
   const { token } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -36,7 +38,8 @@ const InsertProject = ({ onSuccess }) => {
     optionalSkills: { languages: [], frameworks: [], libraries: [], databases: [], tools: [] },
     requiredRoles: [],
     availabilityRequirement: { weeklyHours: '', meetingDays: [], durationWeeks: '' },
-    domain: []
+    domain: [],
+    dueDate: ''
   });
 
   const [errors, setErrors] = useState({});
@@ -73,6 +76,18 @@ const InsertProject = ({ onSuccess }) => {
       case 'projectType':
         if (!strVal) errorMsg = 'Project type is required.';
         break;
+      case 'dueDate':
+        if (!strVal) {
+          errorMsg = 'Due date is required.';
+        } else {
+          const selectedDate = new Date(strVal);
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          if (selectedDate <= today) {
+            errorMsg = 'Due date must be a future date.';
+          }
+        }
+        break;
       case 'specialization':
         if (!strVal) errorMsg = 'Specialization is required.';
         break;
@@ -83,7 +98,7 @@ const InsertProject = ({ onSuccess }) => {
         if (!strVal || parseInt(strVal) < 1 || parseInt(strVal) > 2) errorMsg = 'Semester must be 1 or 2.';
         break;
       case 'minimumCGPA':
-        if (strVal === '' || parseFloat(strVal) < 0 || parseFloat(strVal) > 4.0) errorMsg = 'CGPA must be between 0.0 and 4.0.';
+        if (strVal !== '' && (parseFloat(strVal) < 0 || parseFloat(strVal) > 4.0)) errorMsg = 'CGPA must be between 0.0 and 4.0.';
         break;
       case 'weeklyHours':
         if (!strVal || parseInt(strVal) < 1) errorMsg = 'Weekly hours must be at least 1.';
@@ -149,7 +164,7 @@ const InsertProject = ({ onSuccess }) => {
 
   const validateAll = () => {
     const newErrors = {};
-    const textFields = ['title', 'description', 'teamSize', 'projectType', 'minimumCGPA'];
+    const textFields = ['title', 'description', 'teamSize', 'projectType', 'minimumCGPA', 'dueDate'];
 
     textFields.forEach(field => {
       const err = validateField(field, formData[field]);
@@ -210,6 +225,7 @@ const InsertProject = ({ onSuccess }) => {
           onSuccess();
         } else {
           alert('Project created successfully!');
+          navigate('/your-projects');
         }
       } else {
         const errorData = await response.json();
@@ -262,6 +278,12 @@ const InsertProject = ({ onSuccess }) => {
                 </select>
                 {touched.projectType && errors.projectType && <span className="error-message-ip">{errors.projectType}</span>}
               </div>
+            </div>
+
+            <div className="form-group-ip">
+              <label>Due Date *</label>
+              <input type="date" name="dueDate" value={formData.dueDate} onChange={handleChange} onBlur={handleBlur} className={touched.dueDate && errors.dueDate ? 'input-error-ip' : ''} />
+              {touched.dueDate && errors.dueDate && <span className="error-message-ip">{errors.dueDate}</span>}
             </div>
 
             <div className="form-group-ip">
