@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useParams, useNavigate } from 'react-router-dom';
-import './UpdateProject.css';
+import './InsertProject.css';
 
 const CheckboxGroup = ({ options, selectedValues = [], onChange }) => {
   const handleCheckboxChange = (option) => {
@@ -13,9 +13,9 @@ const CheckboxGroup = ({ options, selectedValues = [], onChange }) => {
   };
 
   return (
-    <div className="update-checkbox-group">
+    <div className="checkbox-group-ip">
       {options.map(option => (
-        <label key={option} className="update-checkbox-label">
+        <label key={option} className="checkbox-label-ip">
           <input
             type="checkbox"
             checked={selectedValues.includes(option)}
@@ -160,7 +160,7 @@ const UpdateProject = () => {
   const todayStr = new Date().toISOString().split('T')[0];
 
   return (
-    <div className="update-project-container wrapper-page-layout" style={{ paddingTop: '40px', maxWidth: '900px', margin: '0 auto' }}>
+    <div className="insert-project-container-ip" style={{ paddingTop: '40px', maxWidth: '900px', margin: '0 auto' }}>
       {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
@@ -169,27 +169,27 @@ const UpdateProject = () => {
         ← Cancel
       </button>
 
-      <div className="update-project-card">
-        <h1 className="update-project-title">Update Project Details</h1>
-        <p className="update-project-subtitle">Modify the fields and hit save to update the database.</p>
+      <div className="insert-project-card-ip">
+        <h1 className="insert-project-title-ip">Update Project Details</h1>
+        <p className="insert-project-subtitle-ip">Modify the fields and hit save to update the database.</p>
 
-        <form onSubmit={handleSubmit} className="update-project-form">
+        <form onSubmit={handleSubmit} className="insert-project-form-ip">
           {/* Section: Basic Info */}
-          <div className="form-section">
+          <div className="form-section-ip">
             <h2>Basic Information</h2>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Project Title *</label>
               <input type="text" name="title" value={formData.title} onChange={handleChange} required placeholder="Enter project title" />
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Description *</label>
               <textarea name="description" value={formData.description} onChange={handleChange} required placeholder="What is this project about? Provide some context and goals." rows="4"></textarea>
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
+            <div className="form-row-ip">
+              <div className="form-group-ip">
                 <label>Project Type *</label>
                 <select name="projectType" value={formData.projectType} onChange={handleChange} required>
                   <option value="" disabled>Select Type</option>
@@ -202,7 +202,7 @@ const UpdateProject = () => {
               </div>
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Domain *</label>
               <CheckboxGroup
                 options={['AI/ML', 'Web Development', 'Mobile Apps', 'Cybersecurity', 'Data Science', 'IoT', 'Blockchain', 'Game Dev']}
@@ -211,29 +211,29 @@ const UpdateProject = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Due Date *</label>
               <input type="date" name="dueDate" value={formData.dueDate} onChange={handleChange} min={todayStr} required />
             </div>
           </div>
 
-          <div className="form-section">
+          <div className="form-section-ip">
             <h2>Academic Requirements & Constraints (Auto-filled from Profile)</h2>
-            <div className="form-row">
-              <div className="form-group">
+            <div className="form-row-ip">
+              <div className="form-group-ip">
                 <label>Team Size Limit *</label>
                 <input type="number" name="teamSize" value={formData.teamSize} onChange={handleChange} required min="1" placeholder="e.g. 4" />
               </div>
-              <div className="form-group">
+              <div className="form-group-ip">
                 <label>Minimum CGPA (Optional)</label>
                 <input type="number" name="minimumCGPA" value={formData.minimumCGPA} onChange={handleChange} step="0.01" min="0" max="4" placeholder="e.g. 3.0" />
               </div>
             </div>
           </div>
 
-          <div className="form-section">
+          <div className="form-section-ip">
             <h2>Essential Skills (Must Have)</h2>
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Languages</label>
               <CheckboxGroup
                 options={["JavaScript", "TypeScript", "Python", "Java", "C", "C++", "C#", "Go", "Rust", "Kotlin", "Swift", "PHP", "Ruby", "Dart", "R", "MATLAB"]}
@@ -241,7 +241,7 @@ const UpdateProject = () => {
                 onChange={(values) => handleSkillChange('essentialSkills', 'languages', values)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Frameworks</label>
               <CheckboxGroup
                 options={["React", "Angular", "Vue.js", "Next.js", "Nuxt.js", "Node.js", "Express.js", "Django", "Flask", "Spring Boot", "ASP.NET", "Laravel", "Ruby on Rails", "Flutter", "React Native"]}
@@ -249,7 +249,7 @@ const UpdateProject = () => {
                 onChange={(values) => handleSkillChange('essentialSkills', 'frameworks', values)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Databases</label>
               <CheckboxGroup
                 options={["MongoDB", "MySQL", "PostgreSQL", "SQLite", "Oracle", "Microsoft SQL Server", "Firebase", "Redis", "Cassandra", "DynamoDB", "Neo4j"]}
@@ -258,7 +258,7 @@ const UpdateProject = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Libraries</label>
               <CheckboxGroup
                 options={["Redux", "Axios", "jQuery", "Lodash", "TensorFlow", "Keras", "PyTorch", "Scikit-learn", "Pandas", "NumPy", "Chart.js", "D3.js", "Three.js", "Socket.io", "Bootstrap"]}
@@ -267,7 +267,7 @@ const UpdateProject = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Tools</label>
               <CheckboxGroup
                 options={["Git", "GitHub", "GitLab", "Docker", "Kubernetes", "Postman", "Jira", "Trello", "Figma", "Adobe XD", "VS Code", "IntelliJ IDEA", "Eclipse", "Webpack", "Babel"]}
@@ -278,9 +278,9 @@ const UpdateProject = () => {
           </div>
 
 
-          <div className="form-section">
+          <div className="form-section-ip">
             <h2>Optional Skills (Nice to Have)</h2>
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Languages</label>
               <CheckboxGroup
                 options={["JavaScript", "TypeScript", "Python", "Java", "C", "C++", "C#", "Go", "Rust", "Kotlin", "Swift", "PHP", "Ruby", "Dart", "R", "MATLAB"]}
@@ -288,7 +288,7 @@ const UpdateProject = () => {
                 onChange={(values) => handleSkillChange('optionalSkills', 'languages', values)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Frameworks</label>
               <CheckboxGroup
                 options={["React", "Angular", "Vue.js", "Next.js", "Nuxt.js", "Node.js", "Express.js", "Django", "Flask", "Spring Boot", "ASP.NET", "Laravel", "Ruby on Rails", "Flutter", "React Native"]}
@@ -296,7 +296,7 @@ const UpdateProject = () => {
                 onChange={(values) => handleSkillChange('optionalSkills', 'frameworks', values)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Databases</label>
               <CheckboxGroup
                 options={["MongoDB", "MySQL", "PostgreSQL", "SQLite", "Oracle", "Microsoft SQL Server", "Firebase", "Redis", "Cassandra", "DynamoDB", "Neo4j"]}
@@ -305,7 +305,7 @@ const UpdateProject = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Libraries</label>
               <CheckboxGroup
                 options={["Redux", "Axios", "jQuery", "Lodash", "TensorFlow", "Keras", "PyTorch", "Scikit-learn", "Pandas", "NumPy", "Chart.js", "D3.js", "Three.js", "Socket.io", "Bootstrap"]}
@@ -314,7 +314,7 @@ const UpdateProject = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Tools</label>
               <CheckboxGroup
                 options={["Git", "GitHub", "GitLab", "Docker", "Kubernetes", "Postman", "Jira", "Trello", "Figma", "Adobe XD", "VS Code", "IntelliJ IDEA", "Eclipse", "Webpack", "Babel"]}
@@ -325,9 +325,9 @@ const UpdateProject = () => {
           </div>
 
 
-          <div className="form-section">
+          <div className="form-section-ip">
             <h2>Roles & Availability</h2>
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Required Roles *</label>
               <CheckboxGroup
                 options={['Frontend Developer', 'Backend Developer', 'Full Stack Developer', 'UI/UX Designer', 'QA Engineer', 'Data Scientist', 'DevOps Engineer', 'Product Manager']}
@@ -336,18 +336,18 @@ const UpdateProject = () => {
               />
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
+            <div className="form-row-ip">
+              <div className="form-group-ip">
                 <label>Weekly Hours Required *</label>
                 <input type="number" value={formData.availabilityRequirement.weeklyHours} onChange={(e) => handleNestedChange('availabilityRequirement', 'weeklyHours', e.target.value)} required min="1" placeholder="e.g. 10" />
               </div>
-              <div className="form-group">
+              <div className="form-group-ip">
                 <label>Duration (Weeks) *</label>
                 <input type="number" value={formData.availabilityRequirement.durationWeeks} onChange={(e) => handleNestedChange('availabilityRequirement', 'durationWeeks', e.target.value)} required min="1" placeholder="e.g. 12" />
               </div>
             </div>
 
-            <div className="form-group">
+            <div className="form-group-ip">
               <label>Preferred Meeting Days</label>
               <CheckboxGroup
                 options={['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']}
@@ -357,8 +357,8 @@ const UpdateProject = () => {
             </div>
           </div>
 
-          <div className="update-project-actions">
-            <button type="submit" className="btn-save">Save Changes</button>
+          <div className="form-actions-ip">
+            <button type="submit" className="submit-btn-ip">Save Changes</button>
           </div>
         </form>
       </div>
