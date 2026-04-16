@@ -3,7 +3,7 @@ const dns = require("dns");
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 // Use the correct MongoDB URL for your database
-const dburl = "mongodb+srv://it23259584_db_user:FvhFJL6ufxdrM9mh@cluster0.jrpbwzi.mongodb.net/ProMateDB?retryWrites=true&w=majority";
+const dburl = "mongodb+srv://it23259584_db_user:ZIvrowMSDIVM4Mz0@cluster0.jrpbwzi.mongodb.net/ProMateDB?retryWrites=true&w=majority";
 
 mongoose.set("strictQuery", true);
 
