@@ -29,9 +29,19 @@ const AllProjects = () => {
           };
         });
 
-        // Discard user project cards entirely for "All Projects"
-        const filteredData = mappedData.filter(project => project.itNumber !== user?.studentId);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
+        // Discard user project cards entirely for "All Projects" and discard projects with past due dates
+        const filteredData = mappedData.filter(project => {
+          if (project.itNumber === user?.studentId) return false;
+          if (project.dueDate) {
+            const dDate = new Date(project.dueDate);
+            dDate.setHours(0, 0, 0, 0);
+            if (dDate < today) return false;
+          }
+          return true;
+        });
         setProjects(filteredData.reverse()); // Newest first
       }
     } catch (error) {
