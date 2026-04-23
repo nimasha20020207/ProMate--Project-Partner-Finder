@@ -65,6 +65,7 @@ const ProjectDetailsView = () => {
     const payload = {
       senderIt: user ? `${user.studentId} - ${user.fullName}` : 'Unknown',
       targetIt: viewingProject.itNumber || 'Unknown',
+      postId: viewingProject._id,
       message: `Requested to join ${viewingProject.displayTitle} project`,
       type: 'join_request'
     };
@@ -136,8 +137,10 @@ const ProjectDetailsView = () => {
           <div className="all-details-body" style={{ paddingBottom: '32px' }}>
             <div className="all-details-meta">
               <span className="all-details-badge">{viewingProject.projectType || 'Project'}</span>
-              {viewingProject.teamSize && (
-                <span className="all-details-badge all-badge-team">Team of {viewingProject.teamSize}</span>
+              {viewingProject.teamSize !== undefined && (
+                viewingProject.teamSize <= 0 
+                  ? <span className="all-details-badge" style={{ backgroundColor: '#fef2f2', color: '#ef4444', border: '1px solid #fecaca', fontWeight: 'bold' }}>FULL</span>
+                  : <span className="all-details-badge all-badge-team">Team of {viewingProject.teamSize}</span>
               )}
               {viewingProject.itNumber && (
                 <span className="all-details-badge" style={{ backgroundColor: '#f8fafc', color: '#475569', border: '1px solid #e2e8f0' }}>

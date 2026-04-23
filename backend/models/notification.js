@@ -8,6 +8,9 @@ const NotificationSchema = new mongoose.Schema({
   targetIt: {
     type: String
   },
+  postId: {
+    type: String
+  },
   message: {
     type: String,
     required: true

@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import './Notifications.css';
 
 const Notifications = () => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -37,6 +37,37 @@ const Notifications = () => {
     let projectName = "your";
     if (notif.message && notif.message.includes('Requested to join ')) {
       projectName = notif.message.replace('Requested to join ', '').replace(' project', '');
+    }
+
+    if (isAccepted) {
+      try {
+        let projectIdToUpdate = notif.postId;
+        
+        // Backward compatibility: If no postId stored in older notifications, find it manually
+        if (!projectIdToUpdate) {
+          const fetchRes = await fetch('http://localhost:3000/api/posts');
+          if (fetchRes.ok) {
+            const allPosts = await fetchRes.json();
+            const targetPost = allPosts.find(p => (p.projectId + ' - ' + p.title) === projectName && p.itNumber === user.studentId);
+            if (targetPost) {
+              projectIdToUpdate = targetPost._id;
+            }
+          }
+        }
+
+        if (projectIdToUpdate) {
+          // Decrement the team size.
+          await fetch(`http://localhost:3000/api/posts/${projectIdToUpdate}/decrement-team`, {
+            method: 'PUT',
+            headers: {
+               'Content-Type': 'application/json',
+               'x-auth-token': token
+            }
+          });
+        }
+      } catch (err) {
+        console.error("Error decrementing team size:", err);
+      }
     }
 
     // Create new status notification replacing the action request
