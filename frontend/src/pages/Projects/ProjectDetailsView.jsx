@@ -9,6 +9,7 @@ const ProjectDetailsView = () => {
   const { user, token } = useAuth();
   const [viewingProject, setViewingProject] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasRequested, setHasRequested] = useState(false);
 
   const fetchProject = async () => {
     try {
@@ -37,6 +38,29 @@ const ProjectDetailsView = () => {
     fetchProject();
   }, [id, navigate]);
 
+  useEffect(() => {
+    const checkJoinStatus = async () => {
+      if (viewingProject && user && viewingProject.itNumber !== user.studentId) {
+        try {
+          const res = await fetch(`http://localhost:3000/api/notifications?targetIt=${viewingProject.itNumber}`);
+          if (res.ok) {
+            const notifications = await res.json();
+            const myRequest = notifications.find(n => 
+              n.senderIt && n.senderIt.includes(user.studentId) &&
+              n.message && n.message.includes(viewingProject.displayTitle)
+            );
+            if (myRequest) {
+              setHasRequested(true);
+            }
+          }
+        } catch (err) {
+          console.error('Failed to check join status', err);
+        }
+      }
+    };
+    checkJoinStatus();
+  }, [viewingProject, user]);
+
   const handleJoin = async () => {
     const payload = {
       senderIt: user ? `${user.studentId} - ${user.fullName}` : 'Unknown',
@@ -52,8 +76,8 @@ const ProjectDetailsView = () => {
         body: JSON.stringify(payload)
       });
       if (res.ok) {
+        setHasRequested(true);
         alert('Join Request Sent to the Notifications Page!');
-        navigate(-1);
       } else {
         alert('Failed to send request');
       }
@@ -223,7 +247,14 @@ const ProjectDetailsView = () => {
                 <button className="btn-update" style={{ background: 'transparent', border: '2px solid #3B82F6', color: '#3B82F6', padding: '12px 32px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer' }} onClick={() => navigate('/update-project/' + id)}>Update Details</button>
               </>
             ) : (
-              <button className="all-btn-join" onClick={handleJoin}>Join Project</button>
+              <button 
+                className="all-btn-join" 
+                onClick={handleJoin}
+                disabled={hasRequested}
+                style={hasRequested ? { background: '#94a3b8', cursor: 'not-allowed', color: '#fff', border: 'none' } : {}}
+              >
+                {hasRequested ? 'Requested to Join' : 'Join Project'}
+              </button>
             )}
           </div>
         </div>
