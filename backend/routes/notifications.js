@@ -11,7 +11,18 @@ router.post("/", (req, res) => {
 
 // Get all notifications
 router.get("/", (req, res) => {
-    const filter = req.query.targetIt ? { targetIt: req.query.targetIt } : {};
+    let filter = {};
+    if (req.query.userIt) {
+        filter = {
+            $or: [
+                { targetIt: req.query.userIt },
+                { senderIt: { $regex: req.query.userIt, $options: 'i' }, type: 'join_request' }
+            ]
+        };
+    } else if (req.query.targetIt) {
+        filter = { targetIt: req.query.targetIt };
+    }
+
     Notification.find(filter).sort({ createdAt: -1 }) // newest first
         .then((nots) => res.json(nots))
         .catch((err) => res.status(400).json({ msg: "unable to fetch notifications", error: err }));

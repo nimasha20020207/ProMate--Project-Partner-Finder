@@ -9,9 +9,9 @@ const Notifications = () => {
 
   const fetchNotifications = async () => {
     try {
-      // Only fetch notifications targeted at the currently logged-in user
+      // Fetch notifications targeted at the currently logged-in user OR created by them
       const url = user?.studentId 
-        ? `http://localhost:3000/api/notifications?targetIt=${user.studentId}`
+        ? `http://localhost:3000/api/notifications?userIt=${user.studentId}`
         : 'http://localhost:3000/api/notifications';
         
       const res = await fetch(url);
@@ -105,12 +105,14 @@ const Notifications = () => {
         ) : (
           notifications.map(notif => {
             const isRequest = notif.type === 'join_request';
+            const isIncomingRequest = isRequest && notif.targetIt === user?.studentId;
+            const isOutgoingRequest = isRequest && notif.senderIt.includes(user?.studentId);
 
             return (
               <div key={notif._id} className={`notif-card ${notif.type} flex flex-col md:flex-row gap-4 items-start md:items-center justify-between`}>
                 <div className="notif-content flex items-center gap-4">
                   <div className={`notif-icon ${notif.type}`}>
-                    {notif.type === 'join_request' && (
+                    {isRequest && (
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                     )}
                     {(notif.type === 'accepted' || notif.type === 'you_accepted') && (
@@ -121,15 +123,26 @@ const Notifications = () => {
                     )}
                   </div>
                   <div className="notif-text">
-                    <span className="notif-it">{notif.senderIt}</span>
-                    <p className="notif-desc">{notif.message}</p>
+                    <span className="notif-it">
+                      {isOutgoingRequest ? `Outgoing Request (To: IT NO ${notif.targetIt})` : notif.senderIt}
+                    </span>
+                    <p className="notif-desc">
+                      {isOutgoingRequest
+                        ? notif.message.replace('Requested to join', 'You sent a join request to')
+                        : notif.message}
+                    </p>
                   </div>
                 </div>
 
-                {isRequest ? (
+                {isIncomingRequest ? (
                   <div className="notif-actions flex gap-3 w-full md:w-auto mt-2 md:mt-0">
                     <button className="btn-notif btn-accept flex-1 md:flex-none" onClick={() => handleResponse(notif, 'accepted')}>Accept</button>
                     <button className="btn-notif btn-reject flex-1 md:flex-none" onClick={() => handleResponse(notif, 'rejected')}>Reject</button>
+                  </div>
+                ) : isOutgoingRequest ? (
+                  <div className="notif-actions-simple flex items-center gap-4 w-full md:w-auto mt-2 md:mt-0">
+                    <span className="status-badge pending" style={{ background: '#f59e0b', color: '#fff', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: '600' }}>Pending</span>
+                    <button className="btn-notif btn-reject" onClick={() => handleDelete(notif._id)}>Cancel Request</button>
                   </div>
                 ) : (
                   <div className="notif-actions-simple flex items-center gap-4 w-full md:w-auto mt-2 md:mt-0">
