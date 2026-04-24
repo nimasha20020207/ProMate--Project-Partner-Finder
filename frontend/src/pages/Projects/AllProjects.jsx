@@ -32,9 +32,10 @@ const AllProjects = () => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        // Discard user project cards entirely for "All Projects" and discard projects with past due dates
+        // Discard user project cards entirely for "All Projects", discard projects with past due dates, and discard full projects
         const filteredData = mappedData.filter(project => {
           if (project.itNumber === user?.studentId) return false;
+          if (project.teamSize <= 0) return false; // Hide full projects
           if (project.dueDate) {
             const dDate = new Date(project.dueDate);
             dDate.setHours(0, 0, 0, 0);

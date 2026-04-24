@@ -161,15 +161,28 @@ const UpdateProject = () => {
 
   return (
     <div className="insert-project-container-ip" style={{ paddingTop: '40px', maxWidth: '900px', margin: '0 auto' }}>
-      {/* Back Button */}
-      <button
-        onClick={() => navigate(-1)}
-        style={{ marginBottom: '20px', background: 'none', border: 'none', color: '#3B82F6', cursor: 'pointer', fontWeight: '600', fontSize: '15px' }}
-      >
-        ← Cancel
-      </button>
-
-      <div className="insert-project-card-ip">
+      <div className="insert-project-card-ip" style={{ position: 'relative' }}>
+        <button
+          onClick={() => navigate(-1)}
+          style={{ 
+            position: 'absolute',
+            top: '30px',
+            right: '30px',
+            background: 'none', 
+            border: 'none', 
+            color: '#000', 
+            cursor: 'pointer', 
+            fontSize: '28px', 
+            fontWeight: '900', 
+            lineHeight: 1,
+            padding: '5px'
+          }}
+          aria-label="Close"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style={{ display: 'block' }}>
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+          </svg>
+        </button>
         <h1 className="insert-project-title-ip">Update Project Details</h1>
         <p className="insert-project-subtitle-ip">Modify the fields and hit save to update the database.</p>
 

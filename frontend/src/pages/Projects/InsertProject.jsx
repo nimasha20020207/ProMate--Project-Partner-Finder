@@ -149,7 +149,7 @@ const InsertProject = ({ onSuccess }) => {
         ...prev,
         [type]: { ...prev[type], [category]: newValues }
       };
-      
+
       if (type === 'essentialSkills' && touched.essentialSkills) {
         const hasEssentialSkills = Object.values(updatedData.essentialSkills).some(arr => arr && arr.length > 0);
         setErrors(e => ({

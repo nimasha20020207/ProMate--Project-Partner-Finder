@@ -89,6 +89,23 @@ router.put("/:id", auth, (req, res) => {
     .catch(() => res.status(400).json({msg: "unable to update post"}));
 });
 
+//decrement team size specific route
+router.put("/:id/decrement-team", auth, async (req, res) => {
+    try {
+        const post = await Posts.findById(req.params.id);
+        if (!post) {
+            return res.status(404).json({msg: "post not found"});
+        }
+        if (post.teamSize > 0) {
+            post.teamSize -= 1;
+            await post.save();
+        }
+        res.json({msg: "team size decremented successfully", teamSize: post.teamSize});
+    } catch(err) {
+        res.status(400).json({msg: "unable to decrement team size"});
+    }
+});
+
 //delete post by id
 router.delete("/:id", auth, (req, res) => {
     Posts.findByIdAndDelete(req.params.id)
