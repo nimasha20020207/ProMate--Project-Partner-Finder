@@ -55,3 +55,8 @@ npm run dev
 - Register an account using your university email (e.g., `it12345678@my.sliit.lk`).
 - Fully augment your profile with avatar uploads and social links.
 - Look up project teams to seamlessly integrate!
+
+
+### 5. Admin Credentials (Only for testing)
+-email:adminpromate@gmail.com
+-password:admin123
