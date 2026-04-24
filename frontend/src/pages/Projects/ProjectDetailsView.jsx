@@ -120,17 +120,27 @@ const ProjectDetailsView = () => {
 
   return (
     <div className="all-projects-container" style={{ paddingTop: '40px', maxWidth: '900px', margin: '0 auto' }}>
-      {/* Back Button */}
-      <button
-        onClick={() => navigate(-1)}
-        style={{ marginBottom: '20px', background: 'none', border: 'none', color: '#3B82F6', cursor: 'pointer', fontWeight: '600', fontSize: '15px' }}
-      >
-        ← Back
-      </button>
-
-      <div style={{ background: '#fff', borderRadius: '12px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
-        <div style={{ padding: '24px', borderBottom: '1px solid #eaeaea' }}>
+      <div style={{ background: '#fff', borderRadius: '12px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)', overflow: 'hidden', position: 'relative' }}>
+        <div style={{ padding: '24px', borderBottom: '1px solid #eaeaea', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <h2 style={{ margin: 0, fontSize: '24px', color: '#1e293b', fontWeight: '700' }}>{viewingProject.displayTitle}</h2>
+          <button
+            onClick={() => navigate(-1)}
+            style={{ 
+              background: 'none', 
+              border: 'none', 
+              color: '#000', 
+              cursor: 'pointer', 
+              fontSize: '28px', 
+              fontWeight: 'bold', 
+              lineHeight: 1,
+              padding: '0 8px'
+            }}
+            aria-label="Close"
+          >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style={{ display: 'block' }}>
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+          </svg>
+          </button>
         </div>
 
         <div className="all-project-details-view relative">

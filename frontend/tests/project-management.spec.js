@@ -125,7 +125,7 @@ test.describe('Project Management & Join Requests E2E', () => {
 
     // 5. Navigate to a blank page first to set localStorage
     await page.goto('/');
-    
+
     // Set dummy tokens
     await page.evaluate(({ user }) => {
       localStorage.setItem('token', 'dummy-test-token');
@@ -140,7 +140,7 @@ test.describe('Project Management & Join Requests E2E', () => {
 
     // Wait for the "Create New Project" heading
     await expect(page.locator('h1:has-text("Create New Project")')).toBeVisible();
-    
+
     // Check if the submit button exists
     const submitBtn = page.locator('button:has-text("Create Project")');
     await expect(submitBtn).toBeVisible();
@@ -150,7 +150,7 @@ test.describe('Project Management & Join Requests E2E', () => {
     await page.goto('/your-projects');
 
     await page.waitForTimeout(1000); // give it a sec to load
-    
+
     // Ensure page loads
     await expect(page.locator('h1:has-text("Your Projects")')).toBeVisible({ timeout: 10000 });
 
@@ -162,12 +162,12 @@ test.describe('Project Management & Join Requests E2E', () => {
   });
 
   // --- SUITE 2: JOIN REQUESTS AND NOTIFICATIONS ---
-  
+
   test('All Projects hides FULL project automatically', async ({ page }) => {
     await page.goto('/all-projects');
 
     await page.waitForTimeout(1000); // give it a sec to load
-    
+
     // We should see "Open Project" because teamSize > 0
     await expect(page.locator('h3:has-text("Open Project")')).toBeVisible({ timeout: 5000 });
 
@@ -390,7 +390,7 @@ test.describe('Project Management & Join Requests E2E', () => {
     });
 
     await page.goto('/update-project/proj1');
-    
+
     // Check if the form loads existing data correctly
     const titleInput = page.locator('input[name="title"]');
     await titleInput.waitFor({ state: 'visible' });
@@ -401,9 +401,9 @@ test.describe('Project Management & Join Requests E2E', () => {
     // Submit
     const submitBtn = page.locator('button:has-text("Save Changes")');
     if (await submitBtn.isVisible()) {
-        await submitBtn.click();
-        // Since we bypass validation with just UI click, in a perfect world this executes.
-        // Assuming validation might block, we just ensure the component mounted perfectly as a major win!
+      await submitBtn.click();
+      // Since we bypass validation with just UI click, in a perfect world this executes.
+      // Assuming validation might block, we just ensure the component mounted perfectly as a major win!
     }
   });
 
@@ -447,11 +447,11 @@ test.describe('Project Management & Join Requests E2E', () => {
 
   test('Due date formats correctly on Project Cards based on local timezone formatting', async ({ page }) => {
     await page.goto('/all-projects');
-    
+
     // Future Project has dueDate: '2028-12-31T00:00:00.000Z'
     // Depending on CI runner's timezone, parsing UTC midnight can shift the date visually.
     await expect(page.locator('h3:has-text("Valid Future Project")')).toBeVisible({ timeout: 5000 });
-    
+
     // As long as the generic year mounts statically into the DOM, the formatting script natively functioned without crashing
     await expect(page.locator('text=2028')).toBeVisible();
   });
@@ -461,7 +461,7 @@ test.describe('Project Management & Join Requests E2E', () => {
 
     // Open Project does NOT have a dueDate attribute
     await expect(page.locator('h3:has-text("Open Project")')).toBeVisible({ timeout: 5000 });
-    
+
     // However, it should NOT crash the system, and it theoretically wouldn't say "Due Date:"
     // This implicit visibility proves it survived the `if(project.dueDate)` check flawlessly.
   });
