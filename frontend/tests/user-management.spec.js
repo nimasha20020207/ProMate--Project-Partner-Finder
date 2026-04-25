@@ -42,7 +42,7 @@ test.describe('User Management Tests', () => {
 
     test('shows error on invalid login', async ({ page }) => {
       // Mock failed login
-      await page.route('**/api/users/login', async route => {
+      await page.route('**/api/auth/login', async route => {
         await route.fulfill({
           status: 401,
           contentType: 'application/json',
@@ -60,7 +60,7 @@ test.describe('User Management Tests', () => {
 
     test('successful login navigates to dashboard', async ({ page }) => {
       // Mock successful login
-      await page.route('**/api/users/login', async route => {
+      await page.route('**/api/auth/login', async route => {
         await route.fulfill({
           status: 200,
           contentType: 'application/json',
@@ -115,7 +115,7 @@ test.describe('User Management Tests', () => {
       await page.goto('/register');
       
       // Mock availability check
-      await page.route('**/api/users/check-availability*', async route => {
+      await page.route('**/api/auth/check-availability*', async route => {
         await route.fulfill({
           status: 200,
           contentType: 'application/json',
@@ -163,22 +163,103 @@ test.describe('User Management Tests', () => {
       // Select a role from dropdown
       await page.click('.multiselect-header');
       await page.click('div.multiselect-option:has-text("Frontend Developer")');
+      
+      // Click elsewhere to close the dropdown (so it doesn't cover the button)
+      await page.click('h2:has-text("Create your account")');
 
       // Mock registration API
-      await page.route('**/api/users/register', async route => {
+      await page.route('**/api/auth/register', async route => {
         await route.fulfill({
           status: 201,
           contentType: 'application/json',
-          body: JSON.stringify({ success: true, message: 'Registration successful' }),
+          body: JSON.stringify({ success: true, token: 'dummy-test-token', message: 'Registration successful' }),
         });
       });
 
       // Submit form
-      await page.click('button:has-text("Create Account")');
+      await page.click('button:has-text("🚀 Create Account")');
 
       // Check for success modal
       await expect(page.locator('h2:has-text("Welcome to ProMate!")')).toBeVisible();
       await expect(page.locator('button:has-text("Get Started 🚀")')).toBeVisible();
+    });
+
+    test('shows error when passwords do not match', async ({ page }) => {
+      // Step 1
+      await page.fill('input[name="firstName"]', 'John');
+      await page.fill('input[name="lastName"]', 'Doe');
+      await page.fill('input[name="email"]', 'john.doe@student.com');
+      await page.selectOption('select[name="department"]', 'Computing');
+      await page.selectOption('select[name="yearOfStudy"]', 'Year 2');
+      await page.click('button:has-text("Continue →")');
+
+      // Step 2
+      await page.fill('input[name="password"]', 'Password123!');
+      await page.fill('input[name="confirmPassword"]', 'MismatchingPass123!');
+      
+      // Click continue in Step 2
+      await page.click('div.step-panel.active button:has-text("Continue →")');
+      
+      // Should show error message
+      await expect(page.locator('text=Passwords do not match.')).toBeVisible();
+    });
+  });
+
+  test.describe('Dashboard & Profile', () => {
+    test.beforeEach(async ({ page }) => {
+      // 1. Mock login state for all dashboard tests
+      await page.route('**/api/profile/me', async route => {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify(mockUserResponse.user),
+        });
+      });
+
+      // 2. Set token BEFORE navigating to any protected route
+      await page.addInitScript(() => {
+        window.localStorage.setItem('token', 'dummy-test-token');
+      });
+
+      await page.goto('/dashboard');
+    });
+
+    test('successful logout redirects to login page', async ({ page }) => {
+      await page.waitForLoadState('networkidle');
+      // Click Sign Out in the Navbar
+      await page.locator('text=Sign Out').click();
+      
+      // Should redirect to Landing page (/)
+      await page.waitForURL(/\/$/);
+      await expect(page.locator('text=Find Your Perfect Project Partner at University')).toBeVisible();
+      
+      // Token should be cleared
+      const token = await page.evaluate(() => localStorage.getItem('token'));
+      expect(token).toBeNull();
+    });
+
+    test('updates user bio successfully', async ({ page }) => {
+      await page.goto('/edit-profile');
+      await page.waitForLoadState('networkidle');
+      
+      const bioInput = page.locator('textarea[placeholder*="Tell potential teammates"]');
+      const newBio = 'Updated bio for testing purposes.';
+      
+      await bioInput.fill(newBio);
+      
+      // Mock the update API
+      await page.route('**/api/profile/', async route => {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ ...mockUserResponse.user, bio: newBio }),
+        });
+      });
+      
+      await page.click('button:has-text("Save Changes")');
+      
+      // Verify success message in modal
+      await expect(page.locator('h2:has-text("Profile Updated!")')).toBeVisible();
     });
   });
 });
