@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { Link } from 'react-router-dom';
 import './Notifications.css';
 
 const Notifications = () => {
@@ -155,7 +156,29 @@ const Notifications = () => {
                   </div>
                   <div className="notif-text">
                     <span className="notif-it">
-                      {isOutgoingRequest ? `Outgoing Request (To: IT NO ${notif.targetIt})` : notif.senderIt}
+                      {isOutgoingRequest ? (
+                        <>
+                          Outgoing Request (To: IT NO{' '}
+                          <Link 
+                            to={`/profile/${notif.targetIt}`} 
+                            style={{ color: '#2563eb', textDecoration: 'none', fontWeight: 'bold' }}
+                            onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                            onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+                          >
+                            {notif.targetIt}
+                          </Link>
+                          )
+                        </>
+                      ) : (
+                        <Link 
+                          to={`/profile/${notif.senderIt.split(' - ')[0]}`} 
+                          style={{ color: '#2563eb', textDecoration: 'none', fontWeight: 'bold' }}
+                          onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                          onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+                        >
+                          {notif.senderIt}
+                        </Link>
+                      )}
                     </span>
                     <p className="notif-desc">
                       {isOutgoingRequest

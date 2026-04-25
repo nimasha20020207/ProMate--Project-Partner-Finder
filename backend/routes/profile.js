@@ -60,7 +60,9 @@ router.put("/", auth, async (req, res) => {
 // @access  Public (or Private depending on requirements, let's keep it Private so only logged in students can see)
 router.get("/:user_id", auth, async (req, res) => {
     try {
-        const profile = await Student.findById(req.params.user_id).select(
+        const isObjectId = req.params.user_id.match(/^[0-9a-fA-F]{24}$/);
+        const query = isObjectId ? { _id: req.params.user_id } : { studentId: req.params.user_id };
+        const profile = await Student.findOne(query).select(
             "-password -availability.preferredTime -availability.preferredDays" // Hide some private details
         );
 
