@@ -1,0 +1,264 @@
+{
+	"info": {
+		"name": "Promate - Project Management & Notifications",
+		"description": "Postman collection for testing the Project Management and Join Request Notification features of the ProMate API.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Posts (Project Management)",
+			"item": [
+				{
+					"name": "1. Get All Posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/posts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					}
+				},
+				{
+					"name": "2. Get Post by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/posts/REPLACE_WITH_POST_ID",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts",
+								"REPLACE_WITH_POST_ID"
+							]
+						}
+					}
+				},
+				{
+					"name": "3. Create Post (Auth Required)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Postman Test Project\",\n    \"description\": \"A project created via Postman API testing.\",\n    \"teamSize\": 4,\n    \"projectType\": \"Academic\",\n    \"dueDate\": \"2028-12-31\",\n    \"domain\": [\"Web Development\"],\n    \"essentialSkills\": { \"languages\": [\"JavaScript\"] },\n    \"requiredRoles\": [\"Frontend Developer\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/posts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					}
+				},
+				{
+					"name": "4. Update Post (Auth Required)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Updated Test Project Via Postman\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/posts/REPLACE_WITH_POST_ID",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts",
+								"REPLACE_WITH_POST_ID"
+							]
+						}
+					}
+				},
+				{
+					"name": "5. Decrement Team Size (Auth Required)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/posts/REPLACE_WITH_POST_ID/decrement-team",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts",
+								"REPLACE_WITH_POST_ID",
+								"decrement-team"
+							]
+						}
+					}
+				},
+				{
+					"name": "6. Delete Post (Auth Required)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/posts/REPLACE_WITH_POST_ID",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts",
+								"REPLACE_WITH_POST_ID"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Notifications (Join Requests)",
+			"item": [
+				{
+					"name": "1. Get User Notifications",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/notifications?userIt=IT12345678",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notifications"
+							],
+							"query": [
+								{
+									"key": "userIt",
+									"value": "IT12345678"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "2. Send Join Request Notification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"senderIt\": \"IT99999999 - Postman User\",\n    \"targetIt\": \"IT12345678\",\n    \"postId\": \"REPLACE_WITH_POST_ID\",\n    \"message\": \"Requested to join via Postman API Test\",\n    \"type\": \"join_request\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/notifications",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					}
+				},
+				{
+					"name": "3. Update Notification Status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"accepted\",\n    \"type\": \"accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/notifications/REPLACE_WITH_NOTIF_ID",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notifications",
+								"REPLACE_WITH_NOTIF_ID"
+							]
+						}
+					}
+				},
+				{
+					"name": "4. Delete Notification",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/notifications/REPLACE_WITH_NOTIF_ID",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notifications",
+								"REPLACE_WITH_NOTIF_ID"
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "ENTER_YOUR_JWT_TOKEN_HERE",
+			"type": "string"
+		}
+	]
+}
