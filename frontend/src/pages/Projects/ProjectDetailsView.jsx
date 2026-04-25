@@ -153,9 +153,30 @@ const ProjectDetailsView = () => {
                   : <span className="all-details-badge all-badge-team">Team of {viewingProject.teamSize}</span>
               )}
               {viewingProject.itNumber && (
-                <span className="all-details-badge" style={{ backgroundColor: '#f8fafc', color: '#475569', border: '1px solid #e2e8f0' }}>
-                  IT NO: {viewingProject.itNumber}
-                </span>
+                <div style={{ display: 'inline-flex', gap: '8px', alignItems: 'center' }}>
+                  <span className="all-details-badge" style={{ backgroundColor: '#f8fafc', color: '#475569', border: '1px solid #e2e8f0', margin: 0 }}>
+                    IT NO: {viewingProject.itNumber}
+                  </span>
+                  {viewingProject.creatorId && (
+                    <button 
+                      onClick={() => navigate(`/profile/${viewingProject.creatorId}`)}
+                      style={{ 
+                        backgroundColor: '#eff6ff', 
+                        color: '#2563eb', 
+                        border: '1px solid #bfdbfe', 
+                        padding: '4px 12px', 
+                        borderRadius: '20px', 
+                        fontSize: '11px', 
+                        fontWeight: '700', 
+                        cursor: 'pointer',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}
+                    >
+                      View Profile
+                    </button>
+                  )}
+                </div>
               )}
             </div>
 

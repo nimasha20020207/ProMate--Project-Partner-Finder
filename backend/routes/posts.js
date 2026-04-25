@@ -50,6 +50,9 @@ router.get("/", async (req, res) => {
                     post.year = student.academicInfo.year;
                     post.semester = student.academicInfo.semester;
                 }
+                if (student) {
+                    post.creatorId = student._id;
+                }
             }
         }
         res.json(posts);
@@ -68,6 +71,9 @@ router.get("/:id", async (req, res) => {
                 post.specialization = student.academicInfo.specialization;
                 post.year = student.academicInfo.year;
                 post.semester = student.academicInfo.semester;
+            }
+            if (student) {
+                post.creatorId = student._id;
             }
         }
         res.json(post);
